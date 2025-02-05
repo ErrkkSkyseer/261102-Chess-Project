@@ -1,0 +1,33 @@
+﻿  Board.cpp
+  BoardParser.cpp
+D:\Coding\C++\Project SFML\Chess-Proj\Piece.h(2,10): error C1083: Cannot open include file: 'SFML/System.hpp': No such file or directory
+  (compiling source file 'Board.cpp')
+  
+D:\Coding\C++\Project SFML\Chess-Proj\BoardParser.h(4,10): error C1083: Cannot open include file: 'SFML/System.hpp': No such file or directory
+  (compiling source file 'BoardParser.cpp')
+  
+  Chess261102.cpp
+D:\Coding\C++\Project SFML\Chess-Proj\Engine.h(3,9): error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  (compiling source file 'Chess261102.cpp')
+  
+  Engine.cpp
+D:\Coding\C++\Project SFML\Chess-Proj\Engine.h(3,9): error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  (compiling source file 'Engine.cpp')
+  
+  GameManager.cpp
+D:\Coding\C++\Project SFML\Chess-Proj\GameManager.h(3,10): error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  (compiling source file 'GameManager.cpp')
+  
+  Input.cpp
+D:\Coding\C++\Project SFML\Chess-Proj\Input.h(2,9): error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  (compiling source file 'Input.cpp')
+  
+  Piece.cpp
+D:\Coding\C++\Project SFML\Chess-Proj\Piece.h(2,10): error C1083: Cannot open include file: 'SFML/System.hpp': No such file or directory
+  (compiling source file 'Piece.cpp')
+  
+  Rule.cpp
+D:\Coding\C++\Project SFML\Chess-Proj\Rule.h(2,10): error C1083: Cannot open include file: 'SFML/System.hpp': No such file or directory
+  (compiling source file 'Rule.cpp')
+  
+  Generating Code...
