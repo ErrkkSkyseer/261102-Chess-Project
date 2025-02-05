@@ -31,6 +31,15 @@
 *.out
 *.app
 
+#VS project
+*.vcxproj
+*.log
+*.tlog
+*.lik
+*.idb
+*.pdb
 
 # Ignore VS Code workspace settings
 .vs/
+x64/
+Chess261102/
