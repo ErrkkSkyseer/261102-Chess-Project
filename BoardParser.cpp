@@ -2,7 +2,7 @@
 
 void BoardParser::ParseFile(map<Vector2i, shared_ptr<Piece>>& board,string path)
 {
-	cout << "parsing";
+	cout << "parsing\n";
 	ifstream f(path);
 	string l = "";
 
@@ -22,6 +22,7 @@ void BoardParser::ParseFile(map<Vector2i, shared_ptr<Piece>>& board,string path)
 		{
 			pos = Vector2i(x, y);
 			char c = toupper(l.at(x - 1));
+			if (c == '.') continue;
 			board[pos] = make_shared<Piece>(pos, c);
 		}
 	}

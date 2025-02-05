@@ -2,31 +2,43 @@
 
 Engine::Engine()
 {
-	m_isRunning = true;
+	m_window.setFramerateLimit(FPS_MAX);
 }
 
 void Engine::input()
 {
-	if (Keyboard::isKeyPressed(Keyboard::Key::Escape))
+	vector<optional<Event>> eventCollections;
+	while (const optional sfEvent = m_window.pollEvent())
 	{
-		m_isRunning = false;
+		eventCollections.push_back(sfEvent);
 	}
-	m_gm.input();
+
+	auto it = eventCollections.begin();
+	auto end = eventCollections.end();
+	for (auto& sfEvent = it; it != end; sfEvent++)
+	{
+		if ((*sfEvent)->is<Event::Closed>())
+			m_window.close();
+	}
+
+		m_gm.input(eventCollections);
 }
 
 void Engine::update()
 {
-	m_gm.update();
+	m_gm.update(m_clock.restart().asSeconds());
 }
 
 void Engine::draw()
 {
-	m_gm.draw();
+	m_window.clear();
+	m_gm.draw(m_window);
+	m_window.display();
 }
 
 void Engine::run()
 {
-	while (m_isRunning)
+	while (m_window.isOpen())
 	{
 		input();
 		update();

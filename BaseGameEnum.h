@@ -2,7 +2,7 @@
 
 enum class PieceColor
 {
-	defult,dark,light
+	defult,white,black
 };
 
 enum class PieceType
@@ -12,10 +12,6 @@ enum class PieceType
 
 enum class GameType
 {
-	normal, notNormal
+	isntInGame, normal, notNormal
 };
 
-enum class GameState
-{
-	calculating,wait2select,wait2move
-};

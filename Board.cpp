@@ -5,12 +5,18 @@ Board::Board()
 
 }
 
-shared_ptr<Piece>& Board::getSquareDataRef(Vector2i pos)
+shared_ptr<Piece>& Board::getSquareData(Vector2i pos)
 {
 	return m_board[pos];
 }
 
-map<Vector2i, shared_ptr<Piece>>& Board::getBoardRef()
+bool Board::isEmpty(Vector2i pos)
+{
+	cout << "Checking suqare... : " << ((m_board[pos] == nullptr) ? "Empty" : "Have Piece") << "\n";
+	return m_board[pos] == nullptr;
+}
+
+map<Vector2i, shared_ptr<Piece>>& Board::getBoard()
 {
 	return m_board;
 }

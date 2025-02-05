@@ -1,35 +1,59 @@
 #pragma once
 #include <iostream>
-#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "Board.h"
 #include "BoardParser.h"
 #include "Rule.h"
 #include "BaseGameEnum.h"
+#include "Input.h"
 
 using namespace std;
 using namespace sf;
+
+enum class GameState
+{
+	Start
+	,InputSelect
+	,InputTarget
+	,End
+};
 
 class GameManager
 {
 private:
 	Board m_board;
-	Rule rule;
+	Rule m_rule = Rule(m_board);
 	BoardParser m_parser;
+	Input m_input;
 
-	GameType m_gameType;
+	GameState m_gameState = GameState::Start;
 
-	PieceColor m_turn;
+	GameType m_gameType = GameType::normal; //GameType::isntInGame;
 
-	bool m_isPlaying;
+	PieceColor m_turn = PieceColor::black;
 
-	void ParseInputIOTesting();
+	bool m_isPlaying = false;
+
+	string m_consoleInput;
+	Vector2i m_selectingVector;
+	Vector2i m_targetVector;
+
+
+	//void ParseInputIOTesting(); // <- Purley for testing
+
+	void stateMachine(GameState state);
+	void enterState(GameState state);
+	void exitState(GameState state);
+
+	bool tryParse2Vector2i(string s, Vector2i& out);
+	pair<string, string> splitString(string s, char c);
 
 public:
 	GameManager();
 
-	void input();
-	void update();
-	void draw();
+	void input(vector<optional<Event>>& eventCollections);
+	void update(double fps);
+	void draw(RenderWindow& window);
 };
 

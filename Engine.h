@@ -5,13 +5,20 @@
 
 #include "GameManager.h"
 
+#define WINDOW_WIDTH  800
+#define WINDOW_HEIGHT  600
+#define FPS_MAX  60
+
 using namespace sf;
 
 class Engine
 {
 private:
 	GameManager m_gm;
-	bool m_isRunning;
+	Clock m_clock;
+
+	RenderWindow m_window = RenderWindow(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "SFML window");
+
 
 	void input();
 	void update();

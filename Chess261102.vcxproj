@@ -140,6 +140,7 @@
     <ClCompile Include="Chess261102.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Rule.cpp" />
   </ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="BoardParser.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Rule.h" />
     <ClInclude Include="Vector2Utils.h" />
     <ClInclude Include="Piece.h" />
