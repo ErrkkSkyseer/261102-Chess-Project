@@ -12,7 +12,6 @@ void GameManager::input(vector<optional<Event>>& eventCollections)
 	m_input.UpdateEvent(eventCollections);
 }
 
-
 void GameManager::update(double dt)
 {
 	//ParseInputIOTesting();
