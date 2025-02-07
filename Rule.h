@@ -16,6 +16,8 @@ private:
 	vector<Vector2i> m_controllingSquareWhite;
 	vector<Vector2i> m_controllingSquareBlack;
 
+	void pawnMove(shared_ptr<Piece>& piece);
+
 public:
 	Rule(Board& board);
 

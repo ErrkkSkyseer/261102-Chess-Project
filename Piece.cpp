@@ -31,6 +31,26 @@ Piece::Piece(Vector2i pos, char _char)
 	}
 }
 
+vector<Vector2i> Piece::getPossibleMoveArray()
+{
+	return m_possibleMove;
+}
+
+void Piece::setPossibleMoveArray(vector<Vector2i> v)
+{
+	m_possibleMove = v;
+}
+
+PieceType Piece::getType()
+{
+	return m_type;
+}
+
+PieceColor Piece::getColor()
+{
+	return m_color;
+}
+
 Vector2i Piece::getPosition()
 {
 	return m_position;
@@ -39,6 +59,26 @@ Vector2i Piece::getPosition()
 char Piece::getChar()
 {
 	return m_char;
+}
+
+bool Piece::getIsFirstMove()
+{
+	return m_isFirstMove;
+}
+
+void Piece::setIsFirstMove(bool value)
+{
+	m_isFirstMove = value;
+}
+
+bool Piece::getHasMove()
+{
+	return m_hasMoved;
+}
+
+void Piece::setHasMove(bool value)
+{
+	m_hasMoved = value;
 }
 
 void Piece::move(Vector2i pos)

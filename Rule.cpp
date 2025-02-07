@@ -22,6 +22,31 @@ bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
 void Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
 {
     cout << "Calculating possible moves...\n";
+    switch (piece->getType())
+    {
+    case PieceType::defult:
+        break;
+    case PieceType::pawn:
+        pawnMove(piece);
+        break;
+    case PieceType::knight:
+
+        break;
+    case PieceType::bishop:
+
+        break;
+    case PieceType::rook:
+
+        break;
+    case PieceType::queen:
+
+        break;
+    case PieceType::king:
+
+        break;
+    default:
+        break;
+    }
 }
 
 void Rule::calculateBoardState()

@@ -27,8 +27,20 @@ public:
 
 	Piece(Vector2i pos, char type);
 
+	vector<Vector2i> getPossibleMoveArray();
+	void setPossibleMoveArray(vector<Vector2i> v);
+
+	PieceType getType();
+	PieceColor getColor();
+
 	Vector2i getPosition();
 	char getChar();
+
+	bool getIsFirstMove();
+	void setIsFirstMove(bool value);
+
+	bool getHasMove();
+	void setHasMove(bool value);
 
 	virtual void move(Vector2i pos);
 };
