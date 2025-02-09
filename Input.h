@@ -15,7 +15,8 @@ class Input
 private:
 	bool m_isAnyKeyDown = false;
 	set<Keyboard::Key> m_keysPressed;
-	
+
+	string m_consoleInput = "";
 
 	void resetFlag();
 	string Key2Str(const Keyboard::Key&);
@@ -25,7 +26,10 @@ public:
 
 	void UpdateEvent(vector<optional<Event>>& eventCollection);
 
-	void parseInputKey(string& input);
+	void collectInputKey();
+	void resetConsoleInput();
+	string getConsoleInput();
+
 	bool getAnyKeyPress();
 	bool getKeyPress(Keyboard::Key);
 

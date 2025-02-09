@@ -26,14 +26,25 @@ void Input::UpdateEvent(vector<optional<Event>>& eventCollection)
 /// FOR TESTING ONLY! DOES NOT WORK IN REAL GAME
 /// </summary>
 /// <returns></returns>
-void Input::parseInputKey(string& input)
+void Input::collectInputKey()
 {
     if (_kbhit())
     {
         char c = _getch();
         cout << c;
-        input += c;
+        m_consoleInput += c;
     }
+}
+
+void Input::resetConsoleInput()
+{
+    cout << "Console Input Deltion... : Delete \"" << m_consoleInput << "\"";
+    m_consoleInput.clear();
+}
+
+string Input::getConsoleInput()
+{
+    return m_consoleInput;
 }
 
 bool Input::getAnyKeyPress()

@@ -56,6 +56,11 @@ Vector2i Piece::getPosition()
 	return m_position;
 }
 
+void Piece::setPosition(Vector2i pos)
+{
+	m_position = pos;
+}
+
 char Piece::getChar()
 {
 	return m_char;

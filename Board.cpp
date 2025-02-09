@@ -24,6 +24,8 @@ map<Vector2i, shared_ptr<Piece>>& Board::getBoard()
 
 bool Board::movePiece(Vector2i init, Vector2i end)
 {
+	auto& piece = m_board[init];
+	piece->setPosition(init);
 	m_board[end] = m_board[init];
 	m_board.erase(init);
 

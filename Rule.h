@@ -24,6 +24,7 @@ private:
 	vector<Vector2i> QueenMove(shared_ptr<Piece>& piece);
 	vector<Vector2i> KingMove(shared_ptr<Piece>& piece);
 
+
 public:
 	Rule(Board& board);
 

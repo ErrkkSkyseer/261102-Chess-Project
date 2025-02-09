@@ -1,5 +1,10 @@
 #include "Rule.h"
 
+vector<Vector2i> Rule::pawnMove(shared_ptr<Piece>& piece)
+{
+    return vector<Vector2i>();
+}
+
 Rule::Rule(Board& board)
 {
     m_Board = &board;
@@ -27,7 +32,6 @@ bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
     case PieceType::defult:
         break;
     case PieceType::pawn:
-        piece->setPossibleMoveArray(pawnMove(piece));
         piece->setPossibleMoveArray(pawnAtt(piece));
         break;
     case PieceType::knight:
@@ -49,6 +53,7 @@ bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
         break;
     }
     return !piece->getPossibleMoveArray().empty();
+
 }
 
 void Rule::calculateBoardState()
