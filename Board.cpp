@@ -7,12 +7,26 @@ Board::Board()
 
 shared_ptr<Piece>& Board::getSquareData(Vector2i pos)
 {
+#ifdef DEBUG
+	
+	cout << "Get Data At (" << pos.x << "," << pos.y <<")";
+	if (m_board[pos] != nullptr)
+		m_board[pos]->printStatus();
+	else
+		cout << "\n is empty square\n";
+
+#endif // DEBUG
+
 	return m_board[pos];
 }
 
 bool Board::isEmpty(Vector2i pos)
 {
-	cout << "Checking suqare... : " << ((m_board[pos] == nullptr) ? "Empty" : "Have Piece") << "\n";
+#ifdef DEBUG
+	cout << "Checking pos : " << "(" << pos.x << "," << pos.y << ") = ";
+	cout << ((m_board[pos] == nullptr) ? "Empty" : "Have Piece " )<< "\n";
+#endif // DEBUG
+
 	return m_board[pos] == nullptr;
 }
 
@@ -24,14 +38,18 @@ map<Vector2i, shared_ptr<Piece>>& Board::getBoard()
 
 bool Board::movePiece(Vector2i init, Vector2i end)
 {
-	auto& piece = m_board[init];
-	piece->setPosition(init);
 	m_board[end] = m_board[init];
 	m_board.erase(init);
+
+	m_board[end]->setPosition(end);
+	m_board[end]->printStatus();
 
 	return true;
 }
 
+/// <summary>
+/// Initialize The Board Manually
+/// </summary>
 void Board::initializeBoardByIO()
 {
 	cout << "Currently using : InitializeBoardByIO\n\n";

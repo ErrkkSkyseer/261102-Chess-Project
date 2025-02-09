@@ -86,9 +86,13 @@ void Piece::setHasMove(bool value)
 	m_hasMoved = value;
 }
 
-void Piece::move(Vector2i pos)
+#ifdef DEBUG
+void Piece::printStatus()
 {
-
+	cout << "\n\nPiece::printStatus \n";
+	cout << "Piece : " << m_char << " (" << m_position.x << "," << m_position.y << ")\n";
 }
+#endif // DEBUG
+
 
 

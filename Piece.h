@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "BaseGameEnum.h"
+#include "Debug.h"
 
 using namespace std;
 using namespace sf;
@@ -43,7 +44,10 @@ public:
 
 	bool getHasMove();
 	void setHasMove(bool value);
+#ifdef DEBUG
 
-	virtual void move(Vector2i pos);
+
+	void printStatus();
+#endif // DEBUG
 };
 

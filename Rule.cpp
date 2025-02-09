@@ -1,20 +1,8 @@
 #include "Rule.h"
 
-vector<Vector2i> Rule::pawnMove(shared_ptr<Piece>& piece)
-{
-    return vector<Vector2i>();
-}
-
-Rule::Rule(Board& board)
-{
-    m_Board = &board;
-}
-
-
-bool Rule::canMove(shared_ptr<Piece>& piece)
+Rule::Rule(Board& board) : m_Board(board)
 {
 
-    return piece != nullptr;
 }
 
 bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
@@ -26,32 +14,49 @@ bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
 
 bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
 {
-    cout << "Calculating possible moves...\n";
+    std::cout << "Calculating possible moves...\n";
+    vector<Vector2i> possibleMoves = vector<Vector2i>();
+    vector<Vector2i> moves ;
     switch (piece->getType())
     {
     case PieceType::defult:
         break;
     case PieceType::pawn:
-        piece->setPossibleMoveArray(pawnAtt(piece));
+        moves = pawnMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        printMovesVector(possibleMoves);
+        moves = pawnAtt(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        printMovesVector(possibleMoves);
         break;
     case PieceType::knight:
-        piece->setPossibleMoveArray(KnightMove(piece));
+        moves = KnightMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::bishop:
-        piece->setPossibleMoveArray(BishopMove(piece));
+        moves = BishopMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::rook:
-        piece->setPossibleMoveArray(RookMove(piece));
+        moves = RookMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::queen:
-        piece->setPossibleMoveArray(QueenMove(piece));
+        moves = QueenMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::king:
-        piece->setPossibleMoveArray(KingMove(piece));
+        moves = KingMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     default:
         break;
     }
+
+    vector<Vector2i> moveArray = possibleMoves;
+    printMovesVector(possibleMoves);
+
+    piece->setPossibleMoveArray(possibleMoves);
     return !piece->getPossibleMoveArray().empty();
 
 }
@@ -61,3 +66,17 @@ void Rule::calculateBoardState()
     cout << "Updating Board...\n";
     return;
 }
+
+#ifdef DEBUG
+void Rule::printMovesVector(vector<Vector2i> v)
+{
+    auto it = v.begin();
+    auto end = v.end();
+    cout << "move Array ::\n[";
+    for (it; it != end; it++)
+    {
+        cout << "(" << it->x << "," << it->y << "),";
+    }
+    cout << "]\n\n";
+}
+#endif // DEBUG

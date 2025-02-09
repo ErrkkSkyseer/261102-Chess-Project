@@ -7,6 +7,8 @@
 #include "Piece.h"
 #include "Vector2Utils.h"
 
+#include "Debug.h"
+
 
 using namespace std;
 

@@ -13,11 +13,11 @@ vector<Vector2i> Rule::BishopMove(shared_ptr<Piece>& piece) {
 			if (targetPosition.x < 1 || targetPosition.x > 8 || targetPosition.y < 1 || targetPosition.y > 8) {
 				break;
 			}
-			if (m_Board->isEmpty(targetPosition)) {
+			if (m_Board.isEmpty(targetPosition)) {
 				possibleMove.push_back(targetPosition);
 			}
 			else {
-				shared_ptr<Piece> targetPiece = m_Board->getSquareData(targetPosition);
+				shared_ptr<Piece> targetPiece = m_Board.getSquareData(targetPosition);
 				if (targetPiece->getColor() != piece->getColor()) {
 					possibleMove.push_back(targetPosition);
 				}

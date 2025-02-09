@@ -22,6 +22,9 @@ void Input::UpdateEvent(vector<optional<Event>>& eventCollection)
 
 
 }
+#ifdef DEBUG
+
+
 /// <summary>
 /// FOR TESTING ONLY! DOES NOT WORK IN REAL GAME
 /// </summary>
@@ -38,14 +41,17 @@ void Input::collectInputKey()
 
 void Input::resetConsoleInput()
 {
-    cout << "Console Input Deltion... : Delete \"" << m_consoleInput << "\"";
+    cout << "Console Input Deltion... : Delete \"" << m_consoleInput << "\"\n" ;
     m_consoleInput.clear();
 }
 
 string Input::getConsoleInput()
 {
-    return m_consoleInput;
+    string s = m_consoleInput;
+    resetConsoleInput();
+    return s;
 }
+#endif // !DEBUG
 
 bool Input::getAnyKeyPress()
 {
@@ -65,11 +71,8 @@ bool Input::OnClick()
     return false;
 }
 
-void Input::resetFlag()
-{
 
-}
-
+#ifdef DEBUG
 
 string Input::Key2Str(const Keyboard::Key& k) {
     string ret;
@@ -328,5 +331,6 @@ string Input::Key2Str(const Keyboard::Key& k) {
     }
     return ret;
 }
+#endif // DEBUG
 
 
