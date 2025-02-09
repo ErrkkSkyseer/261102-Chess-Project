@@ -34,6 +34,8 @@ public:
 	PieceColor getColor();
 
 	Vector2i getPosition();
+	void setPosition(Vector2i pos);
+
 	char getChar();
 
 	bool getIsFirstMove();

@@ -14,8 +14,8 @@ using namespace sf;
 enum class GameState
 {
 	Start
-	,InputSelect
-	,InputTarget
+	,Select
+	,Target
 	,End
 };
 
@@ -31,13 +31,11 @@ private:
 
 	GameType m_gameType = GameType::normal; //GameType::isntInGame;
 
-	PieceColor m_turn = PieceColor::black;
+	PieceColor m_turn = PieceColor::white;
 
 	bool m_isPlaying = false;
 
-	string m_consoleInput;
-	Vector2i m_selectingVector;
-	Vector2i m_targetVector;
+	Vector2i m_selectPos;
 
 
 	//void ParseInputIOTesting(); // <- Purley for testing
@@ -45,6 +43,8 @@ private:
 	void stateMachine(GameState state);
 	void enterState(GameState state);
 	void exitState(GameState state);
+
+	void switchState(GameState from, GameState to);
 
 	bool tryParse2Vector2i(string s, Vector2i& out);
 	pair<string, string> splitString(string s, char c);
