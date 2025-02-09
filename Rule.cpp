@@ -32,28 +32,28 @@ bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
     case PieceType::defult:
         break;
     case PieceType::pawn:
-        piece->setPossibleMoveArray(pawnMove(piece));
+        piece->setPossibleMoveArray(pawnAtt(piece));
         break;
     case PieceType::knight:
-
+        piece->setPossibleMoveArray(KnightMove(piece));
         break;
     case PieceType::bishop:
-
+        piece->setPossibleMoveArray(BishopMove(piece));
         break;
     case PieceType::rook:
-
+        piece->setPossibleMoveArray(RookMove(piece));
         break;
     case PieceType::queen:
-
+        piece->setPossibleMoveArray(QueenMove(piece));
         break;
     case PieceType::king:
-
+        piece->setPossibleMoveArray(KingMove(piece));
         break;
     default:
         break;
     }
+    return !piece->getPossibleMoveArray().empty();
 
-    return true;
 }
 
 void Rule::calculateBoardState()
