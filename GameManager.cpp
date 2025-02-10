@@ -4,23 +4,128 @@ GameManager::GameManager()
 {
 	m_parser.ParseFile(m_board.getBoard());
 
-	switchState(m_gameState,GameState::Select);
-
-	
 }
 
 void GameManager::input(vector<optional<Event>>& eventCollections)
 {
 	m_input.UpdateEvent(eventCollections);
+#ifdef DEBUG
 	m_input.collectInputKey();
+#endif // DEBUG
+
 }
 
 void GameManager::update(double dt)
 {
 	//ParseInputIOTesting();
-	
-	stateMachine(m_gameState);
+	if (!m_isPlaying)
+	{
+		if (m_input.getKeyPress(Keyboard::Key::Enter))
+		{
+			startGame();
+		}
+		return;
+	}
 
+	Vector2i pos;
+	switch (m_inputState)
+	{
+	case 1:
+		if (onSquareInput(pos))
+		{
+			if (m_board.isEmpty(pos))
+			{
+				cout << "Empty Square\n";
+				return;
+			}
+
+			auto& piece = m_board.getSquareData(pos);
+			if (m_rule.calculatePossibleMove(piece))
+			{
+				switchState(2);
+				m_selectPos = pos;
+			}
+			else
+			{
+				cout << "No move\n";
+			}
+		}
+		break;
+	case 2:
+		if (onSquareInput(pos))
+		{
+			auto& piece = m_board.getSquareData(m_selectPos);
+			if (m_rule.isValidMove(piece, pos))
+			{
+				//TODO : Rule should handle moving piece not board
+				m_board.movePiece(m_selectPos, pos);
+				switchState(1);
+
+			}
+			else
+			{
+				cout << "Illegel move\n";
+				switchState(1);
+			}
+		}
+		break;
+	}
+	
+
+	//stateMachine(m_gameState);
+
+}
+
+void GameManager::enterState(int state)
+{
+	string debugmsg = "Enter Input State :: ";
+	switch (state)
+	{
+	case 1:
+		m_inputState = 1;
+		m_board.drawIO();
+		debugmsg += "Selecting Piece";
+		break;
+	case 2:
+		m_inputState = 2;
+		debugmsg += "Moving Piece";
+		break;
+	default:
+		debugmsg += "State not exist : m_inputState = " + m_inputState;
+		break;
+	}
+#ifdef DEBUG
+	cout << debugmsg << endl;
+#endif // DEBUG
+
+}
+
+void GameManager::exitState(int state)
+{
+	string debugmsg = "Exit Input State :: ";
+	switch (state)
+	{
+	case 1:
+		m_inputState = 1;
+		debugmsg += "Selecting Piece";
+		break;
+	case 2:
+		m_inputState = 2;
+		debugmsg += "Moving Piece";
+		break;
+	default:
+		debugmsg += "State not exist : m_inputState = " + m_inputState;
+		break;
+	}
+#ifdef DEBUG
+	cout << debugmsg << endl;
+#endif // DEBUG
+}
+
+void GameManager::switchState(int to)
+{
+	exitState(m_inputState);
+	enterState(to);
 }
 
 void GameManager::draw(RenderWindow& window)
@@ -76,10 +181,19 @@ void GameManager::nextTurn()
 
 void GameManager::startGame()
 {
+#ifdef DEBUG
+	cout << "GameStart!\n\n";
+#endif // DEBUG
+
 	m_isPlaying = true;
 	
-	m_turn = PieceColor::white;
-	m_move = 1;
+	m_turn = PieceColor::black;
+	m_move = 0;
+
+	nextTurn();
+
+	switchState(1);
+
 }
 
 void GameManager::gameOver()

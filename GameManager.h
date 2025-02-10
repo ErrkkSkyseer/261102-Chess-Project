@@ -31,6 +31,7 @@ private:
 
 	//[Game State]
 	GameState m_gameState = GameState::Start;
+	int m_inputState = 0;
 	GameType m_gameType = GameType::normal; //GameType::isntInGame;
 
 	// [Game Variables]
@@ -41,9 +42,13 @@ private:
 
 	void stateMachine(GameState state);
 	void enterState(GameState state);
+	void enterState(int state);
+
 	void exitState(GameState state);
+	void exitState(int state);
 
 	void switchState(GameState from, GameState to);
+	void switchState(int to);
 
 	bool onSquareInput(Vector2i& out);
 

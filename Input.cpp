@@ -41,7 +41,7 @@ void Input::collectInputKey()
 
 void Input::resetConsoleInput()
 {
-    cout << "Console Input Deltion... : Delete \"" << m_consoleInput << "\"\n" ;
+    cout << "\nConsole Input Deletion... : Delete \"" << m_consoleInput << "\"\n" ;
     m_consoleInput.clear();
 }
 

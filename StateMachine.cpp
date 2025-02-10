@@ -91,6 +91,7 @@ void GameManager::enterState(GameState state)
 
 }
 
+
 void GameManager::exitState(GameState state)
 {
 	string debugmsg = "Exit State :: ";
@@ -120,5 +121,7 @@ void GameManager::switchState(GameState from, GameState to)
 	exitState(from);
 	enterState(to);
 }
+
+
 
 
