@@ -23,7 +23,7 @@ public:
 
 	map<Vector2i, shared_ptr<Piece>>& getBoard();
 	
-	shared_ptr<Piece>& getSquareData(Vector2i pos); 
+	shared_ptr<Piece>& getSquareData(Vector2i pos);
 	bool isEmpty(Vector2i pos);
 
 	bool movePiece(Vector2i init, Vector2i end);
