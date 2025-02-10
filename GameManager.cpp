@@ -14,10 +14,17 @@ void GameManager::input(vector<optional<Event>>& eventCollections)
 
 void GameManager::update(double dt)
 {
+
 	//ParseInputIOTesting();
 	
 	stateMachine(m_gameState);
 
+	// ตรวจสอบ 50-Move Rule
+	if (_fiftyRuleCount >= 50 * 2) { // 50 ตาสำหรับทั้ง 2 ฝ่าย
+		cout << "Draw by 50-Move Rule!" << endl;
+		enterState(GameState::End);
+	}
+	
 }
 
 void GameManager::draw(RenderWindow& window)
@@ -231,4 +238,15 @@ pair<string, string> GameManager::splitString(string s, char c)
 //}
 
 
-
+bool GameManager::movePiece(Vector2i first, Vector2i end) {
+	shared_ptr<Piece> movingPiece = m_board.getSquareData(first);
+	shared_ptr<Piece> targetPiece = m_board.getSquareData(end);
+	// ตรวจสอบว่ามีการกินหมาก หรือเดินเบี้ยหรือไม่
+	if (targetPiece != nullptr || movingPiece->getType() == PieceType::pawn) {
+		_fiftyRuleCount = 0; // รีเซ็ตนับถอยหลัง
+	}
+	else {
+		_fiftyRuleCount++; // เพิ่มตัวนับถ้าไม่มีการกินหรือเดินเบี้ย
+	}
+	return m_board.movePiece(first, end);
+}

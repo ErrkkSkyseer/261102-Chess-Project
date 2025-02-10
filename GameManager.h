@@ -47,11 +47,14 @@ private:
 	void exitState(GameState state);
 
 	bool tryParse2Vector2i(string s, Vector2i& out);
+	bool movePiece(Vector2i first, Vector2i end);
+
 	pair<string, string> splitString(string s, char c);
 
 public:
 	GameManager();
 
+	int _fiftyRuleCount = 0;
 	void input(vector<optional<Event>>& eventCollections);
 	void update(double fps);
 	void draw(RenderWindow& window);
