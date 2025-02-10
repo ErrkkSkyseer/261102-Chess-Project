@@ -62,7 +62,7 @@ void Rule::calculateBoardState()
     return;
 }
 
-bool Rule::Check() {
+Vector2i Rule::Kingpos() {
     bool turnwhite = true; //wait for checkturn-func
     Vector2i Kingpos;
     for (int y = 1; y < 9; y++){
@@ -93,10 +93,18 @@ bool Rule::Check() {
             }
         }
     }
+    return Kingpos;
+}
+
+bool Rule::Check() {
+    
+    Vector2i kingpos = Kingpos();
+
+    bool turnwhite = true; //wait for checkturn-func
     if (turnwhite == true)
     {
         for (int i = 0; i < m_controllingSquareWhite.size(); i++) {
-            if (Kingpos == m_controllingSquareWhite[i]) {
+            if (kingpos == m_controllingSquareWhite[i]) {
                 return true;
             }
         }
@@ -104,11 +112,15 @@ bool Rule::Check() {
     else if (turnwhite == false)
     {
         for (int i = 0; i < m_controllingSquareBlack.size(); i++) {
-            if (Kingpos == m_controllingSquareBlack[i]) {
+            if (kingpos == m_controllingSquareBlack[i]) {
                 return true;
             }
         }
     }
-   
+
     return false;
+}
+
+void Rule::Pin() {
+    
 }
