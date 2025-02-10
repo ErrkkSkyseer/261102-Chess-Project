@@ -5,15 +5,15 @@
 
 #include "Board.h"
 
+#include "Debug.h"
+
 using namespace sf;
 using namespace std;
-
 class Rule
 {
 private:
-	Board* m_Board;
-	bool isCheck;
-
+	Board& m_Board;
+  	bool isCheck;
 	vector<Vector2i> m_controllingSquareWhite;
 	vector<Vector2i> m_controllingSquareBlack;
 
@@ -23,20 +23,23 @@ private:
 	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece);
 	vector<Vector2i> pawnAtt(shared_ptr<Piece>& piece);
 	vector<Vector2i> KnightMove(shared_ptr<Piece>& piece);
-	vector<Vector2i> RookMove(shared_ptr<Piece>& piece);
 	vector<Vector2i> BishopMove(shared_ptr<Piece>& piece);
-	vector<Vector2i> KingMove(shared_ptr<Piece>& piece);
+	vector<Vector2i> RookMove(shared_ptr<Piece>& piece);
 	vector<Vector2i> QueenMove(shared_ptr<Piece>& piece);
-	void Promotion(shared_ptr<Piece>& piece);
+	vector<Vector2i> KingMove(shared_ptr<Piece>& piece);
 
+#ifdef DEBUG
+
+	void printMovesVector(vector<Vector2i>);
+
+#endif // DEBUG
 public:
 	Rule(Board& board);
 
-	bool canMove(shared_ptr<Piece>& piece);
 	bool isValidMove(shared_ptr<Piece>& piece, Vector2i pos);
 
 	void calculateBoardState();
-	void calculatePossibleMove(shared_ptr<Piece>& piece);
+	bool calculatePossibleMove(shared_ptr<Piece>& piece);
 	
 };
 

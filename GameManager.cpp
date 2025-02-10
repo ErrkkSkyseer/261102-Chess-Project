@@ -3,13 +3,16 @@
 GameManager::GameManager()
 {
 	m_parser.ParseFile(m_board.getBoard());
-	m_board.drawIO();
-	enterState(GameState::InputSelect);
+
 }
 
 void GameManager::input(vector<optional<Event>>& eventCollections)
 {
 	m_input.UpdateEvent(eventCollections);
+#ifdef DEBUG
+	m_input.collectInputKey();
+#endif // DEBUG
+
 }
 
 void GameManager::update(double dt)
@@ -19,8 +22,8 @@ void GameManager::update(double dt)
 	
 	stateMachine(m_gameState);
 
-	// µÃÇ¨ÊÍº 50-Move Rule
-	if (_fiftyRuleCount >= 50 * 2) { // 50 µÒÊÓËÃÑº·Ñé§ 2 ½èÒÂ
+	// ï¿½ï¿½Ç¨ï¿½Íº 50-Move Rule
+	if (_fiftyRuleCount >= 50 * 2) { // 50 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñºï¿½ï¿½ï¿½ 2 ï¿½ï¿½ï¿½ï¿½
 		cout << "Draw by 50-Move Rule!" << endl;
 		enterState(GameState::End);
 	}
@@ -35,128 +38,192 @@ void GameManager::draw(RenderWindow& window)
 void GameManager::stateMachine(GameState state)
 {
 	switch (state)
+	if (!m_isPlaying)
 	{
-	case GameState::Start:
-		break;
-	case GameState::InputSelect:
-		m_input.parseInputKey(m_consoleInput);
-
 		if (m_input.getKeyPress(Keyboard::Key::Enter))
 		{
-			if (tryParse2Vector2i(m_consoleInput, m_selectingVector))
-			{
-				cout << "\n\nSelecting Vector = " << m_selectingVector.x << ":" << m_selectingVector.y << "\n";
-				//Check if selectiing square contain a piece and if it can move
-				if (!m_board.isEmpty(m_selectingVector)
-					&& m_rule.canMove(m_board.getSquareData(m_selectingVector)))
-				{
-					// Forward to Selecting Input State
-					m_rule.calculatePossibleMove(m_board.getSquareData(m_selectingVector));
-					exitState(GameState::InputSelect);
-					enterState(GameState::InputTarget);
-					return;
-				}
-				else
-				{
-					// Enter this state again
-					cout << "Empty Square\n";
-					exitState(GameState::InputSelect);
-					enterState(GameState::InputSelect);
-					return;
-				}
-			}
-			else
-			{
-				// Enter this state again
-				cout << "Invalid vector\n";
-				exitState(GameState::InputSelect);
-				enterState(GameState::InputSelect);
-					return;
-			}
+			startGame();
 		}
-		break;
-	case GameState::InputTarget:
-		m_input.parseInputKey(m_consoleInput);
-		if (m_input.getKeyPress(Keyboard::Key::Enter))
+		return;
+	}
+
+	Vector2i pos;
+	switch (m_inputState)
+	{
+	case 1:
+		if (onSquareInput(pos))
 		{
-			if (tryParse2Vector2i(m_consoleInput, m_targetVector))
+			if (m_board.isEmpty(pos))
 			{
-				cout << "\n\nTarget Vector = " << m_selectingVector.x << ":" << m_selectingVector.y << "\n";
-				if (m_rule.isValidMove(m_board.getSquareData(m_selectingVector), m_targetVector))
-				{
-					//Move piece and calculate board state
-					m_board.movePiece(m_selectingVector, m_targetVector);
-					m_rule.calculateBoardState();
-					exitState(GameState::InputTarget);
-					enterState(GameState::InputSelect);
-					return;
-				}
-				else
-				{
-					cout << "Invalid vector\n";
-					exitState(GameState::InputTarget);
-					enterState(GameState::InputSelect);
-					return;
-				}
-			}
-			else
-			{
-				// Enter this state again
-				cout << "Invalid vector\n";
-				exitState(GameState::InputTarget);
-				enterState(GameState::InputTarget);
+				cout << "Empty Square\n";
 				return;
 			}
+
+			auto& piece = m_board.getSquareData(pos);
+			if (m_rule.calculatePossibleMove(piece))
+			{
+				switchState(2);
+				m_selectPos = pos;
+			}
+			else
+			{
+				cout << "No move\n";
+			}
 		}
 		break;
-	case GameState::End:
+	case 2:
+		if (onSquareInput(pos))
+		{
+			auto& piece = m_board.getSquareData(m_selectPos);
+			if (m_rule.isValidMove(piece, pos))
+			{
+				//TODO : Rule should handle moving piece not board
+				m_board.movePiece(m_selectPos, pos);
+				switchState(1);
+
+			}
+			else
+			{
+				cout << "Illegel move\n";
+				switchState(1);
+			}
+		}
 		break;
 	}
+	
+
+	//stateMachine(m_gameState);
 
 }
 
-
-void GameManager::enterState(GameState state)
+void GameManager::enterState(int state)
 {
+	string debugmsg = "Enter Input State :: ";
 	switch (state)
 	{
-	case GameState::Start:
-		m_gameState = GameState::Start;
-		break;
-	case GameState::InputSelect:
-		m_gameState = GameState::InputSelect;
-		cout << "Input Select Square :: ";
-		m_selectingVector = Vector2i(0, 0);
-		break;
-	case GameState::InputTarget:
-		m_gameState = GameState::InputTarget;
-		cout << "Input Target Square :: ";
-		m_targetVector = Vector2i(0, 0);
-		break;
-	case GameState::End:
-		m_gameState = GameState::End;
-		break;
-	}
-}
-
-void GameManager::exitState(GameState state)
-{
-	switch (state)
-	{
-	case GameState::Start:
-		break;
-	case GameState::InputSelect:
-		
-		m_consoleInput = "";
-		break;
-	case GameState::InputTarget:
-		m_consoleInput = "";
+	case 1:
+		m_inputState = 1;
 		m_board.drawIO();
+		debugmsg += "Selecting Piece";
 		break;
-	case GameState::End:
+	case 2:
+		m_inputState = 2;
+		debugmsg += "Moving Piece";
+		break;
+	default:
+		debugmsg += "State not exist : m_inputState = " + m_inputState;
 		break;
 	}
+#ifdef DEBUG
+	cout << debugmsg << endl;
+#endif // DEBUG
+
 }
+
+void GameManager::exitState(int state)
+{
+	string debugmsg = "Exit Input State :: ";
+	switch (state)
+	{
+	case 1:
+		m_inputState = 1;
+		debugmsg += "Selecting Piece";
+		break;
+	case 2:
+		m_inputState = 2;
+		debugmsg += "Moving Piece";
+		break;
+	default:
+		debugmsg += "State not exist : m_inputState = " + m_inputState;
+		break;
+	}
+#ifdef DEBUG
+	cout << debugmsg << endl;
+#endif // DEBUG
+}
+
+void GameManager::switchState(int to)
+{
+	exitState(m_inputState);
+	enterState(to);
+}
+
+void GameManager::draw(RenderWindow& window)
+{
+
+}
+
+bool GameManager::onSquareInput(Vector2i& out)
+{
+	//IO Version
+#ifdef DEBUG
+	
+	if (m_input.getKeyPress(Keyboard::Key::Enter))
+	{
+		if (tryParse2Vector2i(m_input.getConsoleInput(), out))
+		{
+			return true;
+		}
+		else
+		{
+			cout << "Bad vector\n";
+		}
+	}
+	return false;
+#endif // DEBUG
+
+	// Game Version
+#ifndef DEBUG
+	return true;
+#endif // !DEBUG
+
+}
+
+void GameManager::nextTurn()
+{
+
+	if (m_turn == PieceColor::white)
+		m_turn = PieceColor::black;
+	else if (m_turn == PieceColor::black)
+		m_turn = PieceColor::white;
+	else
+		m_turn = PieceColor::white;
+
+	m_move++;
+
+	m_rule.calculateBoardState();
+
+#ifdef DEBUG
+	cout << (m_turn == PieceColor::white ? "White" : "Black") << " Turn\n";
+	cout << "Move #" << m_move << "\n----------\n";
+#endif // DEBUG
+}
+
+void GameManager::startGame()
+{
+#ifdef DEBUG
+	cout << "GameStart!\n\n";
+#endif // DEBUG
+
+	m_isPlaying = true;
+	
+	m_turn = PieceColor::black;
+	m_move = 0;
+
+	nextTurn();
+
+	switchState(1);
+
+}
+
+void GameManager::gameOver()
+{
+	m_isPlaying = false;
+}
+
+#ifdef DEBUG
+
+
 
 /// <summary>
 /// VERY DANGEROUS FUNCTION. CAN CRASH THE GAME!!!
@@ -200,53 +267,55 @@ pair<string, string> GameManager::splitString(string s, char c)
 	return make_pair(" ", " ");
 }
 
+
 //Unuse function, for testing purpose
 
-//void GameManager::ParseInputIOTesting()
-//{
-//	//State : Update The Board - Check for stuffs
-//
-//	int x, y;
-//	Vector2i init, end;
-//
-//	//State : Input - Selecting a Square
-//	cout << "Enter square to select";
-//
-//	cin >> x >> y;
-//	init = Vector2i(x, y);
-//
-//	//State : Update - Check valid input
-//	if (m_board.getSquareData(init) == nullptr)
-//	{
-//		cout << "Invalid Square" << endl;
-//		return;
-//	}
-//	//State : Update - Calculate all possible move for the piece
-//
-//	//State : Draw all possible move
-//
-//	//State : Input - Moving a picec
-//	cout << "Enter target square";
-//
-//	//State : Update - Check valid input
-//
-//	//State : Update - Move piece
-//	cin >> x >> y;
-//	end = Vector2i(x, y);
-//	m_board.movePiece(init, end);
-//	//State : Draw new board
-//}
+void GameManager::ParseInputIOTesting()
+{
+	//State : Update The Board - Check for stuffs
 
+	int x, y;
+	Vector2i init, end;
+
+	//State : Input - Selecting a Square
+	cout << "Enter square to select";
+
+	cin >> x >> y;
+	init = Vector2i(x, y);
+
+	//State : Update - Check valid input
+	if (m_board.getSquareData(init) == nullptr)
+	{
+		cout << "Invalid Square" << endl;
+		return;
+	}
+	//State : Update - Calculate all possible move for the piece
+
+	//State : Draw all possible move
+
+	//State : Input - Moving a picec
+	cout << "Enter target square";
+
+	//State : Update - Check valid input
+
+	//State : Update - Move piece
+	cin >> x >> y;
+	end = Vector2i(x, y);
+	m_board.movePiece(init, end);
+	//State : Draw new board
+}
+
+#endif // DEBUG
 
 bool GameManager::movePiece(Vector2i first, Vector2i end) {
 	shared_ptr<Piece> movingPiece = m_board.getSquareData(first);
 	shared_ptr<Piece> targetPiece = m_board.getSquareData(end);
-	// µÃÇ¨ÊÍºÇèÒÁÕ¡ÒÃ¡Ô¹ËÁÒ¡ ËÃ×Íà´Ô¹àºÕéÂËÃ×ÍäÁè
+	// ï¿½ï¿½Ç¨ï¿½Íºï¿½ï¿½ï¿½ï¿½Õ¡ï¿½Ã¡Ô¹ï¿½ï¿½Ò¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (targetPiece != nullptr || movingPiece->getType() == PieceType::pawn) {
-		_fiftyRuleCount = 0; // ÃÕà«çµ¹Ñº¶ÍÂËÅÑ§
+		_fiftyRuleCount = 0; // ï¿½ï¿½ï¿½çµ¹Ñºï¿½ï¿½ï¿½ï¿½ï¿½Ñ§
 	}
 	else {
-		_fiftyRuleCount++; // à¾ÔèÁµÑÇ¹Ñº¶éÒäÁèÁÕ¡ÒÃ¡Ô¹ËÃ×Íà´Ô¹àºÕéÂ
+		_fiftyRuleCount++; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¹Ñºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¡ï¿½Ã¡Ô¹ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½ï¿½
 	}
 	return m_board.movePiece(first, end);
 }

@@ -56,6 +56,11 @@ Vector2i Piece::getPosition()
 	return m_position;
 }
 
+void Piece::setPosition(Vector2i pos)
+{
+	m_position = pos;
+}
+
 char Piece::getChar()
 {
 	return m_char;
@@ -81,9 +86,13 @@ void Piece::setHasMove(bool value)
 	m_hasMoved = value;
 }
 
-void Piece::move(Vector2i pos)
+#ifdef DEBUG
+void Piece::printStatus()
 {
-
+	cout << "\n\nPiece::printStatus \n";
+	cout << "Piece : " << m_char << " (" << m_position.x << "," << m_position.y << ")\n";
 }
+#endif // DEBUG
+
 
 

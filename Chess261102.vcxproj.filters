@@ -13,12 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Piece Moveset">
+      <UniqueIdentifier>{69390916-dac3-4785-99e6-bb4b2ad10995}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chess261102.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
@@ -39,22 +39,28 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PawnMoveAndAtt.cpp">
+    <ClCompile Include="StateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BishopMoveAndAtt.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Bishop.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
-    <ClCompile Include="KingMoveAndAtt.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Queen.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
-    <ClCompile Include="KnightMoveAndAtt.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Rook.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
-    <ClCompile Include="QueenMoveAndAtt.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="King.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
-    <ClCompile Include="RookMoveAndAtt.cpp">
+    <ClCompile Include="Knight.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
+    </ClCompile>
+    <ClCompile Include="Pawn.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

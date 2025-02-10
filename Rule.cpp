@@ -1,15 +1,8 @@
 #include "Rule.h"
 
-Rule::Rule(Board& board)
-{
-    m_Board = &board;
-}
-
-
-bool Rule::canMove(shared_ptr<Piece>& piece)
+Rule::Rule(Board& board) : m_Board(board)
 {
 
-    return piece != nullptr;
 }
 
 bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
@@ -25,35 +18,53 @@ bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
     return false;
 }
 
-
-void Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
+bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
 {
-    cout << "Calculating possible moves...\n";
+    std::cout << "Calculating possible moves...\n";
+    vector<Vector2i> possibleMoves = vector<Vector2i>();
+    vector<Vector2i> moves ;
     switch (piece->getType())
     {
     case PieceType::defult:
         break;
     case PieceType::pawn:
-        pawnMove(piece);
+        moves = pawnMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        printMovesVector(possibleMoves);
+        moves = pawnAtt(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        printMovesVector(possibleMoves);
         break;
     case PieceType::knight:
-
+        moves = KnightMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::bishop:
-
+        moves = BishopMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::rook:
-
+        moves = RookMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::queen:
-
+        moves = QueenMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     case PieceType::king:
-
+        moves = KingMove(piece);
+        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         break;
     default:
         break;
     }
+
+    vector<Vector2i> moveArray = possibleMoves;
+    printMovesVector(possibleMoves);
+
+    piece->setPossibleMoveArray(possibleMoves);
+    return !piece->getPossibleMoveArray().empty();
+
 }
 
 void Rule::calculateBoardState()
@@ -124,3 +135,17 @@ bool Rule::Check() {
 void Rule::Pin() {
     
 }
+
+#ifdef DEBUG
+void Rule::printMovesVector(vector<Vector2i> v)
+{
+    auto it = v.begin();
+    auto end = v.end();
+    cout << "move Array ::\n[";
+    for (it; it != end; it++)
+    {
+        cout << "(" << it->x << "," << it->y << "),";
+    }
+    cout << "]\n\n";
+}
+#endif // DEBUG

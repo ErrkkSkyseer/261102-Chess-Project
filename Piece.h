@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "BaseGameEnum.h"
+#include "Debug.h"
 
 using namespace std;
 using namespace sf;
@@ -34,6 +35,8 @@ public:
 	PieceColor getColor();
 
 	Vector2i getPosition();
+	void setPosition(Vector2i pos);
+
 	char getChar();
 
 	bool getIsFirstMove();
@@ -41,7 +44,10 @@ public:
 
 	bool getHasMove();
 	void setHasMove(bool value);
+#ifdef DEBUG
 
-	virtual void move(Vector2i pos);
+
+	void printStatus();
+#endif // DEBUG
 };
 

@@ -1,9 +1,15 @@
 #pragma once
 #include<SFML/Graphics.hpp>
 #include<iostream>
-#include<conio.h>
 #include<set>
 #include<algorithm>
+
+#include "Debug.h"
+
+#ifdef DEBUG
+#include<conio.h>
+#endif // DEBUG
+
 
 #define K2S(x) case sf::Keyboard::Key:: ## x : ret = #x; break;
 
@@ -15,9 +21,9 @@ class Input
 private:
 	bool m_isAnyKeyDown = false;
 	set<Keyboard::Key> m_keysPressed;
-	
 
-	void resetFlag();
+	string m_consoleInput = "";
+
 	string Key2Str(const Keyboard::Key&);
 
 
@@ -25,7 +31,12 @@ public:
 
 	void UpdateEvent(vector<optional<Event>>& eventCollection);
 
-	void parseInputKey(string& input);
+#ifdef DEBUG
+	void collectInputKey();
+	void resetConsoleInput();
+	string getConsoleInput();
+#endif // !DEBUG
+
 	bool getAnyKeyPress();
 	bool getKeyPress(Keyboard::Key);
 
