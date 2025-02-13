@@ -16,8 +16,7 @@ void GameManager::input(vector<optional<Event>>& eventCollections)
 }
 
 void GameManager::update(double dt)
-{
-	//ParseInputIOTesting();
+{	//ParseInputIOTesting();
 	if (!m_isPlaying)
 	{
 		if (m_input.getKeyPress(Keyboard::Key::Enter))
@@ -70,10 +69,14 @@ void GameManager::update(double dt)
 		}
 		break;
 	}
-	
+
 
 	//stateMachine(m_gameState);
+}
 
+void GameManager::draw(RenderWindow& window)
+{
+	
 }
 
 void GameManager::enterState(int state)
@@ -126,11 +129,6 @@ void GameManager::switchState(int to)
 {
 	exitState(m_inputState);
 	enterState(to);
-}
-
-void GameManager::draw(RenderWindow& window)
-{
-
 }
 
 bool GameManager::onSquareInput(Vector2i& out)
@@ -286,5 +284,3 @@ void GameManager::ParseInputIOTesting()
 }
 
 #endif // DEBUG
-
-

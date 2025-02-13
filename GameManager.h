@@ -59,6 +59,8 @@ private:
 	void ParseInputIOTesting(); // <- Purley for testing
 
 	bool tryParse2Vector2i(string s, Vector2i& out);
+	bool movePiece(Vector2i first, Vector2i end);
+
 	pair<string, string> splitString(string s, char c);
 #endif // DEBUG
 

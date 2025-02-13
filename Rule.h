@@ -13,9 +13,15 @@ class Rule
 {
 private:
 	Board& m_Board;
-
+  	bool isCheck = false;
 	vector<Vector2i> m_controllingSquareWhite;
 	vector<Vector2i> m_controllingSquareBlack;
+	int fiftyrule = 0;
+
+	void FiftyRule();
+	bool Check();
+	Vector2i Kingpos();
+	void Pin();
 
 	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece);
 	vector<Vector2i> pawnAtt(shared_ptr<Piece>& piece);
