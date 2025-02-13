@@ -8,7 +8,7 @@ Board::Board()
 shared_ptr<Piece>& Board::getSquareData(Vector2i pos)
 {
 #ifdef DEBUG
-	
+	cout << "\nBoard::getSquareData()\n";
 	cout << "Get Data At (" << pos.x << "," << pos.y <<")";
 	if (m_board[pos] != nullptr)
 		m_board[pos]->printStatus();
@@ -23,6 +23,7 @@ shared_ptr<Piece>& Board::getSquareData(Vector2i pos)
 bool Board::isEmpty(Vector2i pos)
 {
 #ifdef DEBUG
+	cout << "\nBoard::isEmpty()\n";
 	cout << "Checking pos : " << "(" << pos.x << "," << pos.y << ") = ";
 	cout << ((m_board[pos] == nullptr) ? "Empty" : "Have Piece " )<< "\n";
 #endif // DEBUG
@@ -33,6 +34,21 @@ bool Board::isEmpty(Vector2i pos)
 map<Vector2i, shared_ptr<Piece>>& Board::getBoard()
 {
 	return m_board;
+}
+
+vector<shared_ptr<Piece>>& Board::getPieces()
+{
+	m_pieces.clear();
+	for (auto& kvp : m_board)
+	{
+		if (!kvp.second) 
+			continue;
+		
+		m_pieces.push_back(kvp.second);
+	}
+
+
+	return m_pieces;
 }
 
 
@@ -105,22 +121,4 @@ void Board::drawIO()
 	}
 }
 
-vector<shared_ptr<Piece>&> Board::getBoardAsVector()
-{
-	vector<shared_ptr<Piece>&> pieces;
-
-	Vector2i pos;
-	for (int y = m_height; y > 0; y--)
-	{
-		for (int x = m_width; x > 0; x--)
-		{
-			pos = Vector2i(x, y);
-			if (!isEmpty(pos))
-			{
-				pieces.push_back(m_board[pos]);
-			}
-		}
-	}
-	return pieces;
-}
 

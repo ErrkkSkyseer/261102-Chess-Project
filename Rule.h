@@ -17,29 +17,13 @@ private:
 	Board& m_board;
 	PieceColor& m_turn;
 
-	// what piece move last tern
-	// -
-	// 2 piece movement
 
 	vector<Vector2i> m_controllingSquareWhite;
 	vector<Vector2i> m_controllingSquareBlack;
-	vector<Vector2i> getcontrollSquare(PieceColor color);
-
-	int fiftyrule = 0;
-
-  	bool isCheck = false;
-	bool isGameOver = false;
-
-	EndBy endtype = EndBy::null;
 
 	Vector2i m_selectingPos;
-	Vector2i m_lastPieceMove;
-
-	void FiftyRule();
-	bool Check(PieceColor color);
-	Vector2i getKingPos(PieceColor color);
-	vector<Vector2i> Pin(shared_ptr<Piece>& piece , vector<Vector2i>&);
-	void joinMoveVector(vector<Vector2i>& u, vector<Vector2i> v);
+	
+	bool calculatePossibleMove(shared_ptr<Piece>& piece);
 
 #pragma region PieceMovement
 	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece);
@@ -50,25 +34,26 @@ private:
 	vector<Vector2i> QueenMove(shared_ptr<Piece>& piece);
 	vector<Vector2i> KingMove(shared_ptr<Piece>& piece);
 #pragma endregion
+	vector<Vector2i> getPieceMoveset(shared_ptr<Piece>& piece, bool onlyGetAttackMove = false);
 
-	vector<Vector2i> getPieceMove(shared_ptr<Piece>& piece,bool getOnlyAttackMove = false);
+	bool isValidMove(shared_ptr<Piece>& piece, Vector2i end);
 
-	bool isValidMove(Vector2i init, Vector2i end);
-	bool calculatePossibleMove(Vector2i pos);
+	vector<Vector2i> getControllingPos(PieceColor color);
 
 #ifdef DEBUG
 
 	void printMovesVector(vector<Vector2i>);
 
 #endif // DEBUG
-public:
-	Rule(Board& board,PieceColor& color);
 
-	
-	bool tryMoveSelectedPiece(Vector2i pos);
-	bool trySelectPiece(Vector2i pos);
-	bool isGameEnded();
-	EndBy getEndResult();
+	void joinMoveArray(vector<Vector2i>& base, const vector<Vector2i>& add);
+	PieceColor flipColor(PieceColor color);
+
+public:
+	Rule(Board& board, PieceColor& color);
+
+	bool trySelect(Vector2i pos);
+	bool tryMove(Vector2i pos);
 
 	void calculateBoardState();
 	

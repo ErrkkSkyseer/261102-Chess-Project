@@ -10,11 +10,9 @@ vector<Vector2i> Rule::QueenMove(shared_ptr<Piece>& piece) {
 		while (true)
 		{
 			targetPosition += moveset;
-			cout << "Target Position : " << "(" << targetPosition.x << "," << targetPosition.y << ")" << endl;
 			//เช็คว่าอยู่ในกระดานไหม และ สามารถโจมตีได้ไหม
 			if (targetPosition.x < 1 || targetPosition.x > 8 || targetPosition.y < 1 || targetPosition.y > 8) 
 			{
-				cout << "I'm out of the board!!!\n";
 				break;
 			}
 			if (m_board.isEmpty(targetPosition)) 
