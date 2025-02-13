@@ -17,14 +17,14 @@ vector<Vector2i> Rule::QueenMove(shared_ptr<Piece>& piece) {
 				cout << "I'm out of the board!!!\n";
 				break;
 			}
-			if (m_Board.isEmpty(targetPosition)) 
+			if (m_board.isEmpty(targetPosition)) 
 			{
 				possibleMove.push_back(targetPosition);
 				// เช็คว่ามีหมากอยู่ในเส้นทางหรือไม่ และ โจมตี
 			}
 			else
 			{
-				shared_ptr<Piece> targetPiece = m_Board.getSquareData(targetPosition);
+				shared_ptr<Piece> targetPiece = m_board.getSquareData(targetPosition);
 				if (targetPiece->getColor() != piece->getColor()) {
 					possibleMove.push_back(targetPosition);
 				}

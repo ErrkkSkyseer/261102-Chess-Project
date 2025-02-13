@@ -1,26 +1,67 @@
 #include "Rule.h"
 
-Rule::Rule(Board& board) : m_Board(board)
+Rule::Rule(Board& board, PieceColor& color) : 
+    m_board(board), 
+    m_turn(color)
 {
 
 }
 
-bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
+bool Rule::isValidMove(Vector2i init, Vector2i end)
 {
     cout << "Compare input position with piece's Possible move vector\n";
     cout << "Checking is move valid\n";
+    shared_ptr<Piece>& piece = m_board.getBoard()[init];
 
     for (int i = 0; i < size(piece->getPossibleMoveArray()); i++) {
-        if (piece->getPossibleMoveArray()[i] == pos) {
+        if (piece->getPossibleMoveArray()[i] == end) {
             return true;
         }
     }
     return false;
 }
 
-bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
+bool Rule::tryMoveSelectedPiece(Vector2i pos)
+{
+    bool valid = isValidMove(m_selectingPos, pos);
+
+    //check move here
+
+    if (isValidMove(m_selectingPos,pos))
+    {
+        m_board.movePiece(m_selectingPos, pos);
+    }
+
+    return valid;
+}
+
+bool Rule::trySelectPiece(Vector2i pos)
+{
+    bool valid = calculatePossibleMove(pos);
+
+    m_selectingPos = valid ? pos : Vector2i(-1, -1);
+
+    return valid;
+
+}
+
+bool Rule::isGameEnded()
+{
+    return isGameOver;
+}
+
+EndBy Rule::getEndResult()
+{
+    //Return the result of the game
+    //Weather it's draw by... or just checkmate
+    return EndBy::null;
+}
+
+bool Rule::calculatePossibleMove(Vector2i pos)
 {
     std::cout << "Calculating possible moves...\n";
+    shared_ptr<Piece>& piece = m_board.getBoard()[pos];
+
     vector<Vector2i> possibleMoves = vector<Vector2i>();
     vector<Vector2i> moves ;
     switch (piece->getType())
@@ -79,8 +120,8 @@ Vector2i Rule::Kingpos() {
     for (int y = 1; y < 9; y++){
         for (int x = 1; x < 9; x++) {
             Vector2i pos = Vector2i(x,y);
-            if (!m_Board.isEmpty(pos)){
-                auto& piece = m_Board.getSquareData(pos);
+            if (!m_board.isEmpty(pos)){
+                auto& piece = m_board.getSquareData(pos);
                 if (turnwhite == true) {
                     if (piece->getColor() == PieceColor::white) { //WAIT FOR CHECKTURN-FUNC!!
 
@@ -145,8 +186,8 @@ void Rule::Pin() {
     {
         for (int x = 1; x < 9; x++) {
             Vector2i pos = Vector2i(x,y);
-            if (!m_Board.isEmpty(pos)) {
-                auto& piece = m_Board.getSquareData(pos);
+            if (!m_board.isEmpty(pos)) {
+                auto& piece = m_board.getSquareData(pos);
                 if (piece->getType() != PieceType::king && isCheck == true)
                 {
 

@@ -25,7 +25,7 @@ class GameManager
 private:
 	// [Class Instances]
 	Board m_board;
-	Rule m_rule = Rule(m_board);
+	Rule m_rule = Rule(m_board,m_turn);
 	BoardParser m_parser;
 	Input m_input;
 
@@ -40,14 +40,11 @@ private:
 	bool m_isPlaying = false;
 	Vector2i m_selectPos;
 
-	void stateMachine(GameState state);
-	void enterState(GameState state);
 	void enterState(int state);
 
 	void exitState(GameState state);
 	void exitState(int state);
 
-	void switchState(GameState from, GameState to);
 	void switchState(int to);
 
 	bool onSquareInput(Vector2i& out);
@@ -59,7 +56,6 @@ private:
 	void ParseInputIOTesting(); // <- Purley for testing
 
 	bool tryParse2Vector2i(string s, Vector2i& out);
-	bool movePiece(Vector2i first, Vector2i end);
 
 	pair<string, string> splitString(string s, char c);
 #endif // DEBUG

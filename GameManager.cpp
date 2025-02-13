@@ -38,8 +38,7 @@ void GameManager::update(double dt)
 				return;
 			}
 
-			auto& piece = m_board.getSquareData(pos);
-			if (m_rule.calculatePossibleMove(piece))
+			if (m_rule.selectPiece(pos))
 			{
 				switchState(2);
 				m_selectPos = pos;
@@ -54,12 +53,10 @@ void GameManager::update(double dt)
 		if (onSquareInput(pos))
 		{
 			auto& piece = m_board.getSquareData(m_selectPos);
-			if (m_rule.isValidMove(piece, pos))
+			if (m_rule.moveSelectedPiece(pos))
 			{
-				//TODO : Rule should handle moving piece not board
-				m_board.movePiece(m_selectPos, pos);
+				nextTurn();
 				switchState(1);
-
 			}
 			else
 			{
@@ -159,6 +156,8 @@ bool GameManager::onSquareInput(Vector2i& out)
 
 void GameManager::nextTurn()
 {
+	// if (m_rule.isGameEnd())
+	//	gameOver;
 
 	if (m_turn == PieceColor::white)
 		m_turn = PieceColor::black;
