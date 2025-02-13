@@ -104,3 +104,23 @@ void Board::drawIO()
 		cout << "\n";
 	}
 }
+
+vector<shared_ptr<Piece>&> Board::getBoardAsVector()
+{
+	vector<shared_ptr<Piece>&> pieces;
+
+	Vector2i pos;
+	for (int y = m_height; y > 0; y--)
+	{
+		for (int x = m_width; x > 0; x--)
+		{
+			pos = Vector2i(x, y);
+			if (!isEmpty(pos))
+			{
+				pieces.push_back(m_board[pos]);
+			}
+		}
+	}
+	return pieces;
+}
+

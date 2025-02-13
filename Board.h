@@ -24,7 +24,9 @@ public:
 	Board();
 
 	map<Vector2i, shared_ptr<Piece>>& getBoard();
-	
+	vector<shared_ptr<Piece>&> getBoardAsVector();
+
+
 	shared_ptr<Piece>& getSquareData(Vector2i pos);
 	bool isEmpty(Vector2i pos);
 

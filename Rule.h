@@ -2,6 +2,7 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include <memory>
+#include <set>
 
 #include "Board.h"
 #include "BaseGameEnum.h"
@@ -22,6 +23,7 @@ private:
 
 	vector<Vector2i> m_controllingSquareWhite;
 	vector<Vector2i> m_controllingSquareBlack;
+	vector<Vector2i> getcontrollSquare(PieceColor color);
 
 	int fiftyrule = 0;
 
@@ -34,9 +36,10 @@ private:
 	Vector2i m_lastPieceMove;
 
 	void FiftyRule();
-	bool Check();
-	Vector2i Kingpos();
-	void Pin();
+	bool Check(PieceColor color);
+	Vector2i getKingPos(PieceColor color);
+	vector<Vector2i> Pin(shared_ptr<Piece>& piece , vector<Vector2i>&);
+	void joinMoveVector(vector<Vector2i>& u, vector<Vector2i> v);
 
 #pragma region PieceMovement
 	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece);
@@ -47,6 +50,8 @@ private:
 	vector<Vector2i> QueenMove(shared_ptr<Piece>& piece);
 	vector<Vector2i> KingMove(shared_ptr<Piece>& piece);
 #pragma endregion
+
+	vector<Vector2i> getPieceMove(shared_ptr<Piece>& piece,bool getOnlyAttackMove = false);
 
 	bool isValidMove(Vector2i init, Vector2i end);
 	bool calculatePossibleMove(Vector2i pos);

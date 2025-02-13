@@ -62,16 +62,28 @@ bool Rule::calculatePossibleMove(Vector2i pos)
     std::cout << "Calculating possible moves...\n";
     shared_ptr<Piece>& piece = m_board.getBoard()[pos];
 
+    vector<Vector2i> moveArray = getPieceMove(piece);
+    printMovesVector(moveArray);
+    piece->setPossibleMoveArray(moveArray);
+    return !piece->getPossibleMoveArray().empty();
+
+}
+
+vector<Vector2i> Rule::getPieceMove(shared_ptr<Piece>& piece, bool getOnlyAttackMove)
+{
     vector<Vector2i> possibleMoves = vector<Vector2i>();
-    vector<Vector2i> moves ;
+    vector<Vector2i> moves;
     switch (piece->getType())
     {
     case PieceType::defult:
         break;
     case PieceType::pawn:
-        moves = pawnMove(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
-        printMovesVector(possibleMoves);
+        if (!getOnlyAttackMove)
+        {
+            moves = pawnMove(piece);
+            possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+            printMovesVector(possibleMoves);
+        }
         moves = pawnAtt(piece);
         possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
         printMovesVector(possibleMoves);
@@ -99,13 +111,7 @@ bool Rule::calculatePossibleMove(Vector2i pos)
     default:
         break;
     }
-
-    vector<Vector2i> moveArray = possibleMoves;
-    printMovesVector(possibleMoves);
-
-    piece->setPossibleMoveArray(possibleMoves);
-    return !piece->getPossibleMoveArray().empty();
-
+    return possibleMoves;
 }
 
 void Rule::calculateBoardState()
@@ -114,63 +120,46 @@ void Rule::calculateBoardState()
     return;
 }
 
-Vector2i Rule::Kingpos() {
-    bool turnwhite = true; //wait for checkturn-func
+Vector2i Rule::getKingPos(PieceColor color) {
+
     Vector2i Kingpos;
-    for (int y = 1; y < 9; y++){
-        for (int x = 1; x < 9; x++) {
-            Vector2i pos = Vector2i(x,y);
-            if (!m_board.isEmpty(pos)){
-                auto& piece = m_board.getSquareData(pos);
-                if (turnwhite == true) {
-                    if (piece->getColor() == PieceColor::white) { //WAIT FOR CHECKTURN-FUNC!!
-
-                        if (piece->getType() == PieceType::king) {
-                            Kingpos = pos;
-
-                        }
-                    }
-                }
-                else if(turnwhite == false){
-                    if (piece->getColor() == PieceColor::black) { //WAIT FOR CHECKTURN-FUNC!!
-
-                        if (piece->getType() == PieceType::king) {
-                            Kingpos = pos;
-
-                        }
-                    }
-                }
-             
-
-            }
+    vector<shared_ptr<Piece>&> pieces = m_board.getBoardAsVector();
+    for (int i = 0; i < pieces.size(); i++)
+    {
+        if (pieces[i]->getColor() == color && pieces[i]->getType() == PieceType::king) {
+            Kingpos = pieces[i]->getPosition();
         }
     }
     return Kingpos;
 }
 
-bool Rule::Check() {
-    
-    Vector2i kingpos = Kingpos();
+bool Rule::Check(PieceColor color) {
 
-    bool turnwhite = true; //wait for checkturn-func
-    if (turnwhite == true)
+    Vector2i kingpos = getKingPos(color);
+    vector<Vector2i> controllSquare = getcontrollSquare(color);
+    for (int i = 0; i < controllSquare.size(); i++)
     {
-        for (int i = 0; i < m_controllingSquareWhite.size(); i++) {
-            if (kingpos == m_controllingSquareWhite[i]) {
-                return true;
-            }
+        if (kingpos == controllSquare[i]) {
+            return true;
         }
     }
-    else if (turnwhite == false)
-    {
-        for (int i = 0; i < m_controllingSquareBlack.size(); i++) {
-            if (kingpos == m_controllingSquareBlack[i]) {
-                return true;
-            }
-        }
-    }
-
     return false;
+}
+
+vector<Vector2i> Rule::getcontrollSquare(PieceColor color)
+{
+
+    vector<Vector2i> controllSquare;
+    vector<shared_ptr<Piece>&> pieces = m_board.getBoardAsVector();
+    for (int i = 0; i < pieces.size(); i++)
+    {
+        if (pieces[i]->getColor() == color) {
+            joinMoveVector(controllSquare, getPieceMove(pieces[i], true));
+        }
+    }
+    set<Vector2i> temp(controllSquare.begin(), controllSquare.end());
+    vector<Vector2i> trimcontrollSquare(temp.begin(), temp.end());
+    return trimcontrollSquare;
 }
 
 void Rule::FiftyRule() {
@@ -178,25 +167,19 @@ void Rule::FiftyRule() {
 
 }
 
-void Rule::Pin() {
-    bool iswhite = true;
-    Vector2i kingpos = Kingpos();
-    Vector2i pos;
-    for (int y = 1; y < 9; y++)
+vector<Vector2i> Rule::Pin(shared_ptr<Piece>& piece, vector<Vector2i>& possiblemove) {
+    PieceColor color = piece->getColor();
+    for (int i = 0; i < possiblemove.size(); i++)
     {
-        for (int x = 1; x < 9; x++) {
-            Vector2i pos = Vector2i(x,y);
-            if (!m_board.isEmpty(pos)) {
-                auto& piece = m_board.getSquareData(pos);
-                if (piece->getType() != PieceType::king && isCheck == true)
-                {
-
-                }
-            }
-            
-        }
+        Board ghost = m_board;
+     
     }
-    
+}
+
+void Rule::joinMoveVector(vector<Vector2i>& u, vector<Vector2i> v)
+{
+    u.insert(u.end(), v.begin(), v.end());
+
 }
 
 #ifdef DEBUG
