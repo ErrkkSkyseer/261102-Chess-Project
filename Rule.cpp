@@ -79,8 +79,8 @@ Vector2i Rule::Kingpos() {
     for (int y = 1; y < 9; y++){
         for (int x = 1; x < 9; x++) {
             Vector2i pos = Vector2i(x,y);
-            if (!m_Board->isEmpty(pos)){
-                auto& piece = m_Board->getSquareData(pos);
+            if (!m_Board.isEmpty(pos)){
+                auto& piece = m_Board.getSquareData(pos);
                 if (turnwhite == true) {
                     if (piece->getColor() == PieceColor::white) { //WAIT FOR CHECKTURN-FUNC!!
 
@@ -132,7 +132,29 @@ bool Rule::Check() {
     return false;
 }
 
+void Rule::FiftyRule() {
+    fiftyrule++;
+
+}
+
 void Rule::Pin() {
+    bool iswhite = true;
+    Vector2i kingpos = Kingpos();
+    Vector2i pos;
+    for (int y = 1; y < 9; y++)
+    {
+        for (int x = 1; x < 9; x++) {
+            Vector2i pos = Vector2i(x,y);
+            if (!m_Board.isEmpty(pos)) {
+                auto& piece = m_Board.getSquareData(pos);
+                if (piece->getType() != PieceType::king && isCheck == true)
+                {
+
+                }
+            }
+            
+        }
+    }
     
 }
 

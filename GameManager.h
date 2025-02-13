@@ -67,7 +67,6 @@ private:
 public:
 	GameManager();
 
-	int _fiftyRuleCount = 0;
 	void input(vector<optional<Event>>& eventCollections);
 	void update(double fps);
 	void draw(RenderWindow& window);

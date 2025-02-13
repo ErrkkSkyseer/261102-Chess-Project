@@ -16,28 +16,7 @@ void GameManager::input(vector<optional<Event>>& eventCollections)
 }
 
 void GameManager::update(double dt)
-{
-
-	//ParseInputIOTesting();
-	
-	stateMachine(m_gameState);
-
-	// ��Ǩ�ͺ 50-Move Rule
-	if (_fiftyRuleCount >= 50 * 2) { // 50 ������Ѻ��� 2 ����
-		cout << "Draw by 50-Move Rule!" << endl;
-		enterState(GameState::End);
-	}
-	
-}
-
-void GameManager::draw(RenderWindow& window)
-{
-
-}
-
-void GameManager::stateMachine(GameState state)
-{
-	switch (state)
+{	//ParseInputIOTesting();
 	if (!m_isPlaying)
 	{
 		if (m_input.getKeyPress(Keyboard::Key::Enter))
@@ -90,10 +69,14 @@ void GameManager::stateMachine(GameState state)
 		}
 		break;
 	}
-	
+
 
 	//stateMachine(m_gameState);
+}
 
+void GameManager::draw(RenderWindow& window)
+{
+	
 }
 
 void GameManager::enterState(int state)
@@ -146,11 +129,6 @@ void GameManager::switchState(int to)
 {
 	exitState(m_inputState);
 	enterState(to);
-}
-
-void GameManager::draw(RenderWindow& window)
-{
-
 }
 
 bool GameManager::onSquareInput(Vector2i& out)
@@ -306,16 +284,3 @@ void GameManager::ParseInputIOTesting()
 }
 
 #endif // DEBUG
-
-bool GameManager::movePiece(Vector2i first, Vector2i end) {
-	shared_ptr<Piece> movingPiece = m_board.getSquareData(first);
-	shared_ptr<Piece> targetPiece = m_board.getSquareData(end);
-	// ��Ǩ�ͺ����ա�áԹ��ҡ �����Թ�����������
-	if (targetPiece != nullptr || movingPiece->getType() == PieceType::pawn) {
-		_fiftyRuleCount = 0; // ���絹Ѻ�����ѧ
-	}
-	else {
-		_fiftyRuleCount++; // ������ǹѺ�������ա�áԹ�����Թ����
-	}
-	return m_board.movePiece(first, end);
-}
