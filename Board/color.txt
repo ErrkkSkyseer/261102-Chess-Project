@@ -1,0 +1,12 @@
+P,White
+R,White
+N,White
+B,White
+Q,White
+K,White
+P,Black
+R,Black
+N,Black
+B,Black
+Q,Black
+K,Black

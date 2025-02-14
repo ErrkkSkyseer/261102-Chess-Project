@@ -26,7 +26,7 @@ private:
 
 public:
 
-	Piece(Vector2i pos, char type);
+	Piece(Vector2i pos, char type, PieceColor color = PieceColor::defult);
 
 	vector<Vector2i> getPossibleMoveArray();
 	void setPossibleMoveArray(vector<Vector2i> v);

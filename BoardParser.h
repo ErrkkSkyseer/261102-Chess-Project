@@ -5,15 +5,27 @@
 #include <map>
 #include <string>
 
-#include "Piece.h"
+#include "Board.h"
 #include "Vector2Utils.h"
+#include "BaseGameEnum.h"
 
 using namespace std;
 using namespace sf;
 
 class BoardParser
 {
-public:
-	void ParseFile(map<Vector2i,shared_ptr<Piece>>&,string path = "Board/defult.txt");
-};
+private:
+	Board& m_board;
+	std::map<PieceType, PieceColor> colorMap;
 
+	PieceColor ParseColor(char c);
+	PieceType ParseType(char c);
+	bool ParseMoved(char c);
+	PieceColor ParseColorFromString(const std::string& colorStr);
+	void LoadColorMap(const std::string& path);
+
+public:
+	BoardParser(Board& board);
+	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/defult.txt");
+
+};
