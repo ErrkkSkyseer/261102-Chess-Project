@@ -7,19 +7,19 @@ vector<Vector2i> Rule::pawnMove(shared_ptr<Piece>& piece) {
 
 	//การเดินปกติ
 	Vector2i forwardMove = currentPossition + Vector2i(0, direction);
-	if (m_Board.isEmpty(forwardMove)) {									//ถ้าตำแหน่งการเดินว่าง ส่งค่าเข้า possibleMove
+	if (m_board.isEmpty(forwardMove)) {									//ถ้าตำแหน่งการเดินว่าง ส่งค่าเข้า possibleMove
 		possibleMove.push_back(forwardMove);
 		//การเดิน 2 ช่อง
 		Vector2i doubleForwardMove = currentPossition + Vector2i(0, 2 * direction);		//สร้างตัวแปรสำหรับการเดิน 2 ช่อง
-		if (!piece->getHasMove() && m_Board.isEmpty(doubleForwardMove)) {				//เช็คว่าเคยเดินไหม
+		if (!piece->getHasMove() && m_board.isEmpty(doubleForwardMove)) {				//เช็คว่าเคยเดินไหม
 			possibleMove.push_back(doubleForwardMove);
 		}
 	}
 	//การโจมตี
 	vector<Vector2i> attackMoves = {currentPossition + Vector2i(-1, direction), currentPossition + Vector2i(1, direction)};
 	for (auto& attackMove : attackMoves) {
-		if (!m_Board.isEmpty(attackMove)) {
-			shared_ptr<Piece> targetPiece = m_Board.getSquareData(attackMove);
+		if (!m_board.isEmpty(attackMove)) {
+			shared_ptr<Piece> targetPiece = m_board.getSquareData(attackMove);
 			if (targetPiece->getColor() != piece->getColor()) {
 				possibleMove.push_back(attackMove);
 			}
@@ -40,8 +40,8 @@ vector<Vector2i> Rule::pawnAtt(shared_ptr<Piece>& piece) {
 	//การโจมตี
 	vector<Vector2i> attackMoves = { currentPossition + Vector2i(-1, direction), currentPossition + Vector2i(1, direction) };
 	for (auto& attackMove : attackMoves) {
-		if (!m_Board.isEmpty(attackMove)) {
-			shared_ptr<Piece> targetPiece = m_Board.getSquareData(attackMove);
+		if (!m_board.isEmpty(attackMove)) {
+			shared_ptr<Piece> targetPiece = m_board.getSquareData(attackMove);
 			if (targetPiece->getColor() != piece->getColor()) {
 				possibleMove.push_back(attackMove);
 			}

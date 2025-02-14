@@ -17,6 +17,8 @@ class Board
 private:
 	map<Vector2i, shared_ptr<Piece>> m_board;
 
+	vector<shared_ptr<Piece>> m_pieces;
+
 	int m_width = 8;
 	int m_height = 8;
 
@@ -24,6 +26,7 @@ public:
 	Board();
 
 	map<Vector2i, shared_ptr<Piece>>& getBoard();
+	vector<shared_ptr<Piece>>& getPieces();
 	
 	shared_ptr<Piece>& getSquareData(Vector2i pos); 
 	bool isEmpty(Vector2i pos);
