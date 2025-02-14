@@ -26,7 +26,7 @@ private:
 	// [Class Instances]
 	Board m_board;
 	Rule m_rule = Rule(m_board);
-	BoardParser m_parser;
+	BoardParser m_parser = BoardParser(m_board);
 	Input m_input;
 
 	//[Game State]
