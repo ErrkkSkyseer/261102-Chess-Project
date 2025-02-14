@@ -36,6 +36,22 @@ map<Vector2i, shared_ptr<Piece>>& Board::getBoard()
 	return m_board;
 }
 
+Board Board::getGhostBoard()
+{
+	Board ghostBoard;
+	auto& ghostm_Board = ghostBoard.getBoard();
+
+	for (auto& kvp : m_board)
+	{
+		if (!kvp.second)
+			continue;
+
+		ghostm_Board[kvp.first] = make_shared<Piece>(*kvp.second);
+	}
+
+	return move(ghostBoard);
+}
+
 vector<shared_ptr<Piece>>& Board::getPieces()
 {
 	m_pieces.clear();

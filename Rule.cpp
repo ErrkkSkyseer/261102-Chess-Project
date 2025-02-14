@@ -34,7 +34,7 @@ bool Rule::tryMove(Vector2i pos)
 bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
 {
     cout << "\nChecking is move valid\n";
-    getControllingPos(flipColor(m_turn));
+    
     return true;
 }
 
@@ -47,7 +47,7 @@ void Rule::calculateBoardState()
 bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
 {
     std::cout << "\nCalculating possible moves...\n";
-    vector<Vector2i> moveArray = getPieceMoveset(piece);
+    vector<Vector2i> moveArray = getPieceMoveset(piece,m_board);
 
     printMovesVector(moveArray);
 
@@ -56,33 +56,33 @@ bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
 
 }
 
-vector<Vector2i> Rule::getPieceMoveset(shared_ptr<Piece>& piece, bool onlyGetAttackMove)
+vector<Vector2i> Rule::getPieceMoveset(shared_ptr<Piece>& piece, Board& board, bool onlyGetAttackMove)
 {
     vector<Vector2i> possibleMoves = vector<Vector2i>();
     vector<Vector2i> moves;
     switch (piece->getType())
     {
     case PieceType::defult:
-        break;
+        break; 
     case PieceType::pawn:
         if (!onlyGetAttackMove)
-            joinMoveArray(possibleMoves, pawnMove(piece));
-        joinMoveArray(possibleMoves, pawnAtt(piece));
+            joinMoveArray(possibleMoves, pawnMove(piece, board));
+        joinMoveArray(possibleMoves, pawnAtt(piece, board));
         break;
     case PieceType::knight:
-        joinMoveArray(possibleMoves, KnightMove(piece));
+        joinMoveArray(possibleMoves, KnightMove(piece, board));
         break;
     case PieceType::bishop:
-        joinMoveArray(possibleMoves, BishopMove(piece));
+        joinMoveArray(possibleMoves, BishopMove(piece, board));
         break;
     case PieceType::rook:
-        joinMoveArray(possibleMoves, RookMove(piece));
+        joinMoveArray(possibleMoves, RookMove(piece, board));
         break;
     case PieceType::queen:
-        joinMoveArray(possibleMoves, QueenMove(piece));
+        joinMoveArray(possibleMoves, QueenMove(piece, board));
         break;
     case PieceType::king:
-        joinMoveArray(possibleMoves, KingMove(piece));
+        joinMoveArray(possibleMoves, KingMove(piece, board));
         break;
     default:
         break;
@@ -91,7 +91,7 @@ vector<Vector2i> Rule::getPieceMoveset(shared_ptr<Piece>& piece, bool onlyGetAtt
     return possibleMoves;
 }
 
-vector<Vector2i> Rule::getControllingPos(PieceColor color)
+vector<Vector2i> Rule::getControllingPos(PieceColor color, Board& board)
 {
 #ifdef DEBUG
     cout << "\n//////////////////////////////\n";
@@ -103,10 +103,10 @@ vector<Vector2i> Rule::getControllingPos(PieceColor color)
 
     vector<Vector2i> controlPos;
 
-    auto pieces = m_board.getPieces();
+    auto& pieces = board.getPieces();
     for (auto& piece : pieces)
     {
-        joinMoveArray(controlPos, getPieceMoveset(piece, true));
+        joinMoveArray(controlPos, getPieceMoveset(piece, m_board, true));
     }
 
 #ifdef DEBUG
@@ -117,6 +117,72 @@ vector<Vector2i> Rule::getControllingPos(PieceColor color)
 
     return controlPos;
 }
+
+bool Rule::check(PieceColor color, Board& board)
+{
+    Vector2i kingPos = findKingPos(color);
+    vector<Vector2i> controlpos = getControllingPos(flipColor(color), board);
+    for (auto& pos : controlpos)
+    {
+        if (kingPos == pos)
+            return true;
+    }
+    return false;
+}
+
+bool Rule::checkMate(PieceColor color)
+{
+    Vector2i kingPos = findKingPos(color);
+    auto& pieces = m_board.getPieces();
+
+    for (auto& piece : pieces)
+    {
+        Board ghostBoard = m_board.getGhostBoard();
+        if (calculatePossibleMove(piece))
+        {
+            auto moves = piece->getPossibleMoveArray();
+            for (auto& move : moves)
+            {
+
+            }
+        }
+
+    }
+
+}
+
+Vector2i Rule::findKingPos(PieceColor color)
+{
+    Vector2i kingPos = Vector2i();
+    auto& pieces = m_board.getPieces();
+    for (auto& piece : pieces)
+    {
+        if (piece->getType() == PieceType::king
+            && piece->getColor() == PieceColor::white)
+        {
+            kingPos = piece->getPosition();
+            break;
+        }
+    }
+    return kingPos;
+}
+
+vector<Vector2i> Rule::getPinnedMove(shared_ptr<Piece>& piece, const vector<Vector2i> moveArray)
+{
+    vector<Vector2i> pinnedMove;
+    for (auto& move : moveArray)
+    {
+        Board ghostBoard = m_board.getGhostBoard();
+        ghostBoard.movePiece(piece->getPosition(), move);
+
+        if (check(piece->getColor(), ghostBoard))
+        {
+            pinnedMove.push_back(move);
+        }
+    }
+    return pinnedMove;
+}
+
 
 #ifdef DEBUG
 void Rule::printMovesVector(vector<Vector2i> v)
@@ -137,7 +203,6 @@ void Rule::joinMoveArray(vector<Vector2i>& base, const vector<Vector2i>& add)
 {
     base.insert(base.end(), add.begin(), add.end());
 
-#pragma endregion
 
 }
 
@@ -146,3 +211,5 @@ PieceColor Rule::flipColor(PieceColor color)
     
     return color == PieceColor::white? PieceColor::black : PieceColor:: white;
 }
+
+#pragma endregion

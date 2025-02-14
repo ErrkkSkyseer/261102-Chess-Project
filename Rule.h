@@ -17,28 +17,29 @@ private:
 	Board& m_board;
 	PieceColor& m_turn;
 
-
-	vector<Vector2i> m_controllingSquareWhite;
-	vector<Vector2i> m_controllingSquareBlack;
-
 	Vector2i m_selectingPos;
 	
 	bool calculatePossibleMove(shared_ptr<Piece>& piece);
 
 #pragma region PieceMovement
-	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece);
-	vector<Vector2i> pawnAtt(shared_ptr<Piece>& piece);
-	vector<Vector2i> KnightMove(shared_ptr<Piece>& piece);
-	vector<Vector2i> BishopMove(shared_ptr<Piece>& piece);
-	vector<Vector2i> RookMove(shared_ptr<Piece>& piece);
-	vector<Vector2i> QueenMove(shared_ptr<Piece>& piece);
-	vector<Vector2i> KingMove(shared_ptr<Piece>& piece);
+	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece	,Board& board);
+	vector<Vector2i> pawnAtt(shared_ptr<Piece>& piece	,Board& board);
+	vector<Vector2i> KnightMove(shared_ptr<Piece>& piece,Board& board);
+	vector<Vector2i> BishopMove(shared_ptr<Piece>& piece,Board& board);
+	vector<Vector2i> RookMove(shared_ptr<Piece>& piece	,Board& board);
+	vector<Vector2i> QueenMove(shared_ptr<Piece>& piece	,Board& board);
+	vector<Vector2i> KingMove(shared_ptr<Piece>& piece	,Board& board);
 #pragma endregion
-	vector<Vector2i> getPieceMoveset(shared_ptr<Piece>& piece, bool onlyGetAttackMove = false);
+	vector<Vector2i> getPieceMoveset(shared_ptr<Piece>& piece, Board& board, bool onlyGetAttackMove = false);
 
 	bool isValidMove(shared_ptr<Piece>& piece, Vector2i end);
+	vector<Vector2i> getControllingPos(PieceColor color, Board& board);
+	Vector2i findKingPos(PieceColor color);
+	
+	bool check(PieceColor color, Board& board);
+	bool checkMate(PieceColor color);
 
-	vector<Vector2i> getControllingPos(PieceColor color);
+	vector<Vector2i> getPinnedMove(shared_ptr<Piece>& piece, const vector<Vector2i> moveArray);
 
 #ifdef DEBUG
 

@@ -26,6 +26,8 @@ public:
 	Board();
 
 	map<Vector2i, shared_ptr<Piece>>& getBoard();
+	Board getGhostBoard();
+
 	vector<shared_ptr<Piece>>& getPieces();
 	
 	shared_ptr<Piece>& getSquareData(Vector2i pos); 

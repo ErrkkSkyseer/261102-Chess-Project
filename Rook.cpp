@@ -1,6 +1,6 @@
 ﻿#include "Rule.h"
 
-vector<Vector2i> Rule::RookMove(shared_ptr<Piece>& piece) {
+vector<Vector2i> Rule::RookMove(shared_ptr<Piece>& piece,Board& board) {
 	vector<Vector2i> possibleMove;
 	Vector2i currentPosition = piece->getPosition();
 	//สร้าง moveset การเดินของ Rook
@@ -13,11 +13,11 @@ vector<Vector2i> Rule::RookMove(shared_ptr<Piece>& piece) {
 			if (targetPosition.x < 1 || targetPosition.x > 8 || targetPosition.y < 1 || targetPosition.y > 8) {
 				break;
 			}
-			if (m_board.isEmpty(targetPosition)) {
+			if (board.isEmpty(targetPosition)) {
 				possibleMove.push_back(targetPosition);
 				// เช็คว่ามีหมากอยู่ในเส้นทางหรือไม่ และ โจมตี
 			}else{
-				shared_ptr<Piece> targetPiece = m_board.getSquareData(targetPosition);
+				shared_ptr<Piece> targetPiece = board.getSquareData(targetPosition);
 				if (targetPiece->getColor() != piece->getColor()) {
 					possibleMove.push_back(targetPosition);
 				}

@@ -1,6 +1,6 @@
 ﻿#include "Rule.h"
 
-vector<Vector2i> Rule::QueenMove(shared_ptr<Piece>& piece) {
+vector<Vector2i> Rule::QueenMove(shared_ptr<Piece>& piece, Board& board) {
 	vector<Vector2i> possibleMove;
 	Vector2i currentPosition = piece->getPosition();
 	//สร้าง moveset การเดินของ Queen
@@ -15,14 +15,14 @@ vector<Vector2i> Rule::QueenMove(shared_ptr<Piece>& piece) {
 			{
 				break;
 			}
-			if (m_board.isEmpty(targetPosition)) 
+			if (board.isEmpty(targetPosition))
 			{
 				possibleMove.push_back(targetPosition);
 				// เช็คว่ามีหมากอยู่ในเส้นทางหรือไม่ และ โจมตี
 			}
 			else
 			{
-				shared_ptr<Piece> targetPiece = m_board.getSquareData(targetPosition);
+				shared_ptr<Piece> targetPiece = board.getSquareData(targetPosition);
 				if (targetPiece->getColor() != piece->getColor()) {
 					possibleMove.push_back(targetPosition);
 				}
