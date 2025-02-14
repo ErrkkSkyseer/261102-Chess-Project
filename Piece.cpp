@@ -1,9 +1,10 @@
 #include "Piece.h"
 
-Piece::Piece(Vector2i pos, char _char)
+Piece::Piece(Vector2i pos, char _char,PieceColor color)
 {
 	m_position = pos;
 	m_char = _char;
+	m_color = color;
 
 	switch (m_char)
 	{
