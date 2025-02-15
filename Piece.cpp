@@ -90,7 +90,7 @@ void Piece::setHasMove(bool value)
 #ifdef DEBUG
 void Piece::printStatus()
 {
-	cout << "\n\nPiece::printStatus \n";
+	cout << "\nPiece::printStatus \n";
 	cout << "Piece : " << m_char << " (" << m_position.x << "," << m_position.y << ")\n";
 }
 #endif // DEBUG

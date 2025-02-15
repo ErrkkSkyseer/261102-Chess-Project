@@ -1,70 +1,121 @@
 #include "Rule.h"
 
-Rule::Rule(Board& board) : m_Board(board)
+Rule::Rule(Board& board, PieceColor& color) :
+    m_board(board), 
+    m_turn(color)
 {
 
+}
+
+bool Rule::trySelect(Vector2i pos)
+{
+    auto& piece = m_board.getSquareData(pos);
+    bool haveMove = calculatePossibleMove(piece);
+
+    if (haveMove)
+        m_selectingPos = pos;
+
+    return haveMove;
+}
+
+bool Rule::tryMove(Vector2i pos)
+{
+    auto& piece = m_board.getSquareData(pos);
+    bool valid = isValidMove(piece, pos);
+
+    if (valid)
+    {
+        m_board.movePiece(m_selectingPos, pos);
+    }
+
+    return valid;
 }
 
 bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
 {
-    cout << "Compare input position with piece's Possible move vector\n";
-    cout << "Checking is move valid\n";
+    cout << "\nChecking is move valid\n";
+    getControllingPos(flipColor(m_turn));
     return true;
+}
+
+void Rule::calculateBoardState()
+{
+    cout << "\nUpdating Board...\n";
+    return;
 }
 
 bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
 {
-    std::cout << "Calculating possible moves...\n";
+    std::cout << "\nCalculating possible moves...\n";
+    vector<Vector2i> moveArray = getPieceMoveset(piece);
+
+    printMovesVector(moveArray);
+
+    piece->setPossibleMoveArray(moveArray);
+    return !piece->getPossibleMoveArray().empty();
+
+}
+
+vector<Vector2i> Rule::getPieceMoveset(shared_ptr<Piece>& piece, bool onlyGetAttackMove)
+{
     vector<Vector2i> possibleMoves = vector<Vector2i>();
-    vector<Vector2i> moves ;
+    vector<Vector2i> moves;
     switch (piece->getType())
     {
     case PieceType::defult:
         break;
     case PieceType::pawn:
-        moves = pawnMove(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
-        printMovesVector(possibleMoves);
-        moves = pawnAtt(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
-        printMovesVector(possibleMoves);
+        if (!onlyGetAttackMove)
+            joinMoveArray(possibleMoves, pawnMove(piece));
+        joinMoveArray(possibleMoves, pawnAtt(piece));
         break;
     case PieceType::knight:
-        moves = KnightMove(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        joinMoveArray(possibleMoves, KnightMove(piece));
         break;
     case PieceType::bishop:
-        moves = BishopMove(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        joinMoveArray(possibleMoves, BishopMove(piece));
         break;
     case PieceType::rook:
-        moves = RookMove(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        joinMoveArray(possibleMoves, RookMove(piece));
         break;
     case PieceType::queen:
-        moves = QueenMove(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        joinMoveArray(possibleMoves, QueenMove(piece));
         break;
     case PieceType::king:
-        moves = KingMove(piece);
-        possibleMoves.insert(possibleMoves.end(), moves.begin(), moves.end());
+        joinMoveArray(possibleMoves, KingMove(piece));
         break;
     default:
         break;
     }
 
-    vector<Vector2i> moveArray = possibleMoves;
-    printMovesVector(possibleMoves);
-
-    piece->setPossibleMoveArray(possibleMoves);
-    return !piece->getPossibleMoveArray().empty();
-
+    return possibleMoves;
 }
 
-void Rule::calculateBoardState()
+vector<Vector2i> Rule::getControllingPos(PieceColor color)
 {
-    cout << "Updating Board...\n";
-    return;
+#ifdef DEBUG
+    cout << "\n//////////////////////////////\n";
+    cout << "Checking Controlling Position!\n";
+    cout << "//////////////////////////////\n";
+    cout << "Color : " << (color == PieceColor::white ? "White" : "Black");
+    cout << "\n";
+#endif // DEBUG
+
+    vector<Vector2i> controlPos;
+
+    auto pieces = m_board.getPieces();
+    for (auto& piece : pieces)
+    {
+        joinMoveArray(controlPos, getPieceMoveset(piece, true));
+    }
+
+#ifdef DEBUG
+    cout << "\Controlling Square array : ";
+    printMovesVector(controlPos);
+#endif // DEBUG
+
+
+    return controlPos;
 }
 
 #ifdef DEBUG
@@ -72,11 +123,26 @@ void Rule::printMovesVector(vector<Vector2i> v)
 {
     auto it = v.begin();
     auto end = v.end();
-    cout << "move Array ::\n[";
+    cout << "\nmove Array ::\n[";
     for (it; it != end; it++)
     {
         cout << "(" << it->x << "," << it->y << "),";
     }
-    cout << "]\n\n";
+    cout << "]\n";
 }
 #endif // DEBUG
+
+#pragma region Auxiliaries
+void Rule::joinMoveArray(vector<Vector2i>& base, const vector<Vector2i>& add)
+{
+    base.insert(base.end(), add.begin(), add.end());
+
+#pragma endregion
+
+}
+
+PieceColor Rule::flipColor(PieceColor color)
+{
+    
+    return color == PieceColor::white? PieceColor::black : PieceColor:: white;
+}
