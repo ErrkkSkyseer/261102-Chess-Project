@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include <map>
 #include <string>
+#include <memory>
 
 #include "Board.h"
 #include "Vector2Utils.h"
@@ -21,11 +22,9 @@ private:
 	PieceColor ParseColor(char c);
 	PieceType ParseType(char c);
 	bool ParseMoved(char c);
-	PieceColor ParseColorFromString(const std::string& colorStr);
-	void LoadColorMap(const std::string& path);
 
 public:
 	BoardParser(Board& board);
-	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/defult.txt");
+	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/inboard.txt");
 
 };
