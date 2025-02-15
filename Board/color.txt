@@ -4,9 +4,9 @@ N,White
 B,White
 Q,White
 K,White
-P,Black
-R,Black
-N,Black
-B,Black
-Q,Black
-K,Black
+p,Black
+r,Black
+n,Black
+b,Black
+q,Black
+k,Black
