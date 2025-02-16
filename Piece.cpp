@@ -90,8 +90,10 @@ void Piece::setHasMove(bool value)
 #ifdef DEBUG
 void Piece::printStatus()
 {
+	string color = m_color == PieceColor::white ? "White" : m_color == PieceColor::black ? "Black" : "Defult";
 	cout << "\nPiece::printStatus \n";
-	cout << "Piece : " << m_char << " (" << m_position.x << "," << m_position.y << ")\n";
+	cout << "Piece : " << m_char << " Color :" << color << " (" << m_position.x << "," << m_position.y << ")\n";
+
 }
 #endif // DEBUG
 

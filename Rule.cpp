@@ -132,23 +132,23 @@ bool Rule::check(PieceColor color, Board& board)
 
 bool Rule::checkMate(PieceColor color)
 {
-    Vector2i kingPos = findKingPos(color);
-    auto& pieces = m_board.getPieces();
+    //Vector2i kingPos = findKingPos(color);
+    //auto& pieces = m_board.getPieces();
 
-    for (auto& piece : pieces)
-    {
-        Board ghostBoard = m_board.getGhostBoard();
-        if (calculatePossibleMove(piece))
-        {
-            auto moves = piece->getPossibleMoveArray();
-            for (auto& move : moves)
-            {
+    //for (auto& piece : pieces)
+    //{
+    //    Board ghostBoard = m_board.getGhostBoard();
+    //    if (calculatePossibleMove(piece))
+    //    {
+    //        auto moves = piece->getPossibleMoveArray();
+    //        for (auto& move : moves)
+    //        {
 
-            }
-        }
+    //        }
+    //    }
 
-    }
-
+    //}
+    return true;
 }
 
 Vector2i Rule::findKingPos(PieceColor color)
