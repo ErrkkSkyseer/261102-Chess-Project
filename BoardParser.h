@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <cassert>
 
 #include "Board.h"
 #include "Vector2Utils.h"
@@ -17,7 +18,7 @@ class BoardParser
 {
 private:
 	Board& m_board;
-	std::map<PieceType, PieceColor> colorMap;
+	map<PieceType, PieceColor> colorMap;
 
 	PieceColor ParseColor(char c);
 	PieceType ParseType(char c);
@@ -25,6 +26,6 @@ private:
 
 public:
 	BoardParser(Board& board);
-	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/inboard.txt");
+	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "inboard.txt");
 
 };

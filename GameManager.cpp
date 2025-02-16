@@ -2,7 +2,7 @@
 
 GameManager::GameManager()
 {
-	m_parser.ParseFile(m_board.getBoard());
+	m_parser.ParseFile(m_board.getBoard(), "matingTest.txt");
 
 }
 
@@ -20,7 +20,7 @@ void GameManager::update(double dt)
 	//ParseInputIOTesting();
 	if (!m_isPlaying)
 	{
-		if (m_input.getKeyPress(Keyboard::Key::Enter))
+		if (m_input.getKeyPress(Keyboard::Key::I))
 		{
 			startGame();
 		}
@@ -57,7 +57,6 @@ void GameManager::update(double dt)
 			if (m_rule.tryMove(pos))
 			{
 				nextTurn();
-				switchState(1);
 			}
 			else
 			{
@@ -172,10 +171,16 @@ void GameManager::nextTurn()
 
 	m_rule.calculateBoardState();
 
+	if (m_rule.getCheckmate() || m_rule.getDraw())
+		gameOver(m_rule.getEndType());
+	else
+	{
 #ifdef DEBUG
-	cout << (m_turn == PieceColor::white ? "White" : "Black") << " Turn\n";
-	cout << "Move #" << m_move << "\n----------\n";
+		cout << (m_turn == PieceColor::white ? "White" : "Black") << " Turn\n";
+		cout << "Move #" << m_move << "\n----------\n";
 #endif // DEBUG
+		switchState(1);
+	}
 }
 
 void GameManager::startGame()
@@ -190,14 +195,38 @@ void GameManager::startGame()
 	m_move = 0;
 
 	nextTurn();
-
-	switchState(1);
-
 }
 
-void GameManager::gameOver()
+void GameManager::gameOver(EndType endtype)
 {
 	m_isPlaying = false;
+	m_board.drawIO();
+	cout << "GameOver!\n=====\n\n";
+	switch (endtype)
+	{
+	case EndType::null:
+		cout << "You gonna have a bad time.\n";
+		break;
+	case EndType::checkmate:
+		cout << (m_turn == PieceColor::white ? "Black" : "White") << "wins by checkmate.\n";
+		break;
+	case EndType::stalemate:
+		cout << "Draw! : Stalemate\n";
+		break;
+	case EndType::repeatation:
+		cout << "Draw! : Threefold Repeatation\n";
+		break;
+	case EndType::fiftyRule:
+		cout << "Draw! : Fiftymove Rule\n";
+		break;
+	case EndType::material:
+		cout << "Draw! : Insufficient Material\n";
+		break;
+	default:
+		cout << "You gonna have a bad time.\n";
+		break;
+	}
+	cout << "\n====\n";
 }
 
 #ifdef DEBUG

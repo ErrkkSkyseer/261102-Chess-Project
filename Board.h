@@ -9,6 +9,11 @@
 
 #include "Debug.h"
 
+#ifdef DEBUGIOBoard
+#define DEBUGIOBoard
+
+#endif // DEBUGIOBoard
+
 
 using namespace std;
 
@@ -32,6 +37,7 @@ public:
 	
 	shared_ptr<Piece>& getSquareData(Vector2i pos); 
 	bool isEmpty(Vector2i pos);
+	bool isInBoard(Vector2i pos);
 
 	bool movePiece(Vector2i init, Vector2i end);
 	

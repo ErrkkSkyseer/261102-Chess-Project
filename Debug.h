@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef DEBUG
 #define DEBUG
+#ifdef DEBUG
 
 #endif // !DEBUG

@@ -10,19 +10,14 @@ vector<Vector2i> Rule::BishopMove(shared_ptr<Piece>& piece, Board& board) {
 		//เช็คเมื่อมีหมากอยู่ในทาง และ โจมตี
 		while (true) {
 			targetPosition += offset;
-			if (targetPosition.x < 1 || targetPosition.x > 8 || targetPosition.y < 1 || targetPosition.y > 8) {
+			if (!board.isInBoard(targetPosition)) {
 				break;
 			}
-			if (board.isEmpty(targetPosition)) {
-				possibleMove.push_back(targetPosition);
-			}
-			else {
-				shared_ptr<Piece> targetPiece = board.getSquareData(targetPosition);
-				if (targetPiece->getColor() != piece->getColor()) {
-					possibleMove.push_back(targetPosition);
-				}
+
+			possibleMove.push_back(targetPosition);
+
+			if (board.isEmpty(targetPosition))
 				break;
-			}
 
 		}
 	}

@@ -42,7 +42,6 @@ private:
 
 	void enterState(int state);
 
-	void exitState(GameState state);
 	void exitState(int state);
 
 	void switchState(int to);
@@ -51,7 +50,7 @@ private:
 
 	void startGame();
 	void nextTurn();
-	void gameOver();
+	void gameOver(EndType endtype);
 #ifdef DEBUG
 	void ParseInputIOTesting(); // <- Purley for testing
 

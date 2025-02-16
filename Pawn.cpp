@@ -15,21 +15,6 @@ vector<Vector2i> Rule::pawnMove(shared_ptr<Piece>& piece, Board& board) {
 			possibleMove.push_back(doubleForwardMove);
 		}
 	}
-	//การโจมตี
-	vector<Vector2i> attackMoves = {currentPossition + Vector2i(-1, direction), currentPossition + Vector2i(1, direction)};
-	for (auto& attackMove : attackMoves) {
-		if (!board.isEmpty(attackMove)) {
-			shared_ptr<Piece> targetPiece = board.getSquareData(attackMove);
-			if (targetPiece->getColor() != piece->getColor()) {
-				possibleMove.push_back(attackMove);
-			}
-		}
-	}
-	//อัปเดตสถานะเมื่อเดินครั้งแรก
-	if (!possibleMove.empty() && !piece->getHasMove()) {
-		piece->setHasMove(true);
-		piece->setIsFirstMove(false);
-	}
 	return possibleMove;
 }
 
@@ -40,17 +25,10 @@ vector<Vector2i> Rule::pawnAtt(shared_ptr<Piece>& piece, Board& board) {
 	//การโจมตี
 	vector<Vector2i> attackMoves = { currentPossition + Vector2i(-1, direction), currentPossition + Vector2i(1, direction) };
 	for (auto& attackMove : attackMoves) {
-		if (!board.isEmpty(attackMove)) {
-			shared_ptr<Piece> targetPiece = board.getSquareData(attackMove);
-			if (targetPiece->getColor() != piece->getColor()) {
-				possibleMove.push_back(attackMove);
-			}
+		if (board.isInBoard(attackMove))
+		{
+			possibleMove.push_back(attackMove);
 		}
-	}
-	//อัปเดตสถานะเมื่อเดินครั้งแรก
-	if (!possibleMove.empty() && !piece->getHasMove()) {
-		piece->setHasMove(true);
-		piece->setIsFirstMove(false);
 	}
 	return possibleMove;
 }

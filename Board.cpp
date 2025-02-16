@@ -7,7 +7,7 @@ Board::Board()
 
 shared_ptr<Piece>& Board::getSquareData(Vector2i pos)
 {
-#ifdef DEBUG
+#ifdef DEBUGIOBoard
 	cout << "\nBoard::getSquareData()\n";
 	cout << "Get Data At (" << pos.x << "," << pos.y <<")";
 	if (m_board[pos] != nullptr)
@@ -15,20 +15,28 @@ shared_ptr<Piece>& Board::getSquareData(Vector2i pos)
 	else
 		cout << "\n is empty square\n";
 
-#endif // DEBUG
+#endif // DEBUGIOBoard
 
 	return m_board[pos];
 }
 
 bool Board::isEmpty(Vector2i pos)
 {
-#ifdef DEBUG
+#ifdef DEBUGIOBoard
 	cout << "\nBoard::isEmpty()\n";
 	cout << "Checking pos : " << "(" << pos.x << "," << pos.y << ") = ";
 	cout << ((m_board[pos] == nullptr) ? "Empty" : "Have Piece " )<< "\n";
-#endif // DEBUG
+#endif // DEBUGIOBoard
 
 	return m_board[pos] == nullptr;
+}
+
+bool Board::isInBoard(Vector2i pos)
+{
+	return pos.x >= 1
+		&& pos.x <= m_width
+		&& pos.y >= 1
+		&& pos.y <= m_height;
 }
 
 map<Vector2i, shared_ptr<Piece>>& Board::getBoard()
@@ -49,7 +57,7 @@ Board Board::getGhostBoard()
 		ghostm_Board[kvp.first] = make_shared<Piece>(*kvp.second);
 	}
 
-	return move(ghostBoard);
+	return ghostBoard;
 }
 
 vector<shared_ptr<Piece>>& Board::getPieces()
@@ -74,7 +82,11 @@ bool Board::movePiece(Vector2i init, Vector2i end)
 	m_board.erase(init);
 
 	m_board[end]->setPosition(end);
+	m_board[end]->setHasMove(true);
+
+#ifdef DEBUGIOBoard
 	m_board[end]->printStatus();
+#endif // DEBUGIOBoard
 
 	return true;
 }
@@ -129,7 +141,12 @@ void Board::drawIO()
 			}
 			else
 			{
-				cout << m_board[pos]->getChar();
+				char pieceChar = m_board[pos]->getChar();
+				if (m_board[pos]->getColor() == PieceColor::white)
+					pieceChar = toupper(pieceChar);
+				else
+					pieceChar = tolower(pieceChar);
+				cout << pieceChar;
 			}
 			cout << " ";
 		}

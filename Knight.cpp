@@ -7,15 +7,11 @@ vector<Vector2i> Rule::KnightMove(shared_ptr<Piece>& piece, Board& board) {
 	vector<Vector2i> moveOffset = { {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
 	for (auto& offset : moveOffset) {
 		Vector2i targetPosition = currentPossition + offset;		//เช็คว่าหมากมีการเดินออกสนามหรือไม่
-		if (targetPosition.x >= 1 && targetPosition.x <= 8 && targetPosition.y >= 1 && targetPosition.y <= 8) {
-			if (board.isEmpty(targetPosition)) {
-				possibleMove.push_back(targetPosition);
-			}else{													//โจมตี
-				shared_ptr<Piece> targetPiece = board.getSquareData(targetPosition);
-				if(targetPiece->getColor() != piece->getColor()){
-					possibleMove.push_back(targetPosition);
-				}
-			}
+		if (board.isInBoard(targetPosition)) {
+			possibleMove.push_back(targetPosition);
+
+			if (board.isEmpty(targetPosition))
+				break;
 		}
 	}
 	return possibleMove;
