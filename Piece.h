@@ -21,6 +21,7 @@ private:
 
 	char m_char = '\0';
 
+	bool m_isFirstMove = false;
 	bool m_hasMoved = false;
 
 public:
@@ -38,6 +39,8 @@ public:
 
 	char getChar();
 
+	bool getIsFirsrMove();
+	void setIsFirsrMove(bool value);
 	bool getHasMove();
 	void setHasMove(bool value);
 

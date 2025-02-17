@@ -69,6 +69,16 @@ char Piece::getChar()
 	return m_char;
 }
 
+bool Piece::getIsFirsrMove()
+{
+	return m_isFirstMove;
+}
+
+void Piece::setIsFirsrMove(bool value)
+{
+	m_isFirstMove = value;
+}
+
 bool Piece::getHasMove()
 {
 	return m_hasMoved;

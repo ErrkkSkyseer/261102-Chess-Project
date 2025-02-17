@@ -75,17 +75,32 @@ vector<shared_ptr<Piece>>& Board::getPieces()
 	return m_pieces;
 }
 
+shared_ptr<Piece>& Board::getLastMocePiece()
+{
+	return m_lastMovePiece;
+}
+
 
 bool Board::movePiece(Vector2i init, Vector2i end)
 {
 	m_board[end] = m_board[init];
 	m_board.erase(init);
 
-	m_board[end]->setPosition(end);
-	m_board[end]->setHasMove(true);
+	auto& piece = m_board[end];
+
+	piece->setPosition(end);
+	if (!piece->getHasMove())
+	{
+		piece->setHasMove(true);
+		piece->setIsFirsrMove(true);
+	}
+	if (m_lastMovePiece != nullptr)
+		m_lastMovePiece->setIsFirsrMove(false);
+
+	m_lastMovePiece = piece;
 
 #ifdef DEBUGIOBoard
-	m_board[end]->printStatus();
+	m_board[piece]->printStatus();
 #endif // DEBUGIOBoard
 
 	return true;

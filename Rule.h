@@ -25,7 +25,7 @@ private:
 
 	Vector2i m_selectingPos;
 	
-	shared_ptr<Piece> m_lastMovePiece;
+	bool m_haveSpecialMove = false;
 
 	bool m_isInCheck = false;
 	EndType m_endType = EndType::null;
@@ -35,11 +35,16 @@ private:
 #pragma region PieceMovement
 	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece	,Board& board);
 	vector<Vector2i> pawnAtt(shared_ptr<Piece>& piece	,Board& board);
+	vector<Vector2i> enPassant(shared_ptr<Piece>& piece, Board& board);
+	
 	vector<Vector2i> KnightMove(shared_ptr<Piece>& piece,Board& board);
 	vector<Vector2i> BishopMove(shared_ptr<Piece>& piece,Board& board);
 	vector<Vector2i> RookMove(shared_ptr<Piece>& piece	,Board& board);
 	vector<Vector2i> QueenMove(shared_ptr<Piece>& piece	,Board& board);
 	vector<Vector2i> KingMove(shared_ptr<Piece>& piece	,Board& board);
+	vector<Vector2i> castel(shared_ptr<Piece>& piece, Board& board);
+	
+	vector<Vector2i> calculateSpecialMove(shared_ptr<Piece>& piece, Board& board);
 #pragma endregion
 
 	vector<Vector2i> validateAttackMove(vector<Vector2i> moveArray, shared_ptr<Piece>& piece, Board& board);
@@ -55,6 +60,8 @@ private:
 	bool isStalemate(PieceColor color);
 
 	vector<Vector2i> getPinnedMove(shared_ptr<Piece>& piece, const vector<Vector2i> moveArray, Board& board);
+
+	void preformSpecialMove(shared_ptr<Piece>& piece,Vector2i pos);
 
 	void printMovesVector(vector<Vector2i>);
 

@@ -2,8 +2,7 @@
 
 GameManager::GameManager()
 {
-	m_parser.ParseFile(m_board.getBoard(), "matingTest.txt");
-
+	//m_parser.ParseFile(m_board.getBoard(), "matingTest.txt");
 }
 
 void GameManager::input(vector<optional<Event>>& eventCollections)
@@ -185,6 +184,7 @@ void GameManager::nextTurn()
 
 void GameManager::startGame()
 {
+	m_parser.ParseFile(m_board.getBoard());
 #ifdef DEBUG
 	cout << "GameStart!\n\n";
 #endif // DEBUG

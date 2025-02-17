@@ -41,8 +41,14 @@ bool Rule::tryMove(Vector2i pos)
 
     if (valid)
     {
-        m_board.movePiece(m_selectingPos, pos);
-        m_lastMovePiece = m_board.getSquareData(pos);
+        if (m_haveSpecialMove)
+        {
+            preformSpecialMove(piece, pos);
+        }
+        else
+        {
+            m_board.movePiece(m_selectingPos, pos);
+        }
     }
 
     return valid;
@@ -82,6 +88,8 @@ bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
     std::cout << "\nCalculating possible moves...\n";
     vector<Vector2i> moveArray = getPieceMoveset(piece,m_board);
     moveArray = validateAttackMove(moveArray,piece, m_board);
+    
+    joinMoveArray(moveArray, calculateSpecialMove(piece, m_board));
 
     vector<Vector2i> pinnedMove = getPinnedMove(piece, moveArray, m_board);
 
@@ -127,6 +135,22 @@ vector<Vector2i> Rule::getPieceMoveset(shared_ptr<Piece>& piece, Board& board, b
     }
 
     return possibleMoves;
+}
+
+vector<Vector2i> Rule::calculateSpecialMove(shared_ptr<Piece>& piece, Board& board)
+{
+    m_haveSpecialMove = false;
+    vector<Vector2i> specialMoves = vector<Vector2i>();
+    PieceType type = piece->getType();
+
+    //En Passant
+    joinMoveArray(specialMoves, enPassant(piece,board));
+
+    //Castle
+    joinMoveArray(specialMoves, castel(piece, board));
+
+    m_haveSpecialMove = !specialMoves.empty();
+    return specialMoves;
 }
 
 /// <summary>
@@ -219,9 +243,10 @@ bool Rule::isCheckmate(PieceColor color)
         auto& pieces = m_board.getPieces();
         for (auto& piece : pieces)
         {
-            if (piece->getColor() == color && !calculatePossibleMove(piece))
-                return true;
+            if (piece->getColor() == color && calculatePossibleMove(piece))
+                return false;
         }
+        return true;
     }
     return false;
 }
@@ -233,9 +258,10 @@ bool Rule::isStalemate(PieceColor color)
         auto& pieces = m_board.getPieces();
         for (auto& piece : pieces)
         {
-            if (piece->getColor() == color && !calculatePossibleMove(piece))
-                return true;
+            if (piece->getColor() == color && calculatePossibleMove(piece))
+                return false;
         }
+        return true;
     }
     return false;
 }
@@ -276,6 +302,45 @@ vector<Vector2i> Rule::getPinnedMove(shared_ptr<Piece>& piece, const vector<Vect
         }
     }
     return pinnedMove;
+}
+
+void Rule::preformSpecialMove(shared_ptr<Piece>& piece, Vector2i pos)
+{
+    auto type = piece->getType();
+    auto color = piece->getColor();
+
+    //En Passant
+    if (type == PieceType::pawn)
+    {
+        Vector2i target = pos - (color == PieceColor::white?
+            Vector2i(0,1) : Vector2i(0, -1));
+        m_board.movePiece(m_selectingPos,pos);
+        if (!m_board.isEmpty(target))
+        {
+            if (m_board.getSquareData(target)->getColor() != color
+                && m_board.getSquareData(target)->getType() == PieceType::pawn)
+                m_board.getBoard()[target] = nullptr;
+        }
+            
+    }
+
+    //Castle
+    if (type == PieceType::king)
+    {
+        //left castle
+        if (pos.x == 3)
+        {
+            m_board.movePiece(Vector2i(1, pos.y), Vector2i(4, pos.y));
+        }
+        //right castle
+        if (pos.x == 7)
+        {
+            m_board.movePiece(Vector2i(8, pos.y), Vector2i(6, pos.y));
+        }
+        // move the king last so it count as last piece that moved.
+        m_board.movePiece(m_selectingPos, pos);
+    }
+
 }
 
 

@@ -9,9 +9,6 @@ vector<Vector2i> Rule::KnightMove(shared_ptr<Piece>& piece, Board& board) {
 		Vector2i targetPosition = currentPossition + offset;		//เช็คว่าหมากมีการเดินออกสนามหรือไม่
 		if (board.isInBoard(targetPosition)) {
 			possibleMove.push_back(targetPosition);
-
-			if (board.isEmpty(targetPosition))
-				break;
 		}
 	}
 	return possibleMove;

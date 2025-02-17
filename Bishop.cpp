@@ -16,7 +16,7 @@ vector<Vector2i> Rule::BishopMove(shared_ptr<Piece>& piece, Board& board) {
 
 			possibleMove.push_back(targetPosition);
 
-			if (board.isEmpty(targetPosition))
+			if (!board.isEmpty(targetPosition))
 				break;
 
 		}

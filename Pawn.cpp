@@ -32,3 +32,28 @@ vector<Vector2i> Rule::pawnAtt(shared_ptr<Piece>& piece, Board& board) {
 	}
 	return possibleMove;
 }
+
+vector<Vector2i> Rule::enPassant(shared_ptr<Piece>& piece, Board& board)
+{
+	vector<Vector2i> moves;
+	vector<Vector2i> offsets = {{1,0},{-1,0}};
+
+	if (piece->getType() != PieceType::pawn)
+		return moves;
+
+	auto& lastMovePiece = board.getLastMocePiece();
+	if (lastMovePiece == nullptr)
+		return moves;
+
+	for (auto& offset : offsets)
+	{
+		Vector2i targetPos = piece->getPosition() + offset;
+		if (lastMovePiece->getPosition() == targetPos
+			&& lastMovePiece->getIsFirsrMove())
+		{
+			targetPos += piece->getColor() == PieceColor::white ? Vector2i(0, 1) : Vector2i(0, -1);
+			moves.push_back(targetPos);
+		}
+	}
+	return moves;
+}
