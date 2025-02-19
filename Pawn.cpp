@@ -57,3 +57,24 @@ vector<Vector2i> Rule::enPassant(shared_ptr<Piece>& piece, Board& board)
 	}
 	return moves;
 }
+
+bool Rule::checkForPromotion(shared_ptr<Piece>& piece, vector<Vector2i> moveArray)
+{
+	bool value = false;
+	if (piece->getType() == PieceType::pawn)
+	{
+		for (auto& move : moveArray)
+		{
+			switch (piece->getColor())
+			{
+			case PieceColor::white:
+				if (move.y == 8) return true;
+				break;
+			case PieceColor::black:
+				if (move.y == 1) return true;
+				break;
+			}
+		}
+	}
+	return false;
+}

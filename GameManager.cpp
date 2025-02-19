@@ -2,7 +2,6 @@
 
 GameManager::GameManager()
 {
-	//m_parser.ParseFile(m_board.getBoard(), "matingTest.txt");
 }
 
 void GameManager::input(vector<optional<Event>>& eventCollections)
@@ -55,7 +54,15 @@ void GameManager::update(double dt)
 			auto& piece = m_board.getSquareData(m_selectPos);
 			if (m_rule.tryMove(pos))
 			{
-				nextTurn();
+				if (m_rule.isPromotion())
+				{
+					char c;
+					cout << "Pawn Promotion :\n";
+					cout << "K : Knight, B : Bishop, R : Rook, Q : Queen";
+					cin >> c;
+					m_rule.promote(pos, c);
+				}
+					nextTurn();
 			}
 			else
 			{
@@ -184,13 +191,13 @@ void GameManager::nextTurn()
 
 void GameManager::startGame()
 {
-	m_parser.ParseFile(m_board.getBoard());
+	m_parser.ParseFile(m_board.getBoard(), "PP.txt");
 #ifdef DEBUG
 	cout << "GameStart!\n\n";
 #endif // DEBUG
 
 	m_isPlaying = true;
-	
+
 	m_turn = PieceColor::black;
 	m_move = 0;
 
@@ -208,7 +215,7 @@ void GameManager::gameOver(EndType endtype)
 		cout << "You gonna have a bad time.\n";
 		break;
 	case EndType::checkmate:
-		cout << (m_turn == PieceColor::white ? "Black" : "White") << "wins by checkmate.\n";
+		cout << (m_turn == PieceColor::white ? "Black" : "White") << " win by checkmate.\n";
 		break;
 	case EndType::stalemate:
 		cout << "Draw! : Stalemate\n";

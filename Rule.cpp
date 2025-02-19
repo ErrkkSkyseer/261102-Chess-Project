@@ -49,6 +49,7 @@ bool Rule::tryMove(Vector2i pos)
         {
             m_board.movePiece(m_selectingPos, pos);
         }
+        countFiftyMove(m_board.getSquareData(pos)->getType());
     }
 
     return valid;
@@ -58,12 +59,19 @@ void Rule::calculateBoardState()
 {
     cout << "\nUpdating Board...\n";
     m_isInCheck = isCheck(m_turn,m_board);
+    
+    m_isPromotion = false;
+    m_selectingPos = {};
+
 
     if (isCheckmate(m_turn))
         m_endType = EndType::checkmate;
-    if (isStalemate(m_turn))
+    else if (isStalemate(m_turn))
         m_endType = EndType::stalemate;
-
+    else if (checkRepeatation(m_board))
+        m_endType = EndType::repeatation;
+    else if (checkInsufficientMeterial())
+        m_endType = EndType::material;
 
     return;
 }
@@ -86,14 +94,20 @@ bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
 bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
 {
     std::cout << "\nCalculating possible moves...\n";
+    //Get piece's possible move
     vector<Vector2i> moveArray = getPieceMoveset(piece,m_board);
+    //Remove illegle attacking move (attack your own piece)
     moveArray = validateAttackMove(moveArray,piece, m_board);
     
+    //calculate special move
     joinMoveArray(moveArray, calculateSpecialMove(piece, m_board));
 
+    //remove any move that make the king become in check
     vector<Vector2i> pinnedMove = getPinnedMove(piece, moveArray, m_board);
-
     subtractMoveArray(moveArray, pinnedMove);
+    
+    //Check for Pawn Promotion
+    m_haveSpecialMove = checkForPromotion(piece,moveArray);
 
     printMovesVector(moveArray);
 
@@ -150,6 +164,7 @@ vector<Vector2i> Rule::calculateSpecialMove(shared_ptr<Piece>& piece, Board& boa
     joinMoveArray(specialMoves, castel(piece, board));
 
     m_haveSpecialMove = !specialMoves.empty();
+
     return specialMoves;
 }
 
@@ -309,6 +324,24 @@ void Rule::preformSpecialMove(shared_ptr<Piece>& piece, Vector2i pos)
     auto type = piece->getType();
     auto color = piece->getColor();
 
+    //Promotion
+    if (type == PieceType::pawn)
+    {
+        switch (color)
+        {
+        case PieceColor::white:
+            m_isPromotion = pos.y == 8;
+            break;
+        case PieceColor::black:
+            m_isPromotion = pos.y == 1;
+            break;
+        default:
+            break;
+        }
+        m_board.movePiece(m_selectingPos, pos);
+        return;
+    }
+
     //En Passant
     if (type == PieceType::pawn)
     {
@@ -321,7 +354,7 @@ void Rule::preformSpecialMove(shared_ptr<Piece>& piece, Vector2i pos)
                 && m_board.getSquareData(target)->getType() == PieceType::pawn)
                 m_board.getBoard()[target] = nullptr;
         }
-            
+        return;
     }
 
     //Castle
@@ -339,10 +372,84 @@ void Rule::preformSpecialMove(shared_ptr<Piece>& piece, Vector2i pos)
         }
         // move the king last so it count as last piece that moved.
         m_board.movePiece(m_selectingPos, pos);
+        return;
     }
 
 }
 
+bool Rule::checkInsufficientMeterial()
+{
+    auto& pieces = m_board.getPieces();
+    if (pieces.size() < 3)
+    {
+        for (auto& piece : pieces)
+        {
+            if (piece->getType() != PieceType::king)
+                return false;
+        }
+        return true;
+    }
+    else if (pieces.size() == 3)
+    {
+        for (auto& piece : pieces)
+        {
+            PieceType type = piece->getType();
+            if (type != PieceType::king
+                && type != PieceType::knight
+                && type != PieceType::bishop)
+                return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Rule::checkRepeatation(Board& board)
+{
+    string newBoardCode = encodeBoard(board);
+    m_encodedBoardHistory.push_back(newBoardCode);
+    return (countPositionOccurrences(m_encodedBoardHistory, newBoardCode) >= 3);
+}
+
+string Rule::encodeBoard(Board& board)
+{
+    string boardCode;
+    Vector2i pos;
+    for (int y = 8; y > 0; y--)
+    {
+        for (int x = 1; x < 9; x++)
+        {
+            pos = { x,y };
+            if (board.isEmpty(pos))
+            {
+                boardCode += ".";
+            }
+            else 
+            {
+                auto& piece = board.getSquareData(pos);
+                if (piece->getColor() == PieceColor::white)
+                {
+                    boardCode += toupper(piece->getChar());
+                }
+                else
+                {
+                    boardCode += tolower(piece->getChar());
+                }
+            }
+        }
+    }
+    return boardCode;
+}
+
+void Rule::countFiftyMove(PieceType type)
+{
+    m_fiftyMoveCounter++;
+    int currentPieceCount = m_board.getPieces().size();
+    if (type == PieceType::pawn
+        || currentPieceCount != m_lastPieceCount)
+        m_fiftyMoveCounter = 0;
+    m_lastPieceCount = currentPieceCount;
+}
 
 void Rule::printMovesVector(vector<Vector2i> v)
 {
@@ -375,11 +482,21 @@ bool Rule::getDraw()
         || m_endType == EndType::material;
 }
 
+bool Rule::isPromotion()
+{
+    return m_isPromotion;
+}
+
+void Rule::promote(Vector2i pos, char c)
+{
+    m_board.getBoard().erase(pos);
+    m_board.getBoard()[pos] = make_shared<Piece>(pos,c,m_turn);
+}
+
 EndType Rule::getEndType()
 {
     return m_endType;
 }
-
 
 #pragma region Auxiliaries
 void Rule::joinMoveArray(vector<Vector2i>& base, const vector<Vector2i>& add)
@@ -418,6 +535,18 @@ void Rule::removeDuplicates(vector<Vector2i>& v)
 void Rule::sortMoveArray(vector<Vector2i>& vec) 
 {
     sort(vec.begin(), vec.end(), [](const auto& a, const auto& b) {return (a.y > b.y) || (a.y == b.y && a.x < b.x);});
+}
+
+int Rule::countPositionOccurrences(const vector<string>& vec, string element) {
+    int count = 0;
+
+    for (auto& num : vec) {
+        if (num == element) {
+            count++;
+        }
+    }
+
+    return count; // Returns 0 if not found, otherwise returns the count
 }
 
 #pragma endregion

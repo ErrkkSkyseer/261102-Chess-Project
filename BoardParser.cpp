@@ -39,6 +39,7 @@ BoardParser::BoardParser(Board& board) : m_board(board)
 
 void BoardParser::ParseFile(map<Vector2i, shared_ptr<Piece>>& board, string path)
 {
+    board.clear();
     cout << "parsing\n";
     string p = "Board/" + path;
     ifstream f(p);
