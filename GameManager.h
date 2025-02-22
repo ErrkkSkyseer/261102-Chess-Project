@@ -7,7 +7,6 @@
 #include "Rule.h"
 #include "BaseGameEnum.h"
 #include "Input.h"
-#include "UIboard.h"
 
 using namespace std;
 using namespace sf;
@@ -28,7 +27,6 @@ private:
 	Rule m_rule = Rule(m_board,m_turn);
 	BoardParser m_parser = BoardParser(m_board);
 	Input m_input;
-	UIboard m_UIboard;
 
 	//[Game State]
 	GameState m_gameState = GameState::Start;

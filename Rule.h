@@ -87,8 +87,14 @@ private:
 	void sortMoveArray(vector<Vector2i>& vec);
 	int countPositionOccurrences(const vector<string>& vec, string element);
 #pragma endregion
+#pragma region Special_rule
 
+	void BurnSquare_Special();
+	void RendomRevive_Special();
+	void CheckKingThreeTime_Special();
+	void KingInMiddle_Special();
 
+#pragma endregion
 public:
 	Rule(Board& board, PieceColor& color);
 
