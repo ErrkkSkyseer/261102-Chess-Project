@@ -8,6 +8,12 @@
 #include "BaseGameEnum.h"
 #include "Input.h"
 
+#ifdef UseDebugBoard
+#define UseDebugBoard "...txt"
+
+#endif // useDebugBoard
+
+
 using namespace std;
 using namespace sf;
 

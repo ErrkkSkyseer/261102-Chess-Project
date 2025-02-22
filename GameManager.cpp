@@ -191,7 +191,14 @@ void GameManager::nextTurn()
 
 void GameManager::startGame()
 {
-	m_parser.ParseFile(m_board.getBoard(), "PP.txt");
+#ifdef UseDebugBoard
+	m_parser.ParseFile(m_board.getBoard(), UseDebugBoard);
+#endif // useDebugBoard
+#ifndef UseDebugBoard
+	m_parser.ParseFile(m_board.getBoard());
+#endif // !useDebugBoard
+
+
 #ifdef DEBUG
 	cout << "GameStart!\n\n";
 #endif // DEBUG

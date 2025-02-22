@@ -9,8 +9,8 @@
 
 #include "Debug.h"
 
-#define DEBUGIORule
 #ifdef DEBUGIORule
+#define DEBUGIORule
 
 #endif // DEBUGIORule
 
