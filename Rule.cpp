@@ -450,14 +450,6 @@ void Rule::countFiftyMove(PieceType type)
         m_fiftyMoveCounter = 0;
     m_lastPieceCount = currentPieceCount;
 }
-// Special Rule are here!
-
-void Rule::BurnSquare_Special() {
-    cout << "Be Careful...IT TIME FOR BURN YOUR PIECE??\n";
-
-}
-
-//
 void Rule::printMovesVector(vector<Vector2i> v)
 {
     sortMoveArray(v);
