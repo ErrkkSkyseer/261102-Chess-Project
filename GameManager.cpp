@@ -21,13 +21,26 @@ void GameManager::update(double dt)
 		if (m_input.getKeyPress(Keyboard::Key::I))
 		{
 			startGame();
+			m_gameType = GameType::normal;
 		}
+		if (m_input.getKeyPress(Keyboard::Key::P))
+		{
+			startGame();
+			m_gameType = GameType::notNormal;
+		}
+		return;
+	}
+
+	//event happen before InputState
+	if (m_gameType == GameType::notNormal) {
+
 		return;
 	}
 
 	Vector2i pos;
 	switch (m_inputState)
 	{
+
 	case 1:
 		if (onSquareInput(pos))
 		{
@@ -78,6 +91,7 @@ void GameManager::update(double dt)
 
 }
 
+
 void GameManager::enterState(int state)
 {
 	string debugmsg = "Enter Input State :: ";
@@ -91,6 +105,13 @@ void GameManager::enterState(int state)
 	case 2:
 		m_inputState = 2;
 		debugmsg += "Moving Piece";
+		break;
+	case 4:
+		if (m_gameType == GameType::notNormal)
+		{
+			//debugmsg += "event can happen";
+			m_rule.m_event = true;
+		}
 		break;
 	default:
 		debugmsg += "State not exist : m_inputState = " + m_inputState;
@@ -114,6 +135,13 @@ void GameManager::exitState(int state)
 	case 2:
 		m_inputState = 2;
 		debugmsg += "Moving Piece";
+		break;
+	case 4:
+		if (m_gameType == GameType::notNormal)
+		{
+			//debugmsg += "event exit";
+			m_rule.m_event = false;
+		}
 		break;
 	default:
 		debugmsg += "State not exist : m_inputState = " + m_inputState;

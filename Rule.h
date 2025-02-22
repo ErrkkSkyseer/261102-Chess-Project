@@ -20,6 +20,7 @@ using namespace std;
 class Rule
 {
 private:
+
 	Board& m_board;
 	PieceColor& m_turn;
 
@@ -111,6 +112,6 @@ public:
 	void promote(Vector2i pos, char c);
 	
 	EndType getEndType();
-
+	bool m_event;
 };
 

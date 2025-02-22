@@ -37,15 +37,14 @@ public:
 
 	vector<shared_ptr<Piece>>& getPieces();
 	shared_ptr<Piece>& getLastMocePiece();
-	
-	shared_ptr<Piece>& getSquareData(Vector2i pos); 
+
+	shared_ptr<Piece>& getSquareData(Vector2i pos);
 	bool isEmpty(Vector2i pos);
 	bool isInBoard(Vector2i pos);
 
 	bool movePiece(Vector2i init, Vector2i end);
-	
+
 	void initializeBoardByIO();
-	void drawIO();	
+	void drawIO();
 
 };
-

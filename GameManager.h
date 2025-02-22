@@ -37,7 +37,7 @@ private:
 	//[Game State]
 	GameState m_gameState = GameState::Start;
 	int m_inputState = 0;
-	GameType m_gameType = GameType::normal; //GameType::isntInGame;
+	GameType m_gameType; //GameType::isntInGame;
 
 	// [Game Variables]
 	PieceColor m_turn = PieceColor::defult;
@@ -56,6 +56,7 @@ private:
 	void startGame();
 	void nextTurn();
 	void gameOver(EndType endtype);
+
 #ifdef DEBUG
 	void ParseInputIOTesting(); // <- Purley for testing
 
