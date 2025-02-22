@@ -34,6 +34,13 @@ private:
 	vector<string> m_encodedBoardHistory;
 	int m_fiftyMoveCounter = 0;
 	int m_lastPieceCount;
+	int whitecheckcount = 0;
+	int blackcheckcount = 0;
+
+	bool W_kinginmiddle = false;
+	bool B_kimginmiddle = false;
+
+	vector<shared_ptr<Piece>> m_deadPiece;
 
 	bool m_isPromotion = false;
 
@@ -87,14 +94,9 @@ private:
 	PieceColor flipColor(PieceColor color);
 	void sortMoveArray(vector<Vector2i>& vec);
 	int countPositionOccurrences(const vector<string>& vec, string element);
-#pragma endregion
-#pragma region Special_rule
-
 	void BurnSquare_Special();
-	void RendomRevive_Special();
 	void CheckKingThreeTime_Special();
 	void KingInMiddle_Special();
-
 #pragma endregion
 public:
 	Rule(Board& board, PieceColor& color);
