@@ -5,9 +5,10 @@
 /// </summary>
 /// <param name="board">Main board ref</param>
 /// <param name="color">player turn ref</param>
-Rule::Rule(Board& board, PieceColor& color) :
+Rule::Rule(Board& board, PieceColor& color, GameType& gametype) :
     m_board(board), 
-    m_turn(color)
+    m_turn(color),
+    m_gametype(gametype)
 {
     m_isInCheck = false;
 
@@ -55,6 +56,13 @@ bool Rule::tryMove(Vector2i pos)
     return valid;
 }
 
+bool Rule::isKingAlive(PieceColor& color, Board& board) {
+    Vector2i kingvector = findKingPos(m_turn, m_board);
+    if (kingvector.x == 0 && kingvector.y == 0) return false;
+    else kingvector = Vector2i(0, 0);
+    return true;
+}
+
 void Rule::calculateBoardState()
 {
     cout << "\nUpdating Board...\n";
@@ -63,6 +71,10 @@ void Rule::calculateBoardState()
     m_isPromotion = false;
     m_selectingPos = {};
 
+    if (m_gametype == GameType::notNormal)
+    {
+        eventActivate();
+    }
 
     if (isCheckmate(m_turn))
         m_endType = EndType::checkmate;
@@ -72,7 +84,14 @@ void Rule::calculateBoardState()
         m_endType = EndType::repeatation;
     else if (checkInsufficientMeterial())
         m_endType = EndType::material;
-
+    else if (m_gametype == GameType::notNormal) {
+        if (CheckKingThreeTime_Special)
+            m_endType = EndType::threecheck;
+        else if (KingInMiddle_Special)
+            m_endType = EndType::kinginmiddle;
+        else if (isKingAlive == false)
+            m_endType = EndType::kingdied;
+    }
     return;
 }
 
@@ -450,6 +469,7 @@ void Rule::countFiftyMove(PieceType type)
         m_fiftyMoveCounter = 0;
     m_lastPieceCount = currentPieceCount;
 }
+
 void Rule::printMovesVector(vector<Vector2i> v)
 {
     sortMoveArray(v);
@@ -546,6 +566,10 @@ int Rule::countPositionOccurrences(const vector<string>& vec, string element) {
     }
 
     return count; // Returns 0 if not found, otherwise returns the count
+}
+
+void Rule::eventActivate() {
+
 }
 
 #pragma endregion

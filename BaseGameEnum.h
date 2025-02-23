@@ -17,5 +17,5 @@ enum class GameType
 
 enum class EndType
 {
-	null, checkmate, stalemate, repeatation, fiftyRule, material, threecheck, kinginmiddle
+	null, checkmate, stalemate, repeatation, fiftyRule, material, threecheck, kinginmiddle, kingdied
 };

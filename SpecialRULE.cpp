@@ -64,4 +64,3 @@ void Rule::KingInMiddle_Special() {
         B_kimginmiddle = false;
     }
 }
-//

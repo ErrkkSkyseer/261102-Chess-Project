@@ -23,6 +23,7 @@ private:
 
 	Board& m_board;
 	PieceColor& m_turn;
+	GameType& m_gametype;
 
 	Vector2i m_selectingPos;
 	
@@ -97,9 +98,12 @@ private:
 	void BurnSquare_Special();
 	void CheckKingThreeTime_Special();
 	void KingInMiddle_Special();
+
 #pragma endregion
 public:
-	Rule(Board& board, PieceColor& color);
+	Rule(Board& board, PieceColor& color,GameType& gametype);
+
+	void eventActivate();
 
 	bool trySelect(Vector2i pos);
 	bool tryMove(Vector2i pos);
@@ -110,10 +114,11 @@ public:
 	bool getCheckmate();
 	bool getDraw();
 
+	bool isKingAlive(PieceColor& color, Board& board);
 	bool isPromotion();
 	void promote(Vector2i pos, char c);
 	
 	EndType getEndType();
-	bool m_event;
+	
 };
 

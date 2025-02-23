@@ -31,12 +31,6 @@ void GameManager::update(double dt)
 		return;
 	}
 
-	//event happen before InputState
-	if (m_gameType == GameType::notNormal) {
-
-		return;
-	}
-
 	Vector2i pos;
 	switch (m_inputState)
 	{
@@ -106,13 +100,6 @@ void GameManager::enterState(int state)
 		m_inputState = 2;
 		debugmsg += "Moving Piece";
 		break;
-	case 4:
-		if (m_gameType == GameType::notNormal)
-		{
-			//debugmsg += "event can happen";
-			m_rule.m_event = true;
-		}
-		break;
 	default:
 		debugmsg += "State not exist : m_inputState = " + m_inputState;
 		break;
@@ -135,13 +122,6 @@ void GameManager::exitState(int state)
 	case 2:
 		m_inputState = 2;
 		debugmsg += "Moving Piece";
-		break;
-	case 4:
-		if (m_gameType == GameType::notNormal)
-		{
-			//debugmsg += "event exit";
-			m_rule.m_event = false;
-		}
 		break;
 	default:
 		debugmsg += "State not exist : m_inputState = " + m_inputState;
@@ -263,6 +243,15 @@ void GameManager::gameOver(EndType endtype)
 		break;
 	case EndType::material:
 		cout << "Draw! : Insufficient Material\n";
+		break;
+	case EndType::kingdied:
+		cout << (m_turn == PieceColor::white ? "White" : "Black") << " lose by no king.\n";
+		break;
+	case EndType::threecheck:
+		cout << (m_turn == PieceColor::white ? "Black" : "White") << " win by threecheck.\n";
+		break;
+	case EndType::kinginmiddle:
+		cout << (m_turn == PieceColor::white ? "White" : "Black") << " win by King of the hill.\n";
 		break;
 	default:
 		cout << "You gonna have a bad time.\n";

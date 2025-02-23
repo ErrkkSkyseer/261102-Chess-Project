@@ -60,6 +60,9 @@
     <ClCompile Include="Rook.cpp">
       <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SpecialRULE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

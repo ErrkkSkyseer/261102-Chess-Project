@@ -30,7 +30,7 @@ class GameManager
 private:
 	// [Class Instances]
 	Board m_board;
-	Rule m_rule = Rule(m_board,m_turn);
+	Rule m_rule = Rule(m_board,m_turn,m_gameType);
 	BoardParser m_parser = BoardParser(m_board);
 	Input m_input;
 
