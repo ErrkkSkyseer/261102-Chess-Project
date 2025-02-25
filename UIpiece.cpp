@@ -1,5 +1,6 @@
 #include "UIpiece.h"
 
+
 void UIpiece::draw(sf::RenderWindow& window)
 {
     if (!m_active)
@@ -9,7 +10,6 @@ void UIpiece::draw(sf::RenderWindow& window)
 
 }
 
-
 void UIpiece::setTexture(string Texturename){
     string path = "assets/" + Texturename + ".png";
     m_sprite.setTexture(TextureHolder::getTexture(path));
@@ -17,9 +17,8 @@ void UIpiece::setTexture(string Texturename){
 
 void UIpiece::initialize(Vector2f objectSize, Vector2f position)
 {
-   
-    auto Texturesize = m_sprite.getTexture().getSize();
-    m_sprite.setScale(Vector2f(objectSize.x / Texturesize.x, objectSize.y / Texturesize.y));
+    auto textureSize = m_sprite.getTexture().getSize();
+    m_sprite.setScale(Vector2f(objectSize.x / textureSize.x, objectSize.y / textureSize.y));
     m_sprite.setColor(Color::White);
     m_position = position;
 }
@@ -28,12 +27,18 @@ void UIpiece::setactive(bool value)
     m_active = value;
 }
 
-UIpiece::UIpiece(Vector2f objectSize, Vector2f position)
+/// <summary>
+/// Fixing no appropiate defult constroctor issue.
+/// </summary>
+/// <param name="textureName"></param>
+UIpiece::UIpiece(string textureName)
+    : m_Texture(TextureHolder::getTexture("assets/" + textureName + ".png"))
 {
-    string path = "assets/notexture.png";
-    m_sprite = Sprite(TextureHolder::getTexture(path));
+}
 
+UIpiece::UIpiece(Vector2f objectSize, Vector2f position, string textureName)
+    : m_Texture(TextureHolder::getTexture("assets/" + textureName + ".png"))
+{
     initialize(objectSize, position);
-
 }
 

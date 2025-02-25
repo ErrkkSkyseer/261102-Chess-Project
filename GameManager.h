@@ -28,7 +28,7 @@ private:
 	Rule m_rule = Rule(m_board,m_turn);
 	BoardParser m_parser = BoardParser(m_board);
 	Input m_input;
-	GUI m_GUI;
+	GUI m_GUI = GUI(m_board,m_rule);
 	
 
 	//[Game State]

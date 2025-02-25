@@ -7,8 +7,8 @@ void UIboard::draw(RenderWindow&window){
 	}
 }
 UIboard::UIboard() {
-	for (int row = 0; row < SIZE; row++) {
-		for (int col = 0; col < SIZE; col++) {
+	for (int row = 0; row < BOARD_SIZE; row++) {
+		for (int col = 0; col < BOARD_SIZE; col++) {
 			Vector2f Position = {(float)col * TILE_SIZE,(float)row * TILE_SIZE};
 			RectangleShape s(Vector2f(TILE_SIZE,TILE_SIZE));
 			s.setPosition(Position);

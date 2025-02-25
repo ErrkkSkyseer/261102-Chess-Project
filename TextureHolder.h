@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 
+#define NOTEXTURE "notexture"
+
 using namespace sf;
 using namespace std;
 

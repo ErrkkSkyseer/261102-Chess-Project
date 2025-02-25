@@ -3,12 +3,12 @@
 using namespace std;
 using namespace sf;
 
+#define BOARD_SIZE 8
+#define TILE_SIZE 80
+
 class UIboard
 {	
-	const int SIZE = 8;
-	const int TILE_SIZE = 80;
 	vector <RectangleShape> squares;
-	
 	 
 public:
 	void draw(RenderWindow&);

@@ -1,20 +1,34 @@
 #include "GUI.h"
 
+GUI::GUI(Board& board, Rule& rule)
+	:m_board(board),m_rule(rule)
+{
+	for (int x = 0; x < BOARD_SIZE; x++) {
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			Vector2i position(x+1, y+1);
+			UIpiece sprite = UIpiece(
+								Vector2f(TILE_SIZE, TILE_SIZE),
+								Vector2f(x * TILE_SIZE,y * TILE_SIZE));
+			m_UIpieces.insert(make_pair(position, sprite));
+
+			//Make all pieces show
+			auto& p = m_UIpieces[position];
+			p.setactive(true);
+		}
+	}
+}
+
 void GUI::draw(RenderWindow& window)
 {
 	m_UIboard.draw(window);
+
+	for (auto& pair : m_UIpieces)
+	{
+		pair.second.draw(window);
+	}
 }
 
-GUI::GUI()
+void GUI::onBoardUpdate()
 {
-	for (int x = 1; x < 9; x++) {
-		for (int y = 1; y < 9; y++) {
-			Vector2i position(x, y);
-			UIpiece positionsprite = UIpiece(Vector2f(80,80),Vector2f((x-1)*80,(y - 1) * 80));
-			m_UIpieces[position] = positionsprite;
-			
-
-			
-		}
-	}
+	//Logic when the board is updated (will be call when turn change)
 }
