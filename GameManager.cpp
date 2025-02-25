@@ -132,7 +132,7 @@ void GameManager::switchState(int to)
 
 void GameManager::draw(RenderWindow& window)
 {
-	m_UIboard.draw(window);
+	m_GUI.draw(window);
 }
 
 bool GameManager::onSquareInput(Vector2i& out)
