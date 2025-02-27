@@ -20,6 +20,10 @@ class Input
 {
 private:
 	bool m_isAnyKeyDown = false;
+
+	bool m_isMouseDown = false;
+	Vector2i m_MousePos;
+
 	set<Keyboard::Key> m_keysPressed;
 
 	string m_consoleInput = "";
@@ -39,6 +43,9 @@ public:
 
 	bool getAnyKeyPress();
 	bool getKeyPress(Keyboard::Key);
+
+	bool isMouseDown();
+	Vector2i getLeftMousePos();
 
 	bool OnClick();
 };

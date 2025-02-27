@@ -155,6 +155,9 @@ bool GameManager::onSquareInput(Vector2i& out)
 	return false;
 #endif // DEBUG
 
+
+
+
 	// Game Version
 #ifndef DEBUG
 	return true;

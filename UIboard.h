@@ -3,15 +3,17 @@
 using namespace std;
 using namespace sf;
 
-#define BOARD_SIZE 8
-#define TILE_SIZE 80
-
 class UIboard
 {	
+	int m_boardSize = 8;
+	int m_tileSize = 80;
+	Vector2f m_offset;
+
 	vector <RectangleShape> squares;
 	 
 public:
 	void draw(RenderWindow&);
-	UIboard();
+	UIboard(int boardSize, int tileSize, Vector2f offset);
+	void Initialize();
 };
 

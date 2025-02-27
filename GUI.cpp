@@ -55,12 +55,15 @@ string GUI::piecetoTexture(Piece& piece)
 GUI::GUI(Board& board, Rule& rule)
 	:m_board(board), m_rule(rule)
 {
+	//Spawn Board
+	m_UIboard.Initialize();
+
 	for (int x = 0; x < BOARD_SIZE; x++) {
 		for (int y = 0; y < BOARD_SIZE; y++) {
 			Vector2i position(x + 1, y + 1);
 			UIpiece sprite = UIpiece(
 				Vector2f(TILE_SIZE, TILE_SIZE),
-				Vector2f(x * TILE_SIZE, ((BOARD_SIZE - 1) * TILE_SIZE) - (y * TILE_SIZE)));
+				Vector2f(BOARD_OFFSET_X+(x * TILE_SIZE), (BOARD_OFFSET_Y+(BOARD_SIZE - 1) * TILE_SIZE) - (y * TILE_SIZE)));
 			m_UIpieces.insert(make_pair(position, sprite));
 
 			//Make all pieces show debug
@@ -68,6 +71,11 @@ GUI::GUI(Board& board, Rule& rule)
 			p.setactive(true);*/
 		}
 	}
+}
+
+Vector2i GUI::ScreenToBoard(Vector2i screenCoords)
+{
+	return Vector2i();
 }
 
 void GUI::draw(RenderWindow& window)

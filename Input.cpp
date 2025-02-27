@@ -5,6 +5,8 @@
 void Input::UpdateEvent(vector<optional<Event>>& eventCollection)
 {
     m_keysPressed.clear();
+    m_isMouseDown = false;
+    m_MousePos = {-1,-1};
 
     auto it = eventCollection.begin();
     auto end = eventCollection.end();
@@ -18,9 +20,15 @@ void Input::UpdateEvent(vector<optional<Event>>& eventCollection)
         {
             m_keysPressed.insert(sfEvent->getIf<Event::KeyPressed>()->code);
         }
+
+        if (sfEvent->is<Event::MouseButtonPressed>())
+        {
+            if (sfEvent->getIf<Event::MouseButtonPressed>()->button == Mouse::Button::Left)
+            {
+                m_MousePos = sfEvent->getIf<Event::MouseButtonPressed>()->position;
+            }
+        }
     }
-
-
 }
 #ifdef DEBUG
 
@@ -63,6 +71,16 @@ bool Input::getKeyPress(Keyboard::Key k)
 {
     auto it = m_keysPressed.find(k);
     return it != m_keysPressed.end();
+}
+
+bool Input::isMouseDown()
+{
+    return m_isMouseDown;
+}
+
+Vector2i Input::getLeftMousePos()
+{
+    return m_MousePos;
 }
 
 
