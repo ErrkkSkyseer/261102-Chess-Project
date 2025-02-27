@@ -75,7 +75,11 @@ GUI::GUI(Board& board, Rule& rule)
 
 Vector2i GUI::ScreenToBoard(Vector2i screenCoords)
 {
-	return Vector2i();
+	Vector2i offset(BOARD_OFFSET_X,BOARD_OFFSET_Y);
+	Vector2i deOffset = screenCoords - offset;
+	Vector2i boardCoord = Vector2i(ceilf(deOffset.x / TILE_SIZE) + 1, BOARD_SIZE - ceilf(deOffset.y / TILE_SIZE));
+	cout << endl << "(" << boardCoord.x << "," << boardCoord.y << ")" << endl;
+	return boardCoord;
 }
 
 void GUI::draw(RenderWindow& window)

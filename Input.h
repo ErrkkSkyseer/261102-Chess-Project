@@ -45,7 +45,7 @@ public:
 	bool getKeyPress(Keyboard::Key);
 
 	bool isMouseDown();
-	Vector2i getLeftMousePos();
+	Vector2i getMousePos();
 
 	bool OnClick();
 };

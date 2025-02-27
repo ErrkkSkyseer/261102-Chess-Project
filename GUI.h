@@ -1,6 +1,8 @@
 #pragma once
-#include<SFML/Graphics.hpp>
-#include<map>
+#include <SFML/Graphics.hpp>
+#include <math.h>
+#include <iostream>
+#include <map>
 
 #include "TextureHolder.h"
 #include "Board.h"

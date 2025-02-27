@@ -39,6 +39,9 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Bishop.cpp">
       <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
@@ -63,13 +66,13 @@
     <ClCompile Include="GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextureHolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="UIboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UIpiece.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureHolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,13 +110,13 @@
     <ClInclude Include="GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextureHolder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="UIboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UIpiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureHolder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

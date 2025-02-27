@@ -138,30 +138,37 @@ void GameManager::draw(RenderWindow& window)
 
 bool GameManager::onSquareInput(Vector2i& out)
 {
-	//IO Version
-#ifdef DEBUG
-	
-	if (m_input.getKeyPress(Keyboard::Key::Enter))
+//	//IO Version
+//#ifdef DEBUG
+//	
+//	if (m_input.getKeyPress(Keyboard::Key::Enter))
+//	{
+//		if (tryParse2Vector2i(m_input.getConsoleInput(), out))
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			cout << "Bad vector\n";
+//		}
+//	}
+//	return false;
+//#endif // DEBUG
+
+
+	if (m_input.isMouseDown())
 	{
-		if (tryParse2Vector2i(m_input.getConsoleInput(), out))
-		{
-			return true;
-		}
-		else
-		{
-			cout << "Bad vector\n";
-		}
+		out = m_GUI.ScreenToBoard(m_input.getMousePos());
+		return true;
 	}
-	return false;
-#endif // DEBUG
-
-
 
 
 	// Game Version
 #ifndef DEBUG
 	return true;
 #endif // !DEBUG
+
+	return false;
 
 }
 
