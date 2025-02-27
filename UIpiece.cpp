@@ -13,6 +13,8 @@ void UIpiece::draw(sf::RenderWindow& window)
 void UIpiece::setTexture(string Texturename){
     string path = "assets/" + Texturename + ".png";
     m_sprite.setTexture(TextureHolder::getTexture(path));
+    auto textureSize = m_sprite.getTexture().getSize();
+    m_sprite.setScale(Vector2f(m_Size.x / textureSize.x, m_Size.y / textureSize.y));
 }
 
 void UIpiece::initialize(Vector2f objectSize, Vector2f position)
@@ -21,6 +23,7 @@ void UIpiece::initialize(Vector2f objectSize, Vector2f position)
     m_sprite.setScale(Vector2f(objectSize.x / textureSize.x, objectSize.y / textureSize.y));
     m_sprite.setColor(Color::White);
     m_position = position;
+    m_Size = objectSize;
 }
 void UIpiece::setactive(bool value)
 {

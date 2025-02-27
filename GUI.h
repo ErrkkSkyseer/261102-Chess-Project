@@ -22,6 +22,8 @@ private:
 	UIboard m_UIboard;
 	map<Vector2i, UIpiece> m_UIpieces;
 
+	string piecetoTexture(Piece&);
+
 public:
 	TextureHolder m_s_TH;
 

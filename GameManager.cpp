@@ -2,6 +2,7 @@
 
 GameManager::GameManager()
 {
+
 }
 
 void GameManager::input(vector<optional<Event>>& eventCollections)
@@ -165,6 +166,7 @@ void GameManager::nextTurn()
 {
 	// if (m_rule.isGameEnd())
 	//	gameOver;
+	m_GUI.onBoardUpdate();
 
 	if (m_turn == PieceColor::white)
 		m_turn = PieceColor::black;
@@ -191,7 +193,7 @@ void GameManager::nextTurn()
 
 void GameManager::startGame()
 {
-	m_parser.ParseFile(m_board.getBoard(), "PP.txt");
+	m_parser.ParseFile(m_board.getBoard());
 #ifdef DEBUG
 	cout << "GameStart!\n\n";
 #endif // DEBUG
