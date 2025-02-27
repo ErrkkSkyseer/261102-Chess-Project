@@ -27,6 +27,12 @@ void GameManager::update(double dt)
 		return;
 	}
 
+	//Save game
+	if (m_input.getKeyPress(Keyboard::Key::S))
+	{
+		m_parser.SaveFile(m_board.getBoard());
+	}
+
 	Vector2i pos;
 	switch (m_inputState)
 	{

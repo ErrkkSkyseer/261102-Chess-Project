@@ -6,11 +6,11 @@
 #include <string>
 #include <memory>
 
+#include "Piece.h"
 #include "Board.h"
 #include "Vector2Utils.h"
 #include "BaseGameEnum.h"
 
-using namespace std;
 using namespace sf;
 
 class BoardParser
@@ -25,6 +25,7 @@ private:
 
 public:
 	BoardParser(Board& board);
-	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/inboard.txt");
+	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/inboard.txt"); //Create Piece from inboard.txt
+	void SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, string path = "Board/SaveLoad.txt"); //Save-Load in SaveLoad.txt
 
 };
