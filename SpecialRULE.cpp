@@ -24,21 +24,25 @@ void Rule::BurnSquare_Special() {
 }
 
 
-void Rule::CheckKingThreeTime_Special() {
+bool Rule::CheckKingThreeTime_Special() {
     if (isCheck(PieceColor::white, m_board)) whitecheckcount++;
     if (isCheck(PieceColor::black, m_board)) blackcheckcount++;
 
     if (whitecheckcount >= 3) {
         cout << "While wins by CheckKingThreeTime! \n";
         m_endType = EndType::threecheck;
+        return true;
+
     }
     if (blackcheckcount >= 3) {
         cout << "Black wins by CheckKingThreeTime! \n";
         m_endType = EndType::threecheck;
+        return true;
     }
+    return false;
 }
 
-void Rule::KingInMiddle_Special() {
+bool Rule::KingInMiddle_Special() {
     Vector2i W_KingPossition = findKingPos(PieceColor::white, m_board);
     Vector2i B_KingPossition = findKingPos(PieceColor::black, m_board);
     
@@ -49,6 +53,7 @@ void Rule::KingInMiddle_Special() {
             m_endType = EndType::kinginmiddle;
         }
         W_kinginmiddle = true;
+        return true;
     }
     else {
         W_kinginmiddle = false;
@@ -59,6 +64,7 @@ void Rule::KingInMiddle_Special() {
             m_endType = EndType::kinginmiddle;
         }
         B_kimginmiddle = true;
+        return true;
     }
     else {
         B_kimginmiddle = false;

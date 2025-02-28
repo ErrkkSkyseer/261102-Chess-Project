@@ -96,8 +96,8 @@ private:
 	void sortMoveArray(vector<Vector2i>& vec);
 	int countPositionOccurrences(const vector<string>& vec, string element);
 	void BurnSquare_Special();
-	void CheckKingThreeTime_Special();
-	void KingInMiddle_Special();
+	bool CheckKingThreeTime_Special();
+	bool KingInMiddle_Special();
 
 #pragma endregion
 public:

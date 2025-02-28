@@ -85,14 +85,14 @@ void Rule::calculateBoardState()
     else if (checkInsufficientMeterial())
         m_endType = EndType::material;
     else if (m_gametype == GameType::notNormal) {
-        if (CheckKingThreeTime_Special)
+        if (CheckKingThreeTime_Special())
             m_endType = EndType::threecheck;
-        else if (KingInMiddle_Special)
+        else if (KingInMiddle_Special())
             m_endType = EndType::kinginmiddle;
-        else if (isKingAlive == false)
+        else if (isKingAlive(m_turn,m_board) == false)
             m_endType = EndType::kingdied;
     }
-    return;
+     return;
 }
 
 bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
