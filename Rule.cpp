@@ -14,6 +14,18 @@ Rule::Rule(Board& board, PieceColor& color) :
     m_endType = EndType::null;
 }
 
+void Rule::reset()
+{
+    m_selectingPos = Vector2i(-1, -1);
+    m_haveSpecialMove = false;
+    m_isInCheck = false;
+    m_endType = EndType::null;
+    m_encodedBoardHistory.clear();
+    m_fiftyMoveCounter = 0;
+    m_lastPieceCount = m_board.getPieces().size();
+    m_isPromotion = false;
+}
+
 /// <summary>
 /// Try to select a piece
 /// </summary>
@@ -25,7 +37,7 @@ bool Rule::trySelect(Vector2i pos)
     bool haveMove = false;
 
     if (piece->getColor() == m_turn)
-        haveMove = calculatePossibleMove(piece);
+        haveMove = calculatePossibleMove(piece,true);
     else
         cout << "Wrong piece Color\n";
     if (haveMove)
@@ -91,7 +103,7 @@ bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
     return false;
 }
 
-bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
+bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece, bool doUpdateSpecial = true)
 {
     std::cout << "\nCalculating possible moves...\n";
     //Get piece's possible move
@@ -100,14 +112,15 @@ bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece)
     moveArray = validateAttackMove(moveArray,piece, m_board);
     
     //calculate special move
-    joinMoveArray(moveArray, calculateSpecialMove(piece, m_board));
+    joinMoveArray(moveArray, calculateSpecialMove(piece, m_board, doUpdateSpecial));
 
     //remove any move that make the king become in check
     vector<Vector2i> pinnedMove = getPinnedMove(piece, moveArray, m_board);
     subtractMoveArray(moveArray, pinnedMove);
     
     //Check for Pawn Promotion
-    m_haveSpecialMove = checkForPromotion(piece,moveArray);
+    if (checkForPromotion(piece, moveArray))
+        m_haveSpecialMove = true;
 
     printMovesVector(moveArray);
 
@@ -151,9 +164,8 @@ vector<Vector2i> Rule::getPieceMoveset(shared_ptr<Piece>& piece, Board& board, b
     return possibleMoves;
 }
 
-vector<Vector2i> Rule::calculateSpecialMove(shared_ptr<Piece>& piece, Board& board)
+vector<Vector2i> Rule::calculateSpecialMove(shared_ptr<Piece>& piece, Board& board, bool doUpdateSpecial = true)
 {
-    m_haveSpecialMove = false;
     vector<Vector2i> specialMoves = vector<Vector2i>();
     PieceType type = piece->getType();
 
@@ -163,7 +175,8 @@ vector<Vector2i> Rule::calculateSpecialMove(shared_ptr<Piece>& piece, Board& boa
     //Castle
     joinMoveArray(specialMoves, castel(piece, board));
 
-    m_haveSpecialMove = !specialMoves.empty();
+    if (doUpdateSpecial)
+        m_haveSpecialMove = !specialMoves.empty();
 
     return specialMoves;
 }
@@ -258,7 +271,7 @@ bool Rule::isCheckmate(PieceColor color)
         auto& pieces = m_board.getPieces();
         for (auto& piece : pieces)
         {
-            if (piece->getColor() == color && calculatePossibleMove(piece))
+            if (piece->getColor() == color && calculatePossibleMove(piece,false))
                 return false;
         }
         return true;
@@ -273,7 +286,7 @@ bool Rule::isStalemate(PieceColor color)
         auto& pieces = m_board.getPieces();
         for (auto& piece : pieces)
         {
-            if (piece->getColor() == color && calculatePossibleMove(piece))
+            if (piece->getColor() == color && calculatePossibleMove(piece,false))
                 return false;
         }
         return true;
@@ -338,8 +351,11 @@ void Rule::preformSpecialMove(shared_ptr<Piece>& piece, Vector2i pos)
         default:
             break;
         }
-        m_board.movePiece(m_selectingPos, pos);
-        return;
+        if (m_isPromotion)
+        {
+            m_board.movePiece(m_selectingPos, pos);
+            return;
+        }
     }
 
     //En Passant
@@ -347,12 +363,14 @@ void Rule::preformSpecialMove(shared_ptr<Piece>& piece, Vector2i pos)
     {
         Vector2i target = pos - (color == PieceColor::white?
             Vector2i(0,1) : Vector2i(0, -1));
+        cout << "pos:(" << pos.x << "," << pos.y << ")" << endl;
+        cout << "target:(" << target.x << "," << target.y << ")" << endl;
         m_board.movePiece(m_selectingPos,pos);
         if (!m_board.isEmpty(target))
         {
             if (m_board.getSquareData(target)->getColor() != color
                 && m_board.getSquareData(target)->getType() == PieceType::pawn)
-                m_board.getBoard()[target] = nullptr;
+                m_board.getBoard().erase(target);
         }
         return;
     }

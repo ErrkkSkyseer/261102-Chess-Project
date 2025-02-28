@@ -213,6 +213,7 @@ void GameManager::startGame()
 	m_turn = PieceColor::black;
 	m_move = 0;
 
+	m_rule.reset();
 	nextTurn();
 }
 
