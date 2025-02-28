@@ -69,4 +69,5 @@ bool Rule::KingInMiddle_Special() {
     else {
         B_kimginmiddle = false;
     }
+    return false;
 }
