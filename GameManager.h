@@ -13,6 +13,7 @@
 
 #endif // useDebugBoard
 
+#include "GUI.h"
 
 using namespace std;
 using namespace sf;
@@ -33,6 +34,10 @@ private:
 	Rule m_rule = Rule(m_board,m_turn,m_gameType);
 	BoardParser m_parser = BoardParser(m_board);
 	Input m_input;
+
+	GUI m_GUI = GUI(m_board,m_rule);
+	
+
 
 	//[Game State]
 	GameState m_gameState = GameState::Start;

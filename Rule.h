@@ -45,7 +45,7 @@ private:
 
 	bool m_isPromotion = false;
 
-	bool calculatePossibleMove(shared_ptr<Piece>& piece);
+	bool calculatePossibleMove(shared_ptr<Piece>& piece,bool);
 
 #pragma region PieceMovement
 	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece	,Board& board);
@@ -60,7 +60,7 @@ private:
 	vector<Vector2i> KingMove(shared_ptr<Piece>& piece	,Board& board);
 	vector<Vector2i> castel(shared_ptr<Piece>& piece, Board& board);
 	
-	vector<Vector2i> calculateSpecialMove(shared_ptr<Piece>& piece, Board& board);
+	vector<Vector2i> calculateSpecialMove(shared_ptr<Piece>& piece, Board& board,bool);
 #pragma endregion
 
 	vector<Vector2i> validateAttackMove(vector<Vector2i> moveArray, shared_ptr<Piece>& piece, Board& board);
@@ -104,6 +104,8 @@ public:
 	Rule(Board& board, PieceColor& color,GameType& gametype);
 
 	void eventActivate();
+
+	void reset();
 
 	bool trySelect(Vector2i pos);
 	bool tryMove(Vector2i pos);

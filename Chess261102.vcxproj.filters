@@ -66,6 +66,9 @@
     <ClCompile Include="SpecialRULE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UIpiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseGameEnum.h">

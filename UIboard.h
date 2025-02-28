@@ -5,13 +5,15 @@ using namespace sf;
 
 class UIboard
 {	
-	const int SIZE = 8;
-	const int TILE_SIZE = 80;
+	int m_boardSize = 8;
+	int m_tileSize = 80;
+	Vector2f m_offset;
+
 	vector <RectangleShape> squares;
-	
 	 
 public:
 	void draw(RenderWindow&);
-	UIboard();
+	UIboard(int boardSize, int tileSize, Vector2f offset);
+	void Initialize();
 };
 
