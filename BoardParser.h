@@ -18,6 +18,7 @@ class BoardParser
 {
 private:
 	Board& m_board;
+	Rule& m_Rule;
 	map<PieceType, PieceColor> colorMap;
 
 	PieceColor ParseColor(char c);

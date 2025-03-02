@@ -105,8 +105,16 @@ public:
 
 	bool isPromotion();
 	void promote(Vector2i pos, char c);
-	
+
 	EndType getEndType();
+
+#pragma region For BoardParser class
+	vector<string>& getEncodedBoardHistoryRef();
+	int& getFiftyMoveCounterRef();
+	int& getLastPieceCountRef();
+
+#pragma endregion
+
 
 };
 
