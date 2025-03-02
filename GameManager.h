@@ -53,9 +53,6 @@ private:
 	void nextTurn();
 	void gameOver();
 
-	//Annouc
-	PieceColor m_currentTurn;
-
 #ifdef DEBUG
 	void ParseInputIOTesting(); // <- Purley for testing
 
