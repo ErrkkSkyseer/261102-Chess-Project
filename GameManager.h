@@ -7,7 +7,7 @@
 #include "Rule.h"
 #include "BaseGameEnum.h"
 #include "Input.h"
-
+#include "GUI.h"
 
 using namespace std;
 using namespace sf;
@@ -28,6 +28,8 @@ private:
 	Rule m_rule = Rule(m_board,m_turn);
 	BoardParser m_parser = BoardParser(m_board);
 	Input m_input;
+	GUI m_GUI = GUI(m_board,m_rule);
+	
 
 	//[Game State]
 	GameState m_gameState = GameState::Start;
@@ -42,7 +44,6 @@ private:
 
 	void enterState(int state);
 
-	void exitState(GameState state);
 	void exitState(int state);
 
 	void switchState(int to);
@@ -51,7 +52,8 @@ private:
 
 	void startGame();
 	void nextTurn();
-	void gameOver();
+
+	void gameOver(EndType endtype);
 
 #ifdef DEBUG
 	void ParseInputIOTesting(); // <- Purley for testing
@@ -67,5 +69,6 @@ public:
 	void input(vector<optional<Event>>& eventCollections);
 	void update(double fps);
 	void draw(RenderWindow& window);
+
 };
 

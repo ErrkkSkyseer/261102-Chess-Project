@@ -39,15 +39,12 @@ public:
 
 	char getChar();
 
-	bool getIsFirstMove();
-	void setIsFirstMove(bool value);
-
+	bool getIsFirsrMove();
+	void setIsFirsrMove(bool value);
 	bool getHasMove();
 	void setHasMove(bool value);
-#ifdef DEBUG
 
 
 	void printStatus();
-#endif // DEBUG
 };
 

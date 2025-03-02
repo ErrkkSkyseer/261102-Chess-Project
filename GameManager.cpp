@@ -2,7 +2,6 @@
 
 GameManager::GameManager()
 {
-	m_parser.ParseFile(m_board.getBoard());
 
 }
 
@@ -20,7 +19,7 @@ void GameManager::update(double dt)
 	//ParseInputIOTesting();
 	if (!m_isPlaying)
 	{
-		if (m_input.getKeyPress(Keyboard::Key::Enter))
+		if (m_input.getKeyPress(Keyboard::Key::I))
 		{
 			startGame();
 		}
@@ -62,8 +61,15 @@ void GameManager::update(double dt)
 			auto& piece = m_board.getSquareData(m_selectPos);
 			if (m_rule.tryMove(pos))
 			{
-				nextTurn();
-				switchState(1);
+				if (m_rule.isPromotion())
+				{
+					char c;
+					cout << "Pawn Promotion :\n";
+					cout << "K : Knight, B : Bishop, R : Rook, Q : Queen";
+					cin >> c;
+					m_rule.promote(pos, c);
+				}
+					nextTurn();
 			}
 			else
 			{
@@ -133,32 +139,42 @@ void GameManager::switchState(int to)
 
 void GameManager::draw(RenderWindow& window)
 {
-
+	m_GUI.draw(window);
 }
 
 bool GameManager::onSquareInput(Vector2i& out)
 {
-	//IO Version
-#ifdef DEBUG
-	
-	if (m_input.getKeyPress(Keyboard::Key::Enter))
+//	//IO Version
+//#ifdef DEBUG
+//	
+//	if (m_input.getKeyPress(Keyboard::Key::Enter))
+//	{
+//		if (tryParse2Vector2i(m_input.getConsoleInput(), out))
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			cout << "Bad vector\n";
+//		}
+//	}
+//	return false;
+//#endif // DEBUG
+
+
+	if (m_input.isMouseDown())
 	{
-		if (tryParse2Vector2i(m_input.getConsoleInput(), out))
-		{
-			return true;
-		}
-		else
-		{
-			cout << "Bad vector\n";
-		}
+		out = m_GUI.ScreenToBoard(m_input.getMousePos());
+		return true;
 	}
-	return false;
-#endif // DEBUG
+
 
 	// Game Version
 #ifndef DEBUG
 	return true;
 #endif // !DEBUG
+
+	return false;
 
 }
 
@@ -166,6 +182,7 @@ void GameManager::nextTurn()
 {
 	// if (m_rule.isGameEnd())
 	//	gameOver;
+	m_GUI.onBoardUpdate();
 
 	if (m_turn == PieceColor::white)
 		m_turn = PieceColor::black;
@@ -178,32 +195,64 @@ void GameManager::nextTurn()
 
 	m_rule.calculateBoardState();
 
+	if (m_rule.getCheckmate() || m_rule.getDraw())
+		gameOver(m_rule.getEndType());
+	else
+	{
 #ifdef DEBUG
-	cout << (m_turn == PieceColor::white ? "White" : "Black") << " Turn\n";
-	cout << "Move #" << m_move << "\n----------\n";
+		cout << (m_turn == PieceColor::white ? "White" : "Black") << " Turn\n";
+		cout << "Move #" << m_move << "\n----------\n";
 #endif // DEBUG
+		switchState(1);
+	}
 }
 
 void GameManager::startGame()
 {
+	m_parser.ParseFile(m_board.getBoard());
 #ifdef DEBUG
 	cout << "GameStart!\n\n";
 #endif // DEBUG
 
 	m_isPlaying = true;
-	
+
 	m_turn = PieceColor::black;
 	m_move = 0;
 
+	m_rule.reset();
 	nextTurn();
-
-	switchState(1);
-
 }
 
-void GameManager::gameOver()
+void GameManager::gameOver(EndType endtype)
 {
 	m_isPlaying = false;
+	m_board.drawIO();
+	cout << "GameOver!\n=====\n\n";
+	switch (endtype)
+	{
+	case EndType::null:
+		cout << "You gonna have a bad time.\n";
+		break;
+	case EndType::checkmate:
+		cout << (m_turn == PieceColor::white ? "Black" : "White") << " win by checkmate.\n";
+		break;
+	case EndType::stalemate:
+		cout << "Draw! : Stalemate\n";
+		break;
+	case EndType::repeatation:
+		cout << "Draw! : Threefold Repeatation\n";
+		break;
+	case EndType::fiftyRule:
+		cout << "Draw! : Fiftymove Rule\n";
+		break;
+	case EndType::material:
+		cout << "Draw! : Insufficient Material\n";
+		break;
+	default:
+		cout << "You gonna have a bad time.\n";
+		break;
+	}
+	cout << "\n====\n";
 }
 
 #ifdef DEBUG

@@ -3,8 +3,10 @@
 Piece::Piece(Vector2i pos, char _char,PieceColor color)
 {
 	m_position = pos;
-	m_char = _char;
+	m_char = toupper(_char);
 	m_color = color;
+
+	
 
 	switch (m_char)
 	{
@@ -67,12 +69,12 @@ char Piece::getChar()
 	return m_char;
 }
 
-bool Piece::getIsFirstMove()
+bool Piece::getIsFirsrMove()
 {
 	return m_isFirstMove;
 }
 
-void Piece::setIsFirstMove(bool value)
+void Piece::setIsFirsrMove(bool value)
 {
 	m_isFirstMove = value;
 }
@@ -87,13 +89,13 @@ void Piece::setHasMove(bool value)
 	m_hasMoved = value;
 }
 
-#ifdef DEBUG
 void Piece::printStatus()
 {
+	string color = m_color == PieceColor::white ? "White" : m_color == PieceColor::black ? "Black" : "Defult";
 	cout << "\nPiece::printStatus \n";
-	cout << "Piece : " << m_char << " (" << m_position.x << "," << m_position.y << ")\n";
+	cout << "Piece : " << m_char << " Color :" << color << " (" << m_position.x << "," << m_position.y << ")\n";
+
 }
-#endif // DEBUG
 
 
 

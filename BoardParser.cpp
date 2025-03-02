@@ -48,6 +48,7 @@ void BoardParser::ParseFile(map<Vector2i, shared_ptr<Piece>>& board, string path
 
     board.clear();
 
+
     std::string line;
     while (std::getline(f, line))
     {

@@ -15,7 +15,7 @@ enum class GameType
 	isntInGame, normal, notNormal
 };
 
-enum class EndBy
+enum class EndType
 {
 	null, checkmate, stalemate, repeatation, fiftyRule, material
 };
