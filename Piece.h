@@ -24,6 +24,9 @@ private:
 	bool m_isFirstMove = false;
 	bool m_hasMoved = false;
 
+	int m_round = 0; // ??????????????????
+	PieceColor m_currentTurn = PieceColor::white; // ?????????????????????????
+
 public:
 
 	Piece(Vector2i pos, char type, PieceColor color = PieceColor::defult);
@@ -44,6 +47,12 @@ public:
 
 	bool getHasMove();
 	void setHasMove(bool value);
+
+	int getRound();
+	void setRound(int round);
+
+	PieceColor getCurrentTurn();
+	void setCurrentTurn(PieceColor turn);
 #ifdef DEBUG
 
 

@@ -30,7 +30,7 @@ void GameManager::update(double dt)
 	//Save game
 	if (m_input.getKeyPress(Keyboard::Key::S))
 	{
-		m_parser.SaveFile(m_board.getBoard());
+		m_parser.SaveFile(m_board.getBoard(), m_move, m_currentTurn);
 	}
 
 	Vector2i pos;

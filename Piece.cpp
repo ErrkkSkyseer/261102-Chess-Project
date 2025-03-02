@@ -87,11 +87,33 @@ void Piece::setHasMove(bool value)
 	m_hasMoved = value;
 }
 
+int Piece::getRound()
+{
+	return m_round;
+}
+
+void Piece::setRound(int round)
+{
+	m_round = round;
+}
+
+PieceColor Piece::getCurrentTurn()
+{
+	return m_currentTurn;
+}
+
+void Piece::setCurrentTurn(PieceColor turn)
+{
+	m_currentTurn = turn;
+}
+
 #ifdef DEBUG
 void Piece::printStatus()
 {
 	cout << "\nPiece::printStatus \n";
 	cout << "Piece : " << m_char << " (" << m_position.x << "," << m_position.y << ")\n";
+	cout << "Round: " << m_round << endl;
+	cout << "Current Turn: " << (m_currentTurn == PieceColor::white ? "White" : "Black") << endl;
 }
 #endif // DEBUG
 

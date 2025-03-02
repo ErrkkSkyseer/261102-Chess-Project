@@ -3,33 +3,33 @@
 
 PieceColor BoardParser::ParseColor(char c)
 {
-	if (c == 'w' || c == 'W') {
-		return PieceColor::white;
-	}
-	else if (c == 'b' || c == 'B') {
-		return PieceColor::black;
-	}
-	else {
-		return PieceColor::defult;
-	}
+    if (c == 'w' || c == 'W') {
+        return PieceColor::white;
+    }
+    else if (c == 'b' || c == 'B') {
+        return PieceColor::black;
+    }
+    else {
+        return PieceColor::defult;
+    }
 }
 
 PieceType BoardParser::ParseType(char c)
 {
-	switch (toupper(c)) {
-	case 'P': return PieceType::pawn;
-	case 'R': return PieceType::rook;
-	case 'N': return PieceType::knight;
-	case 'B': return PieceType::bishop;
-	case 'Q': return PieceType::queen;
-	case 'K': return PieceType::king;
-	default: return PieceType::defult;
-	}
+    switch (toupper(c)) {
+    case 'P': return PieceType::pawn;
+    case 'R': return PieceType::rook;
+    case 'N': return PieceType::knight;
+    case 'B': return PieceType::bishop;
+    case 'Q': return PieceType::queen;
+    case 'K': return PieceType::king;
+    default: return PieceType::defult;
+    }
 }
 
 bool BoardParser::ParseMoved(char c)
 {
-	return isupper(c);
+    return isupper(c);
 }
 
 BoardParser::BoardParser(Board& board) : m_board(board)
@@ -75,7 +75,7 @@ void BoardParser::ParseFile(map<Vector2i, shared_ptr<Piece>>& board, string path
     std::cout << "Board parsed successfully from " << path << std::endl;
 }
 
-void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, string path)
+void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int round,PieceColor m_currentTurn, string path)
 {
     std::ofstream f(path);
 
@@ -84,6 +84,10 @@ void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, string
         return;
     }
 
+    //รับเทิร์นและรอบ
+    f << "Round:" << round << std::endl;
+    f << "Turn:" << (m_currentTurn == PieceColor::white ? 'w' : 'b') << std::endl;
+
     for (const auto& pair : board)
     {
         const Vector2i& position = pair.first;
@@ -91,6 +95,14 @@ void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, string
 
         if (piece)
         {
+            char pieceChar = piece->getChar();
+            if (piece->getHasMove()) {
+                pieceChar = toupper(pieceChar);
+            }
+            else {
+                pieceChar = tolower(pieceChar);
+            }
+
             f << piece->getChar() << ",";
             f << (piece->getColor() == PieceColor::white ? 'w' : 'b') << ",";
             f << position.x << "," << position.y << std::endl;
