@@ -516,6 +516,21 @@ EndType Rule::getEndType()
     return m_endType;
 }
 
+vector<string>& Rule::getEncodedBoardHistoryRef()
+{
+    return m_encodedBoardHistory;
+}
+
+int& Rule::getFiftyMoveCounterRef()
+{
+    return m_fiftyMoveCounter;
+}
+
+int& Rule::getLastPieceCountRef()
+{
+    return m_lastPieceCount;
+}
+
 #pragma region Auxiliaries
 void Rule::joinMoveArray(vector<Vector2i>& base, const vector<Vector2i>& add)
 {
