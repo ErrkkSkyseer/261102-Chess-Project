@@ -75,7 +75,7 @@ vector<shared_ptr<Piece>>& Board::getPieces()
 	return m_pieces;
 }
 
-shared_ptr<Piece>& Board::getLastMocePiece()
+shared_ptr<Piece>& Board::getLastMovePiece()
 {
 	return m_lastMovePiece;
 }

@@ -33,7 +33,6 @@ private:
 
 public:
 	TextureHolder m_s_TH;
-
 	GUI(Board& board,Rule& m_rule);
 
 	Vector2i ScreenToBoard(Vector2i screenCoords);
