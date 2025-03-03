@@ -61,6 +61,7 @@ private:
 
 	void startGame();
 	void nextTurn();
+
 	void gameOver(EndType endtype);
 
 #ifdef DEBUG

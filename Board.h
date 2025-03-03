@@ -36,9 +36,11 @@ public:
 	Board getGhostBoard();
 
 	vector<shared_ptr<Piece>>& getPieces();
+
 	shared_ptr<Piece>& getLastMocePiece();
 
 	shared_ptr<Piece>& getSquareData(Vector2i pos);
+
 	bool isEmpty(Vector2i pos);
 	bool isInBoard(Vector2i pos);
 

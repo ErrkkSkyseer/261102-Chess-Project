@@ -7,17 +7,18 @@
 #include <memory>
 #include <cassert>
 
+#include "Piece.h"
 #include "Board.h"
 #include "Vector2Utils.h"
 #include "BaseGameEnum.h"
 
-using namespace std;
 using namespace sf;
 
 class BoardParser
 {
 private:
 	Board& m_board;
+	Rule& m_Rule;
 	map<PieceType, PieceColor> colorMap;
 
 	PieceColor ParseColor(char c);
@@ -26,6 +27,7 @@ private:
 
 public:
 	BoardParser(Board& board);
-	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "inboard.txt");
+	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/inboard.txt"); //Create Piece from inboard.txt
+	void SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int m_move, PieceColor m_currentTurn, string path = "Board/SaveLoad.txt"); //Save in SaveLoad.txt
 
 };
