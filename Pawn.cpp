@@ -41,7 +41,7 @@ vector<Vector2i> Rule::enPassant(shared_ptr<Piece>& piece, Board& board)
 	if (piece->getType() != PieceType::pawn)
 		return moves;
 
-	auto& lastMovePiece = board.getLastMocePiece();
+	auto& lastMovePiece = board.getLastMovePiece();
 	if (lastMovePiece == nullptr)
 		return moves;
 

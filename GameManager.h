@@ -26,7 +26,7 @@ private:
 	// [Class Instances]
 	Board m_board;
 	Rule m_rule = Rule(m_board,m_turn);
-	BoardParser m_parser = BoardParser(m_board);
+	BoardParser m_parser = BoardParser(m_board,m_rule);
 	Input m_input;
 	GUI m_GUI = GUI(m_board,m_rule);
 	
