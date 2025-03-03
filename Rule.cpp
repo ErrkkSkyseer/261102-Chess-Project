@@ -5,9 +5,10 @@
 /// </summary>
 /// <param name="board">Main board ref</param>
 /// <param name="color">player turn ref</param>
-Rule::Rule(Board& board, PieceColor& color) :
+Rule::Rule(Board& board, PieceColor& color, GameType& gametype) :
     m_board(board), 
-    m_turn(color)
+    m_turn(color),
+    m_gametype(gametype)
 {
     m_isInCheck = false;
 
@@ -24,6 +25,10 @@ void Rule::reset()
     m_fiftyMoveCounter = 0;
     m_lastPieceCount = m_board.getPieces().size();
     m_isPromotion = false;
+    m_BurnSquare_Special = false;
+    m_CheckKingThreeTime_Special = false;
+    m_KingInMiddle_Special = false;
+
 }
 
 /// <summary>
@@ -67,6 +72,13 @@ bool Rule::tryMove(Vector2i pos)
     return valid;
 }
 
+bool Rule::isKingAlive(PieceColor& color, Board& board) {
+    Vector2i kingvector = findKingPos(m_turn, m_board);
+    if (kingvector.x == 0 && kingvector.y == 0) return false;
+    else kingvector = Vector2i(0, 0);
+    return true;
+}
+
 void Rule::calculateBoardState()
 {
     cout << "\nUpdating Board...\n";
@@ -75,6 +87,10 @@ void Rule::calculateBoardState()
     m_isPromotion = false;
     m_selectingPos = {};
 
+    if (m_gametype == GameType::notNormal)
+    {
+        eventActivate();
+    }
 
     if (isCheckmate(m_turn))
         m_endType = EndType::checkmate;
@@ -84,8 +100,15 @@ void Rule::calculateBoardState()
         m_endType = EndType::repeatation;
     else if (checkInsufficientMeterial())
         m_endType = EndType::material;
-
-    return;
+    else if (m_gametype == GameType::notNormal) {
+        if (CheckKingThreeTime_Special())
+            m_endType = EndType::threecheck;
+        else if (KingInMiddle_Special())
+            m_endType = EndType::kinginmiddle;
+        else if (isKingAlive(m_turn,m_board) == false)
+            m_endType = EndType::kingdied;
+    }
+     return;
 }
 
 bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
@@ -580,6 +603,33 @@ int Rule::countPositionOccurrences(const vector<string>& vec, string element) {
     }
 
     return count; // Returns 0 if not found, otherwise returns the count
+}
+
+void Rule::eventActivate() {
+    count_Event++;
+    if (count_Event == 10)
+    {
+        srand(time(0));
+        int event = rand() % 3 +1;
+        switch (event)
+        {
+        case 1:
+            m_BurnSquare_Special = true;
+            count_Event = 0;
+            event = 0;
+            break;
+        case 2:
+            m_CheckKingThreeTime_Special = true;
+            count_Event = 0;
+            event = 0;
+            break;
+        case 3:
+            m_KingInMiddle_Special = true;
+            count_Event = 0;
+            event = 0;
+            break;
+        }
+    }
 }
 
 #pragma endregion
