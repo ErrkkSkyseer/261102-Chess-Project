@@ -44,6 +44,7 @@ void GameManager::update(double dt)
 	if (m_input.getKeyPress(Keyboard::Key::L))
 	{
 		m_parser.LoadGame(m_board.getBoard(), m_move, m_turn);
+		m_GUI.onBoardUpdate();
 		
 	}
 
@@ -199,7 +200,6 @@ void GameManager::nextTurn()
 {
 	// if (m_rule.isGameEnd())
 	//	gameOver;
-	m_GUI.onBoardUpdate();
 
 	if (m_turn == PieceColor::white)
 		m_turn = PieceColor::black;
@@ -220,6 +220,8 @@ void GameManager::nextTurn()
 		cout << (m_turn == PieceColor::white ? "White" : "Black") << " Turn\n";
 		cout << "Move #" << m_move << "\n----------\n";
 #endif // DEBUG
+
+	m_GUI.onBoardUpdate();
 		switchState(1);
 	}
 }
