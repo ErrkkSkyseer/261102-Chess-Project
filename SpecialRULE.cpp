@@ -17,6 +17,7 @@ void Rule::BurnSquare_Special() {
         Vector2i select_pos = possi_pos[num_for_select];
 
         vector<Vector2i> destroySquares = { select_pos + Vector2i(1, 0), select_pos + Vector2i(-1, 0), select_pos + Vector2i(0, 1), select_pos + Vector2i(0, -1), select_pos };
+        burn_sq = destroySquares;
         for (auto& targetpos : destroySquares) {
             if (m_board.isInBoard(targetpos) && !m_board.isEmpty(targetpos)) {
                 cout << "Piece at X = " << targetpos.x << "and Y = " << targetpos.y << " BURNED!!!\n";
