@@ -40,6 +40,13 @@ void GameManager::update(double dt)
 		m_parser.SaveFile(m_board.getBoard(), m_move, m_turn);
 	}
 
+	//Load Game
+	if (m_input.getKeyPress(Keyboard::Key::L))
+	{
+		m_parser.LoadGame(m_board.getBoard(), m_move, m_turn);
+		
+	}
+
 	Vector2i pos;
 	switch (m_inputState)
 	{
