@@ -28,7 +28,7 @@ void Rule::reset()
     m_BurnSquare_Special = false;
     m_CheckKingThreeTime_Special = false;
     m_KingInMiddle_Special = false;
-
+    burn_sq.clear();
 }
 
 /// <summary>
@@ -81,12 +81,12 @@ bool Rule::isKingAlive(PieceColor& color, Board& board) {
 
 void Rule::calculateBoardState()
 {
-    cout << "\nUpdating Board...\n";
     m_isInCheck = isCheck(m_turn,m_board);
     
     m_isPromotion = false;
     m_selectingPos = {};
 
+    burn_sq.clear();
     if (m_gametype == GameType::notNormal)
     {
         eventActivate();

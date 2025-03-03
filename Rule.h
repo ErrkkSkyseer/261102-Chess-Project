@@ -81,6 +81,7 @@ private:
 	bool isStalemate(PieceColor color);
 
 	vector<Vector2i> getPinnedMove(shared_ptr<Piece>& piece, const vector<Vector2i> moveArray, Board& board);
+	vector<Vector2i> burn_sq;
 
 	void preformSpecialMove(shared_ptr<Piece>& piece,Vector2i pos);
 
@@ -93,7 +94,6 @@ private:
 	void printMovesVector(vector<Vector2i>);
 
 	void eventActivate();
-	void eventToggle();
 
 
 #pragma region Auxiliary Functions
