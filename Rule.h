@@ -37,6 +37,7 @@ private:
 	int m_lastPieceCount;
 	int whitecheckcount = 0;
 	int blackcheckcount = 0;
+	int count_Event = 0;
 
 	bool W_kinginmiddle = false;
 	bool B_kimginmiddle = false;
@@ -44,6 +45,10 @@ private:
 	vector<shared_ptr<Piece>> m_deadPiece;
 
 	bool m_isPromotion = false;
+
+	bool m_BurnSquare_Special = false;
+	bool m_CheckKingThreeTime_Special = false;
+	bool m_KingInMiddle_Special = false;
 
 	bool calculatePossibleMove(shared_ptr<Piece>& piece,bool);
 
@@ -87,6 +92,10 @@ private:
 
 	void printMovesVector(vector<Vector2i>);
 
+	void eventActivate();
+	void eventToggle();
+
+
 #pragma region Auxiliary Functions
 
 	void joinMoveArray(vector<Vector2i>& base, const vector<Vector2i>& add);
@@ -102,8 +111,6 @@ private:
 #pragma endregion
 public:
 	Rule(Board& board, PieceColor& color,GameType& gametype);
-
-	void eventActivate();
 
 	void reset();
 

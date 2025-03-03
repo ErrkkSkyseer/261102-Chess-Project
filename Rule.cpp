@@ -25,6 +25,10 @@ void Rule::reset()
     m_fiftyMoveCounter = 0;
     m_lastPieceCount = m_board.getPieces().size();
     m_isPromotion = false;
+    m_BurnSquare_Special = false;
+    m_CheckKingThreeTime_Special = false;
+    m_KingInMiddle_Special = false;
+
 }
 
 /// <summary>
@@ -587,7 +591,30 @@ int Rule::countPositionOccurrences(const vector<string>& vec, string element) {
 }
 
 void Rule::eventActivate() {
-
+    count_Event++;
+    if (count_Event == 10)
+    {
+        srand(time(0));
+        int event = 3;//rand() % 2 +1;
+        switch (event)
+        {
+        case 1:
+            m_BurnSquare_Special = true;
+            count_Event = 0;
+            event = 0;
+            break;
+        case 2:
+            m_CheckKingThreeTime_Special = true;
+            count_Event = 0;
+            event = 0;
+            break;
+        case 3:
+            m_KingInMiddle_Special = true;
+            count_Event = 0;
+            event = 0;
+            break;
+        }
+    }
 }
 
 #pragma endregion

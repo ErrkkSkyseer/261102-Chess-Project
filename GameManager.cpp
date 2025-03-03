@@ -1,5 +1,7 @@
 #include "GameManager.h"
 
+
+
 GameManager::GameManager()
 {
 
@@ -197,7 +199,7 @@ void GameManager::nextTurn()
 
 	m_rule.calculateBoardState();
 
-	if (m_rule.getCheckmate() || m_rule.getDraw())
+	if (m_rule.getCheckmate() || m_rule.getDraw() || (m_gameType == GameType::notNormal && m_rule.getEndType() != EndType::null))
 		gameOver(m_rule.getEndType());
 	else
 	{
@@ -265,7 +267,7 @@ void GameManager::gameOver(EndType endtype)
 		cout << (m_turn == PieceColor::white ? "Black" : "White") << " win by threecheck.\n";
 		break;
 	case EndType::kinginmiddle:
-		cout << (m_turn == PieceColor::white ? "White" : "Black") << " win by King of the hill.\n";
+		cout << (m_turn == PieceColor::white ? "Black" : "White") << " win by King of the hill.\n";
 		break;
 	default:
 		cout << "You gonna have a bad time.\n";

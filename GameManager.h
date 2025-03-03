@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <ctime>
+#include <cstdlib>
 
 #include "Board.h"
 #include "BoardParser.h"
@@ -36,8 +38,6 @@ private:
 	Input m_input;
 
 	GUI m_GUI = GUI(m_board,m_rule);
-	
-
 
 	//[Game State]
 	GameState m_gameState = GameState::Start;
@@ -48,6 +48,7 @@ private:
 	PieceColor m_turn = PieceColor::defult;
 	int m_move = 0;
 	bool m_isPlaying = false;
+	
 	Vector2i m_selectPos;
 
 	void enterState(int state);

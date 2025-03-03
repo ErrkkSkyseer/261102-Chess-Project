@@ -39,10 +39,16 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
+    <ClCompile Include="StateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bishop.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
+    </ClCompile>
+    <ClCompile Include="Queen.cpp">
+      <Filter>Source Files\Piece Moveset</Filter>
+    </ClCompile>
+    <ClCompile Include="Rook.cpp">
       <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
     <ClCompile Include="King.cpp">
@@ -54,16 +60,19 @@
     <ClCompile Include="Pawn.cpp">
       <Filter>Source Files\Piece Moveset</Filter>
     </ClCompile>
-    <ClCompile Include="Queen.cpp">
-      <Filter>Source Files\Piece Moveset</Filter>
-    </ClCompile>
-    <ClCompile Include="Rook.cpp">
-      <Filter>Source Files\Piece Moveset</Filter>
-    </ClCompile>
-    <ClCompile Include="StateMachine.cpp">
+    <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpecialRULE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureHolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UIpiece.cpp">
@@ -96,6 +105,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureHolder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIpiece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
