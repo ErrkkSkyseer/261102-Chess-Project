@@ -93,7 +93,6 @@ private:
 	void printMovesVector(vector<Vector2i>);
 
 	void eventActivate();
-	void eventToggle();
 
 
 #pragma region Auxiliary Functions

@@ -610,7 +610,7 @@ void Rule::eventActivate() {
     if (count_Event == 10)
     {
         srand(time(0));
-        int event = 3;//rand() % 2 +1;
+        int event = rand() % 3 +1;
         switch (event)
         {
         case 1:

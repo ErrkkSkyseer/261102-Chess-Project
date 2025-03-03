@@ -37,7 +37,7 @@ public:
 
 	vector<shared_ptr<Piece>>& getPieces();
 
-	shared_ptr<Piece>& getLastMocePiece();
+	shared_ptr<Piece>& getLastMovePiece();
 
 	shared_ptr<Piece>& getSquareData(Vector2i pos);
 
