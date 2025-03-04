@@ -33,6 +33,7 @@ bool BoardParser::ParseMoved(char c)
 }
 
 
+
 BoardParser::BoardParser(Board& board, Rule& rule) 
     : m_board(board), m_rule(rule)
 {
@@ -79,7 +80,7 @@ void BoardParser::ParseFile(map<Vector2i, shared_ptr<Piece>>& board, string path
     std::cout << "Board parsed successfully from " << path << std::endl;
 }
 
-void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int round,PieceColor m_currentTurn, string path)
+void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int& round, PieceColor& m_currentTurn, int& fiftyMoveCounter, int& lastPieceCount, vector<string>& encodedBoardHistory, string path)
 {
     std::ofstream f(path);
 
@@ -88,9 +89,17 @@ void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int ro
         return;
     }
 
-    //รับเทิร์นและรอบ
+    // รับเทิร์นและรอบ
     f << "Round:" << round << std::endl;
     f << "Turn:" << (m_currentTurn == PieceColor::white ? 'w' : 'b') << std::endl;
+    f << "FiftyMoveCounter:" << fiftyMoveCounter << std::endl;
+    f << "LastPieceCount:" << lastPieceCount << std::endl;
+
+    // บันทึก encodedBoardHistory
+    f << "BoardHistory:" << std::endl;
+    for (const auto& history : encodedBoardHistory) {
+        f << history << std::endl;
+    }
 
     for (const auto& pair : board)
     {
@@ -122,7 +131,7 @@ void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int ro
     std::cout << "Board saved successfully to " << path << std::endl;
 }
 
-void BoardParser::LoadGame(map<Vector2i, shared_ptr<Piece>>& board, int& round, PieceColor& m_currentTurn, string path)
+void BoardParser::LoadGame(map<Vector2i, shared_ptr<Piece>>& board, int& round, PieceColor& m_currentTurn, int& fiftyMoveCounter, int& lastPieceCount, vector<string>& encodedBoardHistory, string path)
 {
     std::cout << "Loading game from " << path << std::endl;
     std::ifstream f(path);
@@ -133,6 +142,7 @@ void BoardParser::LoadGame(map<Vector2i, shared_ptr<Piece>>& board, int& round, 
     }
 
     board.clear();
+    encodedBoardHistory.clear();
 
     std::string line;
     while (std::getline(f, line))
@@ -144,6 +154,20 @@ void BoardParser::LoadGame(map<Vector2i, shared_ptr<Piece>>& board, int& round, 
         else if (line.find("Turn:") == 0)
         {
             m_currentTurn = ParseColor(line[5]);
+        }
+        else if (line.find("FiftyMoveCounter:") == 0)
+        {
+            fiftyMoveCounter = std::stoi(line.substr(17));
+        }
+        else if (line.find("LastPieceCount:") == 0)
+        {
+            lastPieceCount = std::stoi(line.substr(15));
+        }
+        else if (line.find("BoardHistory:") == 0) {
+            // อ่าน encodedBoardHistory
+            while (std::getline(f, line) && !line.empty()) {
+                encodedBoardHistory.push_back(line);
+            }
         }
         else
         {
