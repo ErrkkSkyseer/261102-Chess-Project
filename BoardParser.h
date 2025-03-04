@@ -27,8 +27,8 @@ private:
 	bool ParseMoved(char c);
 
 public:
-	BoardParser(Board& board,Rule& rule);
+	BoardParser(Board& board, Rule& rule);
 	void ParseFile(map<Vector2i, shared_ptr<Piece>>&, string path = "Board/inboard.txt"); //Create Piece from inboard.txt
-	void SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int& m_move, PieceColor& m_currentTurn, string path = "Board/SaveLoad.txt"); //Save in SaveLoad.txt
-	void LoadGame(map<Vector2i, shared_ptr<Piece>>& board, int& m_move, PieceColor& m_currentTurn, string path = "Board/SaveLoad.txt"); //Load from SaveLoad.txt
+	void SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int& m_move, PieceColor& m_currentTurn, int& fiftyMoveCounter, int& lastPieceCount, vector<string>& encodedBoardHistory, string path = "Board/SaveLoad.txt"); //Save in SaveLoad.txt
+	void LoadGame(map<Vector2i, shared_ptr<Piece>>& board, int& m_move, PieceColor& m_currentTurn, int& fiftyMoveCounter, int& lastPieceCount, vector<string>& encodedBoardHistory, string path = "Board/SaveLoad.txt"); //Load from SaveLoad.txt
 };
