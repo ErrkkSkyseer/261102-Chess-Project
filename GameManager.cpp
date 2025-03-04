@@ -1,5 +1,7 @@
 #include "GameManager.h"
 
+
+
 GameManager::GameManager()
 {
 
@@ -22,6 +24,12 @@ void GameManager::update(double dt)
 		if (m_input.getKeyPress(Keyboard::Key::I))
 		{
 			startGame();
+			m_gameType = GameType::normal;
+		}
+		if (m_input.getKeyPress(Keyboard::Key::P))
+		{
+			startGame();
+			m_gameType = GameType::notNormal;
 		}
 		return;
 	}
@@ -41,6 +49,7 @@ void GameManager::update(double dt)
 	Vector2i pos;
 	switch (m_inputState)
 	{
+
 	case 1:
 		if (onSquareInput(pos))
 		{
@@ -90,6 +99,7 @@ void GameManager::update(double dt)
 	//stateMachine(m_gameState);
 
 }
+
 
 void GameManager::enterState(int state)
 {
@@ -201,7 +211,7 @@ void GameManager::nextTurn()
 
 	m_rule.calculateBoardState();
 
-	if (m_rule.getCheckmate() || m_rule.getDraw())
+	if (m_rule.getCheckmate() || m_rule.getDraw() || (m_gameType == GameType::notNormal && m_rule.getEndType() != EndType::null))
 		gameOver(m_rule.getEndType());
 	else
 	{
@@ -215,7 +225,15 @@ void GameManager::nextTurn()
 
 void GameManager::startGame()
 {
+#ifdef UseDebugBoard
+	m_parser.ParseFile(m_board.getBoard(), UseDebugBoard);
+#endif // useDebugBoard
+#ifndef UseDebugBoard
 	m_parser.ParseFile(m_board.getBoard());
+#endif // !useDebugBoard
+
+
+
 #ifdef DEBUG
 	cout << "GameStart!\n\n";
 #endif // DEBUG
@@ -253,6 +271,15 @@ void GameManager::gameOver(EndType endtype)
 		break;
 	case EndType::material:
 		cout << "Draw! : Insufficient Material\n";
+		break;
+	case EndType::kingdied:
+		cout << (m_turn == PieceColor::white ? "White" : "Black") << " lose by no king.\n";
+		break;
+	case EndType::threecheck:
+		cout << (m_turn == PieceColor::white ? "Black" : "White") << " win by threecheck.\n";
+		break;
+	case EndType::kinginmiddle:
+		cout << (m_turn == PieceColor::white ? "Black" : "White") << " win by King of the hill.\n";
 		break;
 	default:
 		cout << "You gonna have a bad time.\n";

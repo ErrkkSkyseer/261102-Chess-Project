@@ -32,8 +32,12 @@ bool BoardParser::ParseMoved(char c)
     return isupper(c);
 }
 
-BoardParser::BoardParser(Board& board, Rule& rule) : m_board(board), m_Rule(rule)
+
+
+BoardParser::BoardParser(Board& board, Rule& rule) 
+    : m_board(board), m_rule(rule)
 {
+
 }
 
 void BoardParser::ParseFile(map<Vector2i, shared_ptr<Piece>>& board, string path)
