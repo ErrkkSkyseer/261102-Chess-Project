@@ -10,7 +10,6 @@
 #include "Piece.h"
 #include "Rule.h"
 #include "Board.h"
-#include "Rule.h"
 #include "Vector2Utils.h"
 #include "BaseGameEnum.h"
 
@@ -26,6 +25,8 @@ private:
 	PieceColor ParseColor(char c);
 	PieceType ParseType(char c);
 	bool ParseMoved(char c);
+	bool m_hasMoved = false;
+	bool m_isFirstMove = true;
 
 public:
 
