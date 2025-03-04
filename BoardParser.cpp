@@ -100,6 +100,7 @@ void BoardParser::SaveFile(const map<Vector2i, shared_ptr<Piece>>& board, int& r
     for (const auto& history : encodedBoardHistory) {
         f << history << std::endl;
     }
+    f << endl;
 
     for (const auto& pair : board)
     {

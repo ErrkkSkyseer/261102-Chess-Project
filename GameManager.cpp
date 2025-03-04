@@ -65,6 +65,7 @@ void GameManager::update(double dt)
 	if (m_input.getKeyPress(Keyboard::Key::L))
 	{
 		m_parser.LoadGame(m_board.getBoard(), m_move, m_turn,m_rule.getFiftyMoveCounterRef(), m_rule.getLastPieceCountRef(), m_rule.getEncodedBoardHistoryRef());
+		m_GUI.onBoardUpdate();
 	}
 
 	Vector2i pos;
