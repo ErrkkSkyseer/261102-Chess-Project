@@ -72,6 +72,9 @@
     <ClCompile Include="UIpiece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SpecialRULE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -119,10 +122,10 @@
     <ClInclude Include="UIpiece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Debug.h">
+    <ClInclude Include="StartScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StartScene.h">
+    <ClInclude Include="Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
