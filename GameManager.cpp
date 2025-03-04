@@ -37,15 +37,13 @@ void GameManager::update(double dt)
 	//Save game
 	if (m_input.getKeyPress(Keyboard::Key::S))
 	{
-		m_parser.SaveFile(m_board.getBoard(), m_move, m_turn);
+		m_parser.SaveFile(m_board.getBoard(), m_move, m_turn, m_rule.getFiftyMoveCounterRef(), m_rule.getLastPieceCountRef(), m_rule.getEncodedBoardHistoryRef());
 	}
 
 	//Load Game
 	if (m_input.getKeyPress(Keyboard::Key::L))
 	{
-		m_parser.LoadGame(m_board.getBoard(), m_move, m_turn);
-		m_GUI.onBoardUpdate();
-		
+		m_parser.LoadGame(m_board.getBoard(), m_move, m_turn,m_rule.getFiftyMoveCounterRef(), m_rule.getLastPieceCountRef(), m_rule.getEncodedBoardHistoryRef());
 	}
 
 	Vector2i pos;
