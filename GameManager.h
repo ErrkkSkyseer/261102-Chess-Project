@@ -39,12 +39,11 @@ private:
 
 	Input m_input;
 
-	GUI m_GUI = GUI(m_board,m_rule);
+	GUI m_GUI = GUI(m_board,m_rule,m_input, m_isPlaying, m_gameType);
 
 	//[Game State]
-	GameState m_gameState = GameState::Start;
 	int m_inputState = 0;
-	GameType m_gameType; //GameType::isntInGame;
+	GameType m_gameType;
 
 	// [Game Variables]
 	PieceColor m_turn = PieceColor::defult;

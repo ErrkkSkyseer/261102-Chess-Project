@@ -14,6 +14,27 @@ void GameManager::input(vector<optional<Event>>& eventCollections)
 	m_input.collectInputKey();
 #endif // DEBUG
 
+	if (m_input.isMouseDown() && m_GUI.getStartScene().isEnable())
+	{
+		int startSceneButton = m_GUI.getStartScene().getButtonClick();
+		switch (startSceneButton)
+		{
+		case 1:
+			startGame();
+			m_gameType = GameType::normal;
+			m_GUI.getStartScene().setEnable(false);
+			break;
+		case 2:
+			startGame();
+			m_gameType = GameType::notNormal;
+			m_GUI.getStartScene().setEnable(false);
+			break;
+		default:
+			break;
+		} 
+
+	}
+
 }
 
 void GameManager::update(double dt)

@@ -42,7 +42,7 @@ bool Rule::trySelect(Vector2i pos)
     bool haveMove = false;
 
     if (piece->getColor() == m_turn)
-        haveMove = calculatePossibleMove(piece,true);
+        haveMove = calculatePossibleMove(piece,true,true);
     else
         cout << "Wrong piece Color\n";
     if (haveMove)
@@ -113,7 +113,6 @@ void Rule::calculateBoardState()
 
 bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
 {
-    cout << "\nChecking is move valid\n";
     auto moveArray = piece->getPossibleMoveArray();
     
     //Look for matching move
@@ -126,9 +125,8 @@ bool Rule::isValidMove(shared_ptr<Piece>& piece, Vector2i pos)
     return false;
 }
 
-bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece, bool doUpdateSpecial = true)
+bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece, bool doUpdateSpecial = true,bool doPrintMoveVector=true)
 {
-    std::cout << "\nCalculating possible moves...\n";
     //Get piece's possible move
     vector<Vector2i> moveArray = getPieceMoveset(piece,m_board);
     //Remove illegle attacking move (attack your own piece)
@@ -145,7 +143,8 @@ bool Rule::calculatePossibleMove(shared_ptr<Piece>& piece, bool doUpdateSpecial 
     if (checkForPromotion(piece, moveArray))
         m_haveSpecialMove = true;
 
-    printMovesVector(moveArray);
+    if (doPrintMoveVector)
+        printMovesVector(moveArray);
 
     piece->setPossibleMoveArray(moveArray);
     return !piece->getPossibleMoveArray().empty();
@@ -294,7 +293,7 @@ bool Rule::isCheckmate(PieceColor color)
         auto& pieces = m_board.getPieces();
         for (auto& piece : pieces)
         {
-            if (piece->getColor() == color && calculatePossibleMove(piece,false))
+            if (piece->getColor() == color && calculatePossibleMove(piece,false,false))
                 return false;
         }
         return true;
@@ -309,7 +308,7 @@ bool Rule::isStalemate(PieceColor color)
         auto& pieces = m_board.getPieces();
         for (auto& piece : pieces)
         {
-            if (piece->getColor() == color && calculatePossibleMove(piece,false))
+            if (piece->getColor() == color && calculatePossibleMove(piece,false,false))
                 return false;
         }
         return true;
@@ -386,8 +385,6 @@ void Rule::preformSpecialMove(shared_ptr<Piece>& piece, Vector2i pos)
     {
         Vector2i target = pos - (color == PieceColor::white?
             Vector2i(0,1) : Vector2i(0, -1));
-        cout << "pos:(" << pos.x << "," << pos.y << ")" << endl;
-        cout << "target:(" << target.x << "," << target.y << ")" << endl;
         m_board.movePiece(m_selectingPos,pos);
         if (!m_board.isEmpty(target))
         {
@@ -607,7 +604,7 @@ int Rule::countPositionOccurrences(const vector<string>& vec, string element) {
 
 void Rule::eventActivate() {
     count_Event++;
-    if (count_Event == 10)
+    if (count_Event == 6)
     {
         srand(time(0));
         int event = rand() % 3 +1;

@@ -28,7 +28,6 @@ private:
 
 	string m_consoleInput = "";
 
-	string Key2Str(const Keyboard::Key&);
 
 
 public:

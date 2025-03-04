@@ -50,7 +50,7 @@ private:
 	bool m_CheckKingThreeTime_Special = false;
 	bool m_KingInMiddle_Special = false;
 
-	bool calculatePossibleMove(shared_ptr<Piece>& piece,bool);
+	bool calculatePossibleMove(shared_ptr<Piece>& piece,bool,bool);
 
 #pragma region PieceMovement
 	vector<Vector2i> pawnMove(shared_ptr<Piece>& piece	,Board& board);

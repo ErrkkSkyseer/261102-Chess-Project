@@ -52,8 +52,12 @@ string GUI::piecetoTexture(Piece& piece)
 	}
 }
 
-GUI::GUI(Board& board, Rule& rule)
-	:m_board(board), m_rule(rule)
+GUI::GUI(Board& board, Rule& rule, Input& input, bool& isPlaying, GameType& gameType)
+	:m_board(board),
+	m_rule(rule),
+	m_input(input),
+	m_isPLayingRef(isPlaying),
+	m_gameType(gameType)
 {
 	//Spawn Board
 	m_UIboard.Initialize();
@@ -73,23 +77,33 @@ GUI::GUI(Board& board, Rule& rule)
 	}
 }
 
+
+
 Vector2i GUI::ScreenToBoard(Vector2i screenCoords)
 {
 	Vector2i offset(BOARD_OFFSET_X,BOARD_OFFSET_Y);
 	Vector2i deOffset = screenCoords - offset;
 	Vector2i boardCoord = Vector2i(ceilf(deOffset.x / TILE_SIZE) + 1, BOARD_SIZE - ceilf(deOffset.y / TILE_SIZE));
-	cout << endl << "(" << boardCoord.x << "," << boardCoord.y << ")" << endl;
 	return boardCoord;
 }
 
 void GUI::draw(RenderWindow& window)
 {
+
 	m_UIboard.draw(window);
 
 	for (auto& pair : m_UIpieces)
 	{
 		pair.second.draw(window);
 	}
+
+	if (!m_isPLayingRef)
+		m_startScene.draw(window);
+}
+
+StartScene& GUI::getStartScene()
+{
+	return m_startScene;
 }
 
 void GUI::onBoardUpdate()
